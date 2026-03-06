@@ -246,13 +246,22 @@ export const getAllIssuedBooks = async () => {
 
 /* ================= RESERVATIONS ================= */
 
-export const reserveBook = async (bookId, hallTicket) => {
+export const reserveBook = async (bookId) => {
   const res = await fetch(
-    `${BASE_URL}/library/reserve?bookId=${bookId}&hallTicket=${hallTicket}`,
-    { method: "POST" }
+    `${BASE_URL}/library/reserve?bookId=${bookId}`,
+    {
+      method: "POST",
+      credentials: "include"
+    }
   );
 
-  return res.json();
+  const data = await res.text();
+
+  if (!res.ok) {
+    throw new Error(data);
+  }
+
+  return data;
 };
 
 export const getReservations = async () => {
