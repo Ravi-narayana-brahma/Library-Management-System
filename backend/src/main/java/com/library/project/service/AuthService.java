@@ -95,7 +95,7 @@ public class AuthService {
         );
     }
     // ✅ ADMIN REGISTER
-   @Transactional
+  	@Transactional
 	public Map<String, Object> registerAdmin(
 	        String username,
 	        String email,
@@ -111,30 +111,30 @@ public class AuthService {
 	    admin.setUsername(username);
 	    admin.setEmail(email);
 	    admin.setPassword(password);
-	    admin.setActive(false);   
+	    admin.setActive(false);
 	
 	    adminRepository.save(admin);
 	
-	    // 🔐 Send OTP
-	    sendOtp(email);
+	    // generate OTP
+	    Map<String,Object> otpData = sendOtp(email);
 	
 	    return Map.of(
-	            "message", "OTP sent to email. Verify to activate account"
+	            "success", true,
+	            "message", "OTP generated successfully",
+	            "otp", otpData.get("otp")
 	    );
 	}
 	
-	    @Transactional 
-	    public Map<String, Object> sendOtp(String email) {
+	@Transactional
+	public Map<String, Object> sendOtp(String email) {
 	
-	    // ✅ Check admin exists
 	    Admin admin = adminRepository.findByEmail(email)
 	            .orElseThrow(() ->
 	                    new RuntimeException("Email not registered"));
 	
-	    // ✅ Delete old OTP if exists (IMPORTANT)
+	    // delete previous otp
 	    otpRepository.deleteByEmail(email);
 	
-	    // ✅ Generate new OTP
 	    String otp = String.valueOf(
 	            new Random().nextInt(900000) + 100000
 	    );
@@ -142,17 +142,20 @@ public class AuthService {
 	    OtpToken token = new OtpToken();
 	    token.setEmail(email);
 	    token.setOtp(otp);
-	    token.setExpiryTime(
-	            LocalDateTime.now().plusMinutes(5)
-	    );
+	    token.setExpiryTime(LocalDateTime.now().plusMinutes(1)); // 1 minute
 	
 	    otpRepository.save(token);
 	
-	    // ✅ Send email
-	    emailService.sendOtp(email, otp);
+	    try {
+	        emailService.sendOtp(email, otp);
+	    } catch (Exception e) {
+	        System.out.println("Email failed, OTP shown in UI instead");
+	    }
 	
 	    return Map.of(
-	            "message", "OTP sent successfully"
+	            "success", true,
+	            "message", "OTP generated successfully",
+	            "otp", otp
 	    );
 	}
 
