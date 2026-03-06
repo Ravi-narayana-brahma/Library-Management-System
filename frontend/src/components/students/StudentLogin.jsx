@@ -4,7 +4,7 @@ import logo from "../../assets/logo.png";
 import { showToast } from "../../../public/toast";
 import { useNavigate } from "react-router-dom";
 
-import { studentLogin, getCurrentUser } from "../../api";
+import { studentLogin } from "../../api";
 
 export default function StudentLogin() {
 
@@ -22,19 +22,9 @@ export default function StudentLogin() {
 
     try {
 
-      const data = await studentLogin(username, password);
+      await studentLogin(username, password);
 
-      if (!data.success) {
-
-        showToast(data.message || "Login failed", "error");
-        return;
-
-      }
-
-      showToast(data.message || "Login successful", "success");
-
-      // load session
-      await getCurrentUser();
+      showToast("Login successful", "success");
 
       setTimeout(() => {
         navigate("/student/dashboard");
@@ -42,7 +32,7 @@ export default function StudentLogin() {
 
     } catch (err) {
 
-      showToast("Server error", "error");
+      showToast(err.message || "Login failed", "error");
 
     }
 
@@ -54,7 +44,6 @@ export default function StudentLogin() {
 
       <div className="glass-card">
 
-        {/* LOGO */}
         <div className="logo">
 
           <img
@@ -64,25 +53,18 @@ export default function StudentLogin() {
           />
 
           <div className="logo-text">
-
             <strong>Book Nexa</strong>
             <span>Student Portal</span>
-
           </div>
 
         </div>
 
-
-        <h1 className="h">
-          Student Login
-        </h1>
+        <h1 className="h">Student Login</h1>
 
         <p className="subtitle">
           Library Management System
         </p>
 
-
-        {/* USERNAME */}
         <div className="field">
 
           <input
@@ -92,14 +74,10 @@ export default function StudentLogin() {
             onChange={(e) => setUsername(e.target.value)}
           />
 
-          <label>
-            Student ID / Roll Number
-          </label>
+          <label>Student ID / Roll Number</label>
 
         </div>
 
-
-        {/* PASSWORD */}
         <div className="field">
 
           <input
@@ -109,12 +87,9 @@ export default function StudentLogin() {
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          <label>
-            Password
-          </label>
+          <label>Password</label>
 
         </div>
-
 
         <button
           className="login-btn"
