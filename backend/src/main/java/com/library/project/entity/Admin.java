@@ -25,7 +25,7 @@ public class Admin {
     private String password;
     @Column(nullable = false)
     private boolean active = false;
-    @Column(name = "email_verified", nullable = false)
+    @Column(name = "emailverified", nullable = false)
     private boolean emailVerified = false;
 
 	public boolean isActive() {
