@@ -174,13 +174,20 @@ export const getStudents = async () => {
 };
 
 export const addStudent = async (student) => {
+
   const res = await fetch(`${BASE_URL}/library/student`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(student)
   });
 
-  return res.text();
+  const text = await res.text();
+
+  if (!res.ok) {
+    throw new Error(text || "Failed to add student");
+  }
+
+  return text;
 };
 
 export const getStudentHistory = async (hallTicket) => {
