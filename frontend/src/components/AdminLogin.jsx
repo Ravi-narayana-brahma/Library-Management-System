@@ -33,7 +33,7 @@ export default function AdminLogin() {
             await whoAmI();  // ✅ from api.js
 
             setTimeout(() => {
-                navigate("/");
+                navigate("/admin");
             }, 200);
 
         } catch (err) {
