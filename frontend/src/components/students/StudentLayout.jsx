@@ -22,47 +22,42 @@ export default function StudentLayout() {
   const [showNotif, setShowNotif] = useState(false);
   const [notifications, setNotifications] = useState([]);
 
-  useEffect(() => {
+useEffect(() => {
 
-    const loadStudent = async () => {
+  const loadStudent = async () => {
 
-      try {
+    try {
 
-        const data = await getCurrentUser();
+      const user = await getCurrentUser();
 
-        if (!data || data.role !== "STUDENT") {
-          navigate("/student-login");
-          return;
-        }
-
-        if (!data || data.role !== "STUDENT") {
-          navigate("/student-login");
-          return;
-        }
-
-        setHallTicket(data.hallTicket);
-        setStudentName(data.name);
-
-        const notifRes = await getStudentNotifications();
-        const notifData = await notifRes.json();
-
-        setNotifications(Array.isArray(notifData) ? notifData : []);
-
-      } catch (err) {
-
+      if (!user || user.role !== "STUDENT") {
         navigate("/student-login");
-
-      } finally {
-
-        setLoading(false);
-
+        return;
       }
 
-    };
+      setHallTicket(user.hallTicket);
+      setStudentName(user.name);
 
-    loadStudent();
+      const notifData = await getStudentNotifications();
 
-  }, [navigate]);
+      setNotifications(Array.isArray(notifData) ? notifData : []);
+
+    } catch (err) {
+
+      console.error(err);
+      navigate("/student-login");
+
+    } finally {
+
+      setLoading(false);
+
+    }
+
+  };
+
+  loadStudent();
+
+}, [navigate]);
 
   // logout handler
   const handleLogout = async () => {
