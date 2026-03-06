@@ -76,15 +76,15 @@ useEffect(() => {
 
   const markAsRead = async (id) => {
 
-    await markStudentNotificationRead(id);
+  await markStudentNotificationRead(id);
 
-    const res = await getStudentNotifications();
-    const data = await res.json();
+  setNotifications(prev =>
+    prev.map(n =>
+      n.id === id ? { ...n, viewed: true } : n
+    )
+  );
 
-    setNotifications(Array.isArray(data) ? data : []);
-
-  };
-
+};
   if (loading) {
     return <p style={{ padding: 20 }}>Loading student...</p>;
   }
