@@ -38,10 +38,6 @@ useEffect(() => {
       setHallTicket(user.hallTicket);
       setStudentName(user.name);
 
-      const notifData = await getStudentNotifications();
-
-      setNotifications(Array.isArray(notifData) ? notifData : []);
-
     } catch (err) {
 
       console.error(err);
@@ -71,7 +67,28 @@ useEffect(() => {
     }
 
   };
+useEffect(() => {
 
+  const loadNotifications = async () => {
+
+    try {
+
+      const notifData = await getStudentNotifications();
+      setNotifications(Array.isArray(notifData) ? notifData : []);
+
+    } catch (err) {
+      console.error(err);
+    }
+
+  };
+
+  loadNotifications();
+
+  const interval = setInterval(loadNotifications, 1000); // refresh every 5 seconds
+
+  return () => clearInterval(interval);
+
+}, []);
   const unreadCount = notifications.filter(n => !n.viewed).length;
 
   const markAsRead = async (id) => {
