@@ -17,14 +17,19 @@ export default function Reservations() {
 
   // ✅ Load student profile
   async function loadProfile() {
-    try {
-      const profile = await getStudentProfile();
-      setHallTicket(profile.hallTicket);
-    } catch (e) {
-      console.error(e);
-      showToast("Failed to load student profile", "error");
-    }
+  try {
+
+    const profile = await getStudentProfile();
+
+    console.log("Student profile:", profile);
+
+    setHallTicket(profile?.rollNo || "");
+
+  } catch (e) {
+    console.error(e);
+    showToast("Failed to load student profile", "error");
   }
+}
 
   // Load logged-in student's reservations
   async function loadReservations() {
