@@ -28,14 +28,12 @@ export default function StudentLayout() {
 
       try {
 
-        const res = await getCurrentUser();
+        const data = await getCurrentUser();
 
-        if (!res.ok) {
+        if (!data || data.role !== "STUDENT") {
           navigate("/student-login");
           return;
         }
-
-        const data = await res.json();
 
         if (!data || data.role !== "STUDENT") {
           navigate("/student-login");
