@@ -33,7 +33,7 @@ export default function Sidebar({ open, setOpen }) {
         className="sidebar-content"
         onClick={(e) => e.stopPropagation()}
       >
-       <button onClick={() => go("/admin")}>Dashboard</button>
+       <button onClick={() => go("/admin/dashboard")}>Dashboard</button>
         <button onClick={() => go("/admin/books")}>Books</button>
         <button onClick={() => go("/admin/add-book")}>Add Book</button>
         <button onClick={() => go("/admin/students")}>Students</button>
