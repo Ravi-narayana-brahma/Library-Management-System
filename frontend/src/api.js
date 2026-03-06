@@ -414,13 +414,6 @@ export const getStudentReturnHistory = async () => {
   return res.json();
 };
 
-export const getReservations = async () => {
-  const res = await fetch(`${BASE_URL}/library/student/reservations`, {
-    credentials: "include"
-  });
-
-  return res.json();
-};
 
 export const getStudentFines = async () => {
   const res = await fetch(`${BASE_URL}/library/student/fines`, {
