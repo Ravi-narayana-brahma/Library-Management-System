@@ -185,8 +185,9 @@ public class AuthService {
 	    otpRepository.deleteByEmail(email);
 	
 	    return Map.of(
-	            "message", "Account verified successfully"
-	    );
+		        "success", true,
+		        "message", "Account verified successfully"
+		);
 	}
 
     public Map<String, Object> resetPassword(
@@ -202,9 +203,10 @@ public class AuthService {
 
         otpRepository.deleteByEmail(email);
 
-        return Map.of(
-                "message", "Password reset successfully"
-        );
+       return Map.of(
+		        "success", true,
+		        "message", "Password reset successfully"
+		);
     }
 
     // ✅ Logout
