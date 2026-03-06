@@ -13,37 +13,38 @@ export default function ForgotPassword() {
 
   const sendOtp = async () => {
 
-    if (!email) {
-      showToast("Please enter your email", "warning");
+  if (!email) {
+    showToast("Please enter your email", "warning");
+    return;
+  }
+
+  if (!email.includes("@")) {
+    showToast("Enter valid email address", "error");
+    return;
+  }
+
+  try {
+
+    const data = await forgotPassword(email);
+
+    // Stop redirect if API fails
+    if (!data.success) {
+      showToast(data.message || "Email not registered", "error");
       return;
     }
 
-    if (!email.includes("@")) {
-      showToast("Enter valid email address", "error");
-      return;
-    }
+    showToast(data.message || "OTP sent successfully", "success");
 
-    try {
+    navigate("/verify-otp", {
+      state: { email }
+    });
 
-      const data = await forgotPassword(email);
+  } catch {
 
-      if (data.success === false) {
-        showToast(data.message || "Failed to send OTP", "error");
-        return;
-      }
+    showToast("Server error. Try again.", "error");
 
-      showToast(data.message || "OTP sent successfully", "success");
-
-      navigate("/verify-otp", {
-        state: { email }
-      });
-
-    } catch {
-
-      showToast("Server error. Try again.", "error");
-
-    }
-  };
+  }
+};
 
   const goBack = () => {
 
