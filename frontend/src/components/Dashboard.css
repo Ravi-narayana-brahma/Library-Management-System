@@ -1,0 +1,395 @@
+.dashboard-container{
+  padding:24px 32px;
+  background:#f4f6fb;
+  min-height:100vh;
+  border-radius:30px;
+
+  box-shadow:
+    0 20px 45px rgba(0,0,0,0.10),
+    0 6px 18px rgba(0,0,0,0.08);
+
+  animation:dashboardEnter .45s ease-out;
+}
+
+@keyframes dashboardEnter{
+  from{
+    opacity:0;
+    transform:translateY(12px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+
+.dashboard-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px;
+}
+
+.dashboard-title{
+  font-size:26px;
+  font-weight:700;
+  letter-spacing:.3px;
+
+  color:#1f2933;
+
+  display:flex;
+  align-items:center;
+  gap:10px;
+
+  position:relative;
+}
+
+/* soft accent underline */
+.dashboard-title::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:-6px;
+
+  width:42px;
+  height:3px;
+  border-radius:6px;
+
+  background:linear-gradient(90deg,#6366f1,#22d3ee);
+}
+
+/* new dashboard date pill */
+
+
+
+
+.filter-bar{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  align-items:center;
+  background:#ffffff;
+  padding:12px 16px;
+  border-radius:12px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.06);
+  margin-bottom:24px;
+}
+
+.filter-bar > div{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-size:13px;
+  color:#444;
+}
+
+.filter-bar input{
+  padding:7px 10px;
+  border-radius:8px;
+  border:1px solid #ddd;
+  outline:none;
+  font-size:13px;
+}
+
+.filter-bar input:focus{
+  border-color:#4f46e5;
+}
+
+.filter-bar button{
+  padding:7px 14px;
+  border-radius:999px;
+  border:none;
+  font-size:13px;
+  cursor:pointer;
+  transition:all .2s ease;
+}
+
+/* Apply button */
+.filter-bar button:first-of-type{
+  background:#4f46e5;
+  color:white;
+  font-weight:600;
+}
+
+.filter-bar button:first-of-type:hover{
+  background:#4338ca;
+}
+
+/* quick range buttons */
+.filter-bar button:not(:first-of-type){
+  background:#f3f4f6;
+  color:#333;
+}
+
+.filter-bar button:not(:first-of-type):hover{
+  background:#e0e7ff;
+  color:#3730a3;
+}
+.filter-bar .btn-clear-icon{
+  width:32px;
+  height:32px;
+  border-radius:50%;
+  border:1px solid #fecaca;
+  background:#fee2e2;
+  color:#b91c1c;
+  font-size:18px;
+  font-weight:700;
+  line-height:1;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:all .2s ease;
+}
+
+.filter-bar .btn-clear-icon:hover{
+  background:#fecaca;
+  color:#7f1d1d;
+  transform:scale(1.05);
+}
+
+
+/* KPI cards */
+
+.dashboard-cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:18px;
+  margin-bottom:28px;
+}
+
+.dash-card{
+  padding:22px 20px;
+  border-radius:14px;
+  color:white;
+  box-shadow:0 10px 22px rgba(0,0,0,0.12);
+  transition:0.25s;
+}
+
+.dash-card:hover{
+  transform:translateY(-4px);
+}
+
+.dash-card span{
+  font-size:14px;
+  opacity:0.9;
+}
+
+.dash-card h3{
+  margin-top:8px;
+  font-size:34px;
+  font-weight:700;
+}
+
+/* colors */
+
+.blue    { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+.teal    { background: linear-gradient(135deg, #14b8a6, #0f766e); }
+.green   { background: linear-gradient(135deg, #22c55e, #15803d); }
+.orange  { background: linear-gradient(135deg, #f97316, #c2410c); }
+.red     { background: linear-gradient(135deg, #ef4444, #b91c1c); }
+.amber   { background: linear-gradient(135deg, #f59e0b, #b45309); }
+.purple  { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
+.crimson { background: linear-gradient(135deg, #dc2626, #7f1d1d); }
+.cyan    { background: linear-gradient(135deg, #06b6d4, #0e7490); }
+
+/* graph grid */
+
+.dashboard-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+  gap:18px;
+  margin-bottom:22px;
+}
+
+/* cards (graphs + tables) */
+.dashboard-table-card{
+  background:white;
+  padding:22px;
+  border-radius:16px;
+  box-shadow:0 12px 30px rgba(0,0,0,0.08);
+}
+
+.dashboard-table-card h3{
+  font-size:15px;
+  font-weight:600;
+  color:#2c2c2c;
+}
+
+
+/* charts */
+
+.chart-canvas{
+  width:100%;
+  margin-top:6px;
+  border:1px solid #eee;
+  border-radius:8px;
+}
+
+/* table */
+
+.dashboard-table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+.dashboard-table th{
+  text-align:left;
+  padding:10px 8px;
+  font-size:14px;
+  background:#f1f3f9;
+  color:#555;
+}
+
+.dashboard-table td{
+    color: #333;
+  padding:10px 8px;
+  border-bottom:1px solid #eee;
+  font-size:14px;
+}
+
+.dashboard-table tr:hover td{
+  background:#f8faff;
+}
+
+.empty-row{
+  text-align:center;
+  padding:20px;
+  color:#888;
+}
+/* ---------- soft glass look for main blocks ---------- */
+
+.filter-bar,
+.dashboard-table-card{
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+
+/* ---------- nicer hover for KPI cards ---------- */
+
+.dash-card{
+  position:relative;
+  overflow:hidden;
+}
+
+.dash-card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(120deg,
+      rgba(255,255,255,0.15),
+      rgba(255,255,255,0));
+  opacity:0;
+  transition:.3s ease;
+}
+
+.dash-card:hover::after{
+  opacity:1;
+}
+
+
+/* ---------- small lift on dashboard cards ---------- */
+
+.dashboard-table-card{
+  transition:transform .25s ease, box-shadow .25s ease;
+}
+
+.dashboard-table-card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 16px 36px rgba(0,0,0,0.12);
+}
+
+
+/* ---------- nicer section titles ---------- */
+
+.dashboard-table-card h3{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding-bottom:10px;
+  margin-bottom:14px;
+  border-bottom:1px dashed #e5e7eb;
+}
+
+
+/* ---------- smoother filter inputs ---------- */
+
+.filter-bar input{
+  background:#fafafa;
+  transition:border .2s ease, box-shadow .2s ease;
+}
+
+.filter-bar input:focus{
+  box-shadow:0 0 0 3px rgba(79,70,229,0.15);
+}
+
+
+/* ---------- animated buttons ---------- */
+
+.filter-bar button{
+  position:relative;
+  overflow:hidden;
+}
+
+.filter-bar button::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(255,255,255,0.25);
+  opacity:0;
+  transition:.2s;
+}
+
+.filter-bar button:hover::after{
+  opacity:1;
+}
+
+
+/* ---------- chart canvas polish ---------- */
+
+.chart-canvas{
+  background:#fff;
+  padding:6px;
+}
+
+
+/* ---------- table polish ---------- */
+
+.dashboard-table th{
+  position:sticky;
+  top:0;
+  z-index:1;
+}
+
+.dashboard-table tr{
+  transition:background .15s ease;
+}
+
+
+/* ---------- empty state ---------- */
+
+.empty-row{
+  background:linear-gradient(135deg,#f8fafc,#eef2ff);
+  border-radius:10px;
+  font-size:14px;
+  margin-top:10px;
+}
+
+
+/* ---------- subtle page fade in ---------- */
+
+.dashboard-container{
+  animation:dashboardFade .35s ease;
+}
+
+@keyframes dashboardFade{
+  from{
+    opacity:0;
+    transform:translateY(6px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}

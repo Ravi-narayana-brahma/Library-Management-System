@@ -1,0 +1,175 @@
+*{
+  box-sizing:border-box;
+}
+
+/* =========================
+   Main page scrollbar
+   clean & professional
+========================= */
+
+/* Firefox */
+html{
+  scrollbar-width:thin;
+  scrollbar-color: rgba(113, 150, 153, 0.45) transparent;
+}
+
+/* Chrome / Edge / Safari */
+html::-webkit-scrollbar{
+  width:1px;
+}
+
+:root{
+  /* true black dark theme */
+
+  --bg-body:    #000000;
+  --bg-main:    #000000;
+  --bg-sidebar: #000000;
+
+  --text-primary:#f3f4f6;
+  --text-muted:  #9ca3af;
+
+  --border: rgba(255,255,255,0.08);
+
+  --btn-bg: rgba(255,255,255,0.06);
+  --btn-text:#ffffff;
+
+  /* accent (keep for active / highlight) */
+  --accent:#ffffff;
+}
+
+
+/* ☀ Light mode */
+body.light{
+  --bg-body:#f8fafc;
+  --bg-main:#ffffff;
+  --bg-sidebar:#f1f5f9;
+
+  --text-primary:#0f172a;
+  --text-muted:#475569;
+
+  --border:#e5e7eb;
+  --btn-bg:#0f172a;
+  --btn-text:#ffffff;
+}
+:root{
+  /* true black table theme */
+
+  --table-bg: linear-gradient(180deg,#000000,#000000);
+
+  --table-head-bg: #000000;
+  --table-head-text: #e5e7eb;
+
+  --table-text: #d1d5db;
+
+  --table-border: rgba(255,255,255,.10);
+  --table-row-border: rgba(255,255,255,.06);
+
+  --table-hover: rgba(255,255,255,.05);
+
+  --table-shadow: 0 18px 36px rgba(0,0,0,.6);
+}
+
+
+body.light{
+  --table-bg:#ffffff;
+  --table-head-bg:#f8fafc;
+  --table-head-text:#334155;
+
+  --table-text:#0f172a;
+
+  --table-border:#e5e7eb;
+  --table-row-border:#edf2f7;
+
+  --table-hover:#f1f5f9;
+
+  --table-shadow:0 10px 30px rgba(0,0,0,.08);
+}
+
+/* -------------------------------
+   Base
+--------------------------------*/
+
+body{
+  margin:0;
+  font-family:Inter,system-ui,Segoe UI,Arial,sans-serif;
+  background:var(--bg-body);
+  color:var(--text-primary);
+  transition:background .25s ease,color .25s ease;
+}
+
+/* -------------------------------
+   Layout
+--------------------------------*/
+
+.layout{
+  display:flex;
+  min-height:100vh;
+}
+
+/* optional sidebar (if you use later) */
+.sidebar{
+  width:240px;
+  background:var(--bg-sidebar);
+  border-right:1px solid var(--border);
+  padding:18px;
+}
+
+/* -------------------------------
+   Main
+--------------------------------*/
+
+.main{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  background:var(--bg-main);
+  transition:background .25s ease;
+}
+
+/* -------------------------------
+   Header / Top bar
+--------------------------------*/
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:16px 22px;
+  border-bottom:1px solid var(--border);
+}
+
+/* -------------------------------
+   Content
+--------------------------------*/
+
+.content{
+  padding:22px;
+}
+
+.content p{
+  color:var(--text-muted);
+}
+
+/* -------------------------------
+   Button
+--------------------------------*/
+
+.theme-btn{
+  padding:8px 14px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  background:var(--btn-bg);
+  color:var(--btn-text);
+  font-weight:500;
+}
+
+/* -------------------------------
+   Responsive
+--------------------------------*/
+
+@media(max-width:768px){
+  .content{
+    padding:14px;
+  }
+}

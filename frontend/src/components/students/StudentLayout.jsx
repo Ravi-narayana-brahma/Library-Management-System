@@ -1,0 +1,167 @@
+import { Outlet, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import logo from "../../assets/logo.png";
+import "./Student.css";
+import {
+  getCurrentUser,
+  getStudentNotifications,
+  markStudentNotificationRead,
+  logout
+} from "../../api";
+
+
+export default function StudentLayout() {
+  const navigate = useNavigate();
+
+  const [hallTicket, setHallTicket] = useState(null);
+  const [studentName, setStudentName] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  // 🔔 Notifications
+  const [showNotif, setShowNotif] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+
+  useEffect(() => {
+    getCurrentUser()
+      .then(res => {
+        if (!res.ok) {
+          navigate("/student-login");
+          return null;
+        }
+        return res.json();
+      })
+      .then(data => {
+        if (!data || data.role !== "STUDENT") {
+          navigate("/student-login");
+          return;
+        }
+
+        setHallTicket(data.hallTicket);
+        setStudentName(data.name);
+
+        return getStudentNotifications();
+      })
+      .then(res => res?.json())
+      .then(data => setNotifications(Array.isArray(data) ? data : []))
+      .finally(() => setLoading(false));
+  }, [navigate]);
+
+  const logout = async () => {
+    try {
+      await logout();
+    } finally {
+      navigate("/student-login");
+    }
+  };
+
+  const unreadCount = notifications.filter(n => !n.viewed).length;
+
+  const markAsRead = async (id) => {
+    await markStudentNotificationRead(id);
+    const data = await getStudentNotifications();
+    setNotifications(data);
+  };
+
+  if (loading) {
+    return <p style={{ padding: 20 }}>Loading student...</p>;
+  }
+
+  return (
+    <div className="student-layout">
+      <aside className="student-sidebar">
+
+        {/* 🏫 LOGO + APP NAME */}
+        <div className="student-brand">
+          <img
+            src={logo}
+            alt="Library Logo"
+            className="student-brand-logo"
+          />
+          <div className="student-brand-text">
+            <h1 className="student-brand-name">Book Nexa</h1>
+            <span className="student-brand-tagline">
+              Smart Library System
+            </span>
+          </div>
+        </div>
+
+        {/* 🔔 HEADER */}
+        <div className="student-sidebar-header">
+          <h2>🎓 Student</h2>
+
+          <div
+            className="notification-icon"
+            onClick={() => setShowNotif(true)}
+          >
+            🔔
+            {unreadCount > 0 && (
+              <span className="notification-badge">
+                {unreadCount}
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* SIDEBAR LINKS */}
+        <button onClick={() => navigate("/student")}>Dashboard</button>
+        <button onClick={() => navigate("/student/all-books")}>All Books</button>
+        <button onClick={() => navigate("/student/issued")}>My Books</button>
+        <button onClick={() => navigate("/student/history")}>Return History</button>
+        <button onClick={() => navigate("/student/reservations")}>Reservations</button>
+        <button onClick={() => navigate("/student/fines")}>Fines</button>
+        <button onClick={() => navigate("/student/profile")}>Profile</button>
+
+        <button className="logout-btn" onClick={logout}>Logout</button>
+      </aside>
+
+      <main className="student-content">
+        <Outlet context={{ hallTicket, studentName }} />
+      </main>
+
+      {/* 🔔 NOTIFICATION MODAL */}
+      {showNotif && (
+        <div className="modal-overlay">
+          <div className="modal-box">
+
+            <div className="modal-header">
+              <h3>Notifications</h3>
+              <button onClick={() => setShowNotif(false)}>✖</button>
+            </div>
+
+            <div className="notification-list">
+              {notifications.length === 0 && (
+                <p className="empty-text">No notifications</p>
+              )}
+
+              {notifications.map(n => (
+                <div
+                  key={n.id}
+                  className={`notification-item ${n.viewed ? "read" : ""}`}
+                >
+                  <div>
+                    <p className="notif-title">
+                      {n.status === "APPROVED"
+                        ? "Request Approved"
+                        : "Request Rejected"}
+                    </p>
+                    <span className="notif-msg">{n.message}</span>
+                  </div>
+
+                  {!n.viewed && (
+                    <button
+                      className="read-btn"
+                      onClick={() => markAsRead(n.id)}
+                    >
+                      Read
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

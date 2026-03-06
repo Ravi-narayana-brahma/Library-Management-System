@@ -1,0 +1,643 @@
+.table-wrap{
+  width:100%;
+  max-height: 520px;     /* ✅ important for 1000 rows */
+  overflow-y: auto;
+  overflow-x: auto;
+  border-radius:16px;
+}
+
+
+/* ---------------------------
+   Table shell
+----------------------------*/
+
+.data-table{
+  width:100%;
+  min-width:720px;
+  border-collapse:separate;
+  border-spacing:0;
+  border-radius:16px;
+  overflow:hidden;
+
+  background: var(--table-bg);
+
+  border:1px solid var(--table-border);
+  box-shadow: var(--table-shadow);
+}
+
+/* ---------------------------
+   Header
+----------------------------*/
+
+.data-table th{
+  padding:14px;
+  font-size:12px;
+  letter-spacing:.4px;
+  text-transform:uppercase;
+  text-align:left;
+
+  background: var(--table-head-bg);
+  color: var(--table-head-text);
+
+  border-bottom:1px solid var(--table-border);
+}
+
+/* ---------------------------
+   Body
+----------------------------*/
+
+.data-table td{
+  padding:14px;
+  font-size:14px;
+  color: var(--table-text);
+
+  border-bottom:1px solid var(--table-row-border);
+}
+
+.data-table tbody tr:last-child td{
+  border-bottom:none;
+}
+
+/* ---------------------------
+   Hover
+----------------------------*/
+
+.data-table tbody tr{
+  transition:background .15s ease;
+}
+
+.data-table tbody tr:hover{
+  background: var(--table-hover);
+}
+/* ===========================
+   Copies column fix
+=========================== */
+
+.data-table td:last-child {
+  max-width: 320px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* show full list on hover */
+.data-table td:last-child:hover {
+  white-space: normal;
+  word-break: break-word;
+}
+
+.click-row{
+  cursor:pointer;
+}
+
+.view-text{
+  color:#7dd3fc;
+  font-size:13px;
+  text-align:center;
+}
+
+.expand-row td{
+  background:rgba(120,180,255,0.05);
+}
+
+.copies-box{
+  padding:10px 6px;
+  font-size:13px;
+}
+
+.copies-list{
+  margin-top:4px;
+  line-height:1.5;
+  word-break:break-word;
+  color:#cbd5f5;
+}
+
+/* pagination */
+
+.pagination{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:12px;
+  padding:12px;
+  border-top:1px solid var(--table-border);
+}
+
+.pagination button{
+  background: var(--table-head-bg);
+  border:1px solid var(--table-border);
+  padding:6px 12px;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.pagination button:disabled{
+  opacity:.4;
+  cursor:not-allowed;
+  color: black;
+}
+/* ===============================
+   Copies table (detail view)
+=============================== */
+
+.copies-wrapper{
+  width:100%;
+}
+
+/* table shell */
+
+.copies-table{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+  background:var(--table-bg);
+  border:1px solid var(--table-border);
+  border-radius:12px;
+  overflow:hidden;
+}
+
+/* header */
+
+.copies-table thead th{
+  padding:10px 12px;
+  font-size:12px;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:.4px;
+  text-align:left;
+
+  background:var(--table-head-bg);
+  color:var(--table-head-text);
+
+  border-bottom:1px solid var(--table-border);
+}
+
+/* body cells */
+
+.copies-table tbody td{
+  padding:9px 12px;
+  font-size:13px;
+  color:var(--table-text);
+  border-bottom:1px solid var(--table-row-border);
+  vertical-align:middle;
+}
+
+/* zebra rows */
+
+.copies-table tbody tr:nth-child(even){
+  background:rgba(255,255,255,0.02);
+}
+
+.copies-table tbody tr:last-child td{
+  border-bottom:none;
+}
+
+/* row hover */
+
+.copies-table tbody tr{
+  transition:background .15s ease;
+}
+
+.copies-table tbody tr:hover{
+  background:var(--table-hover);
+}
+
+/* status badge */
+
+.status{
+  padding:3px 9px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.3px;
+  display:inline-block;
+}
+
+.status.available{
+  background:rgba(16,185,129,.15);
+  color:#34d399;
+}
+
+.status.issued{
+  background:rgba(239,68,68,.15);
+  color:#f87171;
+}
+
+/* empty text */
+
+.copies-empty{
+  padding:12px;
+  font-size:13px;
+  opacity:.7;
+}
+
+/* pagination bar */
+
+.copies-pagination{
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  gap:10px;
+  padding:8px 2px 0;
+  font-size:12px;
+  color:var(--table-text);
+}
+
+.copies-pagination button{
+  background:var(--table-head-bg);
+  color:var(--table-head-text);
+  border:1px solid var(--table-border);
+  padding:4px 10px;
+  border-radius:7px;
+  cursor:pointer;
+  font-size:12px;
+}
+
+.copies-pagination button:hover{
+  background:var(--table-hover);
+}
+
+.copies-pagination button:disabled{
+  opacity:.4;
+  cursor:not-allowed;
+}
+.table-search {
+  margin: 10px 0 15px;
+}
+
+.table-search input {
+  width: 260px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+/* pagination */
+
+.pagination{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:12px;
+  margin-top:14px;
+  font-size:14px;
+}
+
+.pagination button{
+  padding:6px 12px;
+  border-radius:8px;
+  border:1px solid rgba(0,0,0,.15);
+  background:#f8fafc;
+  cursor:pointer;
+  font-weight:500;
+  transition:background .2s ease, transform .15s ease;
+}
+
+.pagination button:hover:not(:disabled){
+  background:#e5e7eb;
+  transform:translateY(-1px);
+}
+
+.pagination button:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
+.pagination span{
+  font-weight:600;
+}
+.pagination button.active-page{
+  background:#4f46e5;
+  color:white;
+  font-weight:600;
+}
+
+.pagination .dots{
+  padding: 0 6px;
+}
+
+.back-btn1{
+  background:transparent;
+  border:1px solid var(--table-border);
+  color:var(--table-head-text);
+  padding:6px 12px;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:13px;
+}
+
+.back-btn1:hover{
+  background:var(--table-hover);
+}
+.back-btn{
+  background:transparent;
+  border:1px solid var(--table-border);
+  color:var(--table-head-text);
+  padding:6px 12px;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:13px;
+}
+.back-btn:hover{
+  background:var(--table-hover);
+}
+/* -------- Copy Status Badges -------- */
+button:disabled,
+select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.status {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-block;
+  min-width: 80px;
+  text-align: center;
+  letter-spacing: 0.3px;
+}
+
+/* AVAILABLE */
+.status.available {
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #86efac;
+}
+
+/* ISSUED */
+.status.issued {
+  background: #dbeafe;
+  color: #1d4ed8;
+  border: 1px solid #93c5fd;
+}
+/* RETURNED – teal / success style */
+
+.status.returned {
+  background: #ecfeff;   /* very light cyan */
+  color: #0f766e;        /* teal text */
+  border: 1px solid #67e8f9;
+}
+/* RESERVED – purple / waiting state */
+
+.status.reserved {
+  background: #f3e8ff;   /* light purple */
+  color: #6b21a8;        /* deep purple text */
+  border: 1px solid #d8b4fe;
+}
+/* Reservation ACTIVE (waiting / queue) */
+
+.status.active {
+  background: #f3e8ff;   /* light purple */
+  color: #6b21a8;
+  border: 1px solid #d8b4fe;
+}
+
+
+/* Reservation COMPLETED (already auto issued / done) */
+
+.status.completed {
+  background: #ecfeff;   /* soft cyan */
+  color: #0f766e;
+  border: 1px solid #67e8f9;
+}
+
+/* LOST */
+.status.lost {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+}
+
+/* DAMAGED */
+.status.damaged {
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fcd34d;
+}
+/* small action buttons in tables */
+/* panel header with close button */
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #6b7280;
+  padding: 2px 6px;
+  border-radius: 6px;
+  transition: 0.15s;
+}
+
+.close-btn:hover {
+  background: #f3f4f6;
+  color: #111827;
+}
+.table-top-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:10px;
+}
+
+.page-size-box{
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+
+.page-size-box select{
+    padding:4px 6px;
+}
+.dots{
+    padding:6px 4px;
+}
+
+.mini-btn {
+  padding: 4px 10px;
+  font-size: 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  background: #4f46e5;
+  color: white;
+  transition: 0.2s;
+}
+.pagination{
+    margin-top:15px;
+    display:flex;
+    gap:6px;
+    justify-content:center;
+}
+
+.pagination button{
+    padding:6px 10px;
+    cursor:pointer;
+}
+
+.pagination button.active{
+    background:#333;
+    color:white;
+}
+
+.mini-btn:hover {
+  background: #4338ca;
+}
+.history-link {
+  color: #7c3aed;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.history-link:hover {
+  text-decoration: underline;
+}
+.copy-action-select {
+  padding: 4px 6px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 12px;
+  cursor: pointer;
+  background: #fff;
+}
+
+.copy-action-select:focus {
+  outline: none;
+  border-color: #4f46e5;
+}
+/* Pay cell layout */
+.data-table td .pay-box-inline{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+/* Amount input */
+.data-table td .pay-input{
+  width:70px;
+  padding:4px 6px;
+  font-size:13px;
+  border:1px solid #ccc;
+  border-radius:4px;
+  outline:none;
+}
+
+.data-table td .pay-input:focus{
+  border-color:#4f7cff;
+}
+
+/* Pay button */
+.data-table td .pay-btn-row{
+  padding:4px 8px;
+  font-size:12px;
+  border:none;
+  border-radius:4px;
+  background:#4f7cff;
+  color:#fff;
+  cursor:pointer;
+}
+
+.data-table td .pay-btn-row:hover{
+  background:#3b68e6;
+}
+
+/* cancel button */
+.data-table td .pay-cancel-btn{
+  padding:4px 7px;
+  font-size:12px;
+  border:none;
+  border-radius:4px;
+  background:#eee;
+  cursor:pointer;
+}
+
+.data-table td .pay-cancel-btn:hover{
+  background:#ddd;
+}
+.table-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  padding: 15px;
+  background: var(--table-bg);
+  border-radius: 10px;
+  margin-bottom: 15px;
+  align-items: flex-end;
+  box-shadow: 0 2px 8px var(--table-shadow);
+  border: 1px solid var(--table-border);
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.control-group input,
+.control-group select {
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  min-width: 180px;
+  font-size: 14px;
+}
+
+.control-group input:focus,
+.control-group select:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+.date-group label {
+  font-size: 12px;
+  margin-bottom: 3px;
+  color: var(--table-head-text);
+}
+
+.clear-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  height: 38px;
+}
+
+.clear-btn:hover {
+  background: #dc2626;
+}
+
+.total-count {
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: var(--table-head-text);
+}
+
+.status {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.status.issued { background: #dbeafe; color: #1e40af; }
+.status.returned { background: #dcfce7; color: #166534; }
+.status.lost { background: #fee2e2; color: #991b1b; }
+.status.damaged { background: #ffedd5; color: #9a3412; }
+
+@media(max-width:600px){
+  .data-table th,
+  .data-table td{
+    padding:10px;
+    font-size:13px;
+  }
+}

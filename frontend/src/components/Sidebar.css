@@ -1,0 +1,166 @@
+/* ===== Modern Sidebar (full replacement) ===== */
+
+.sidebar{
+  position:fixed;
+  top:0;
+  left:0;
+
+  width:260px;
+  height:100vh;
+
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--bg-sidebar) 96%, #ffffff),
+      color-mix(in srgb, var(--bg-sidebar) 100%, #000000)
+    );
+
+  color:var(--text-primary);
+
+  padding:18px 14px;
+
+  border-right:1px solid var(--border);
+
+  display:flex;
+  flex-direction:column;
+
+  transform:translateX(-100%);
+  transition:transform .28s cubic-bezier(.4,0,.2,1);
+
+  z-index:1000;
+
+  box-shadow:10px 0 30px rgba(0,0,0,.15);
+}
+
+
+/* open state */
+.sidebar.open{
+  transform:translateX(0);
+}
+
+
+/* header / title */
+.sidebar h2{
+  margin:6px 10px 18px 10px;
+  font-size:18px;
+  font-weight:700;
+  letter-spacing:.3px;
+  color:var(--text-primary);
+}
+
+
+/* content wrapper */
+.sidebar-content{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+
+/* menu buttons */
+.sidebar-content button{
+  all:unset;
+
+  display:flex;
+  align-items:center;
+  gap:12px;
+
+  padding:11px 14px;
+
+  border-radius:12px;
+
+  cursor:pointer;
+
+  font-size:14px;
+  font-weight:500;
+
+  color:var(--text-primary);
+
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--bg-sidebar) 92%, #ffffff),
+      color-mix(in srgb, var(--bg-sidebar) 100%, transparent)
+    );
+
+  border:1px solid var(--border);
+
+  transition:
+    background .18s ease,
+    box-shadow .18s ease,
+    transform .12s ease,
+    color .15s ease;
+}
+
+
+/* hover */
+.sidebar-content button:hover{
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--accent) 10%, var(--bg-sidebar)),
+      color-mix(in srgb, var(--accent) 4%, var(--bg-sidebar))
+    );
+
+  box-shadow:0 6px 16px rgba(0,0,0,.12);
+}
+
+
+/* active menu */
+.sidebar-content button.active{
+  background:
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--accent) 30%, var(--bg-sidebar)),
+      color-mix(in srgb, var(--accent) 10%, var(--bg-sidebar))
+    );
+
+  border-color:
+    color-mix(in srgb, var(--accent) 45%, var(--border));
+
+  box-shadow:
+    inset 4px 0 0 var(--accent),
+    0 10px 22px rgba(0,0,0,.16);
+
+  font-weight:600;
+}
+
+
+/* pressed */
+.sidebar-content button:active{
+  transform:scale(.97);
+}
+
+
+/* divider */
+.sidebar-content .divider{
+  height:1px;
+  margin:10px 6px;
+  background:var(--border);
+  opacity:.7;
+}
+
+
+/* focus (keyboard) */
+.sidebar-content button:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:2px;
+}
+.logout-btn {
+  margin-top: 15px;
+  background: #ff4b2b;
+  color: white;
+  font-weight: bold;
+}
+
+.logout-btn:hover {
+  background: #e63b1f;
+}
+
+
+/* mobile */
+@media (max-width:720px){
+  .sidebar{
+    width:230px;
+  }
+}

@@ -1,0 +1,761 @@
+@import url('https://fonts.googleapis.com/css2?family=Anta&display=swap');
+/* =====================
+   COLOR SYSTEM
+===================== */
+:root {
+  --bg: #0f172a;
+  --card: #111827;
+  --accent: #22d3ee;
+  --accent-soft: rgba(34, 211, 238, 0.35);
+  --text-main: #e2e8f0;
+  --text-sub: #94a3b8;
+  --input-bg: #020617;
+  --border: rgba(255, 255, 255, 0.08);
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+/* =====================
+   BACKGROUND
+===================== */
+.bg {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top right, #0ea5e9 0%, transparent 35%),
+    radial-gradient(circle at bottom left, #22c55e 0%, transparent 35%),
+    var(--bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* =====================
+   CARD
+===================== */
+.glass-card {
+  width: 420px;
+  padding: 45px 38px;
+  background: var(--card);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  box-shadow:
+    0 25px 50px rgba(0, 0, 0, 0.85),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  animation: cardPop 0.7s ease;
+}
+
+/* Card animation */
+@keyframes cardPop {
+  from {
+    opacity: 0;
+    transform: translateY(35px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* =====================
+   LOGO
+===================== */
+.logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 26px;
+}
+
+.logo-img {
+  width: 48px;
+  border-radius: 12px;
+}
+
+/* =====================
+   LOGO TEXT – NEW STYLE
+===================== */
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+  user-select: none;
+}
+
+/* Main Brand Name */
+.logo-text strong {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+ font-family: "Anta", sans-serif;
+  background: linear-gradient(
+    90deg,
+    #22d3ee,
+    #38bdf8,
+    #22d3ee
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  animation: brandFlow 4s linear infinite;
+  text-shadow: 0 0 20px rgba(34, 211, 238, 0.35);
+}
+
+/* Subtitle */
+.logo-text span {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  margin-top: 4px;
+
+  color: #94a3b8;
+  position: relative;
+}
+
+/* Underline accent */
+.logo-text span::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 28px;
+  height: 2px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #22d3ee, transparent);
+}
+
+/* Hover micro-interaction */
+.logo:hover .logo-text strong {
+  text-shadow:
+    0 0 25px rgba(34, 211, 238, 0.7),
+    0 0 50px rgba(34, 211, 238, 0.4);
+  transform: scale(1.03);
+}
+
+/* =====================
+   ANIMATION
+===================== */
+@keyframes brandFlow {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.logo-text span {
+  display: block;
+  font-size: 12px;
+  color: var(--accent);
+}
+
+/* =====================
+   HEADINGS
+===================== */
+/* =====================
+   HEADING – NEW STYLE
+===================== */
+.h {
+  text-align: center;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  margin-bottom: 8px;
+
+  background: linear-gradient(
+    90deg,
+    #e2e8f0,
+    #22d3ee,
+    #e2e8f0
+  );
+  background-size: 200% auto;
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  animation: titleFlow 5s linear infinite;
+}
+
+/* =====================
+   SUBTITLE – NEW STYLE
+===================== */
+.subtitle {
+  text-align: center;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.8px;
+  color: #94a3b8;
+  margin-bottom: 32px;
+  position: relative;
+}
+
+/* Decorative underline */
+.subtitle::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -10px;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 2px;
+  border-radius: 20px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #22d3ee,
+    transparent
+  );
+}
+
+/* =====================
+   ANIMATION
+===================== */
+@keyframes titleFlow {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* =====================
+   FLOATING LABEL INPUT
+===================== */
+
+.field {
+  position: relative;
+  margin-bottom: 22px;
+}
+
+/* Input */
+.field input {
+  width: 100%;
+  padding: 16px 14px;
+  background: var(--input-bg);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  color: var(--text-main);
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+/* Label (acts as placeholder) */
+.field label {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  transform: translateY(-50%);
+  color: var(--text-sub);
+  font-size: 14px;
+  pointer-events: none;
+
+  /* 🔥 FIX */
+  background: linear-gradient(
+    to bottom,
+    transparent 40%,
+    var(--input-bg) 40%
+  );
+
+  padding: 0 4px;
+  transition: all 0.25s ease;
+}
+
+/* On focus OR when input has value */
+.field input:focus + label,
+.field input:not(:placeholder-shown) + label {
+  top: -8px;
+  font-size: 12px;
+  color: var(--accent);
+}
+
+/* Input focus animation */
+.field input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+  transform: translateY(-2px);
+}
+/* =====================
+   BUTTON
+===================== */
+.login-btn {
+  width: 100%;
+  padding: 15px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #22d3ee, #0ea5e9);
+  color: #020617;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 12px 30px rgba(34, 211, 238, 0.5);
+}
+
+.login-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 40px rgba(34, 211, 238, 0.7);
+}
+
+.login-btn:active {
+  transform: scale(0.97);
+}
+
+/* =====================
+   AUTH LINKS – NEW STYLE
+===================== */
+
+/* Forgot password (RIGHT aligned) */
+.forgot {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--text-sub);
+  cursor: pointer;
+  position: relative;
+  width: 100%;
+  transition: color 0.3s ease;
+}
+
+/* Underline animation */
+.forgot::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -3px;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  transition: width 0.3s ease;
+}
+
+/* Hover effect */
+.forgot:hover {
+  color: var(--accent);
+}
+
+.forgot:hover::after {
+  width: 60px;
+}
+
+/* Register link */
+.register {
+  display: block;
+  margin-top: 22px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Hover for register */
+.register:hover {
+  letter-spacing: 0.4px;
+  text-shadow: 0 0 8px var(--accent-soft);
+}
+
+/* =====================
+   MOBILE
+===================== */
+@media (max-width: 430px) {
+  .glass-card {
+    width: 92%;
+    padding: 34px 26px;
+  }
+}
+/* =====================
+   REGISTER / OTP CARD
+===================== */
+
+/* Slightly taller card for register */
+.glass-card {
+  animation: registerFade 0.6s ease;
+}
+
+@keyframes registerFade {
+  from {
+    opacity: 0;
+    transform: translateY(25px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* =====================
+   OTP SECTION EFFECT
+===================== */
+
+/* When OTP is shown – highlight input */
+input[placeholder="Enter OTP"] {
+  letter-spacing: 6px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+/* OTP pulse animation */
+input[placeholder="Enter OTP"]:focus {
+  animation: otpPulse 1.5s infinite;
+}
+
+@keyframes otpPulse {
+  0% {
+    box-shadow: 0 0 0 0 var(--accent-soft);
+  }
+  70% {
+    box-shadow: 0 0 0 10px transparent;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+/* =====================
+   BUTTON STATES
+===================== */
+
+/* Button spacing */
+.login-btn {
+  margin-top: 10px;
+}
+
+/* Secondary button feel when verifying */
+.login-btn:has(+ .forgot) {
+  background: linear-gradient(135deg, #22d3ee, #0ea5e9);
+}
+
+/* =====================
+   BACK TO LOGIN LINK
+===================== */
+
+.forgot {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 18px;
+  font-size: 13px;
+  color: var(--text-sub);
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+/* Arrow indicator */
+.forgot::before {
+  content: "←";
+  margin-right: 6px;
+  opacity: 0;
+  transform: translateX(6px);
+  transition: all 0.3s ease;
+}
+
+/* Hover */
+.forgot:hover {
+  color: var(--accent);
+}
+
+.forgot:hover::before {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* =====================
+   MOBILE OPTIMIZATION
+===================== */
+
+@media (max-width: 420px) {
+  input[placeholder="Enter OTP"] {
+    letter-spacing: 4px;
+    font-size: 15px;
+  }
+}
+/* =====================
+   REGISTER CARD (COMPACT)
+===================== */
+.register-card {
+  width: 460px;            /* ⬅ wider */
+  padding: 32px 36px;      /* ⬅ less height */
+  background: #111827;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.85);
+}
+
+/* =====================
+   REGISTER INPUT FIELD
+===================== */
+.register-field {
+  position: relative;
+  margin-bottom: 18px;   /* ⬅ tighter spacing */
+}
+
+.register-field input {
+  width: 100%;
+  padding: 14px 14px;    /* ⬅ smaller height */
+  background: #020617;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #e5e7eb;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+.register-field label {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  transform: translateY(-50%);
+  font-size: 13px;
+  color: #94a3b8;
+  pointer-events: none;
+  background: #020617;
+  padding: 0 6px;
+  transition: all 0.25s ease;
+}
+
+/* Floating label */
+.register-field input:focus + label,
+.register-field input:not(:placeholder-shown) + label {
+  top: -4px;
+  font-size: 11px;
+  color: #22d3ee;
+}
+
+/* Focus effect */
+.register-field input:focus {
+  border-color: #22d3ee;
+  box-shadow: 0 0 0 3px rgba(34,211,238,0.3);
+}
+
+/* =====================
+   REGISTER BUTTON
+===================== */
+.register-btn {
+  width: 100%;
+  padding: 13px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, #22d3ee, #0ea5e9);
+  color: #020617;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 6px;
+}
+
+.register-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(34,211,238,0.6);
+}
+
+/* =====================
+   BACK LINK
+===================== */
+.back-link {
+  display: block;
+  margin-top: 16px;
+  text-align: right;
+  font-size: 13px;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: color 0.25s ease;
+}
+
+.back-link:hover {
+  color: #22d3ee;
+}
+
+/* =====================
+   RESPONSIVE
+===================== */
+@media (max-width: 480px) {
+  .register-card {
+    width: 92%;
+    padding: 28px 24px;
+  }
+}
+/* ===============================
+   OTP RESEND (NEW DESIGN)
+================================ */
+.otp-resend {
+  margin-top: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.otp-resend span {
+  background: #f4f6fb;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.resend-btn {
+  padding: 6px 14px;
+  background: #1d2671;
+  border: none;
+  border-radius: 20px;
+  color: white;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.resend-btn:hover {
+  background: #151c54;
+  transform: translateY(-1px);
+}
+
+.resend-btn:active {
+  transform: scale(0.95);
+}
+.profile-wrapper {
+  display: flex;
+  gap: 30px;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 30px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+  max-width: 900px;
+  margin: auto;
+}
+
+.profile-left {
+  width: 260px;
+  background: linear-gradient(180deg, #1d2671, #151c54);
+  border-radius: 16px;
+  color: white;
+  padding: 25px 20px;
+  text-align: center;
+}
+
+.profile-avatar {
+  width: 90px;
+  height: 90px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 50%;
+  margin: 0 auto 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+}
+
+.profile-left h2 {
+  margin: 10px 0 4px;
+  font-size: 18px;
+}
+
+.profile-role {
+  font-size: 13px;
+  opacity: 0.85;
+}
+
+.profile-right {
+  flex: 1;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px 22px;
+}
+
+.profile-item {
+  background: #f4f6fb;
+  padding: 14px 16px;
+  border-radius: 12px;
+}
+
+.profile-item label {
+  display: block;
+  font-size: 12px;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.profile-item span {
+  font-size: 14px;
+  color: #111827;
+  font-weight: 500;
+}
+.admin-page-header h1 {
+  margin-bottom: 30px;
+  margin: auto;
+}
+/* Responsive */
+@media (max-width: 768px) {
+  .profile-wrapper {
+    flex-direction: column;
+  }
+
+  .profile-left {
+    width: 100%;
+  }
+
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+}
+/* ===============================
+   OTP INPUT BOXES
+================================ */
+.otp-box {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.otp-box input {
+  width: 44px;
+  height: 50px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.otp-box input:focus {
+  border-color: #1d2671;
+  box-shadow: 0 0 0 2px rgba(29, 38, 113, 0.2);
+}
+
+/* Resend section */
+.otp-resend {
+  margin-top: 12px;
+  text-align: center;
+}
+
+.resend-btn {
+  background: transparent;
+  border: none;
+  color: #1d2671;
+  cursor: pointer;
+  font-weight: 600;
+}
