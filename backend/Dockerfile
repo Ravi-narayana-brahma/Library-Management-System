@@ -1,18 +1,17 @@
-FROM eclipse-temurin:17-jdk-alpine
+FROM eclipse-temurin:17-jdk
 
 WORKDIR /app
 
-COPY . .
-
-# Maven wrapper permission
+COPY pom.xml .
+COPY mvnw .
+COPY .mvn .mvn
 RUN chmod +x mvnw
 
-# Build jar
+RUN ./mvnw dependency:go-offline
+
+COPY src src
 RUN ./mvnw clean package -DskipTests
 
-# Render dynamic port support
-ENV PORT=8080
 EXPOSE 8080
 
-# Start Spring Boot
-CMD java -jar target/*.jar
+CMD ["java","-jar","target/library-0.0.1-SNAPSHOT.jar"]
