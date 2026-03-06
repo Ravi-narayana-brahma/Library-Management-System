@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailService {
 
-    @Autowired
+    @Autowired(required = false)
     private JavaMailSender mailSender;
 
     public void sendOtp(String to, String otp) {
