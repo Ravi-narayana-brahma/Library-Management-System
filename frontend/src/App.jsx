@@ -3,6 +3,7 @@ import AppLayout from "./AppLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 /* Auth */
+import AdminCodeGate from "./components/AdminCodeGate";
 import AdminLogin from "./components/AdminLogin";
 import StudentLogin from "./components/students/StudentLogin";
 import ForgotPassword from "./components/ForgotPassword";
@@ -39,7 +40,8 @@ export default function App() {
       <Route path="/" element={<Navigate to="/student-login" />} />
         {/* ---------- Public ---------- */}
         <Route path="/student-login" element={<StudentLogin />} />
-        <Route path="/admin-login" element={<AdminLogin />} />
+        <Route path="/admin-login" element={<AdminCodeGate />} />
+        <Route path="/real-admin-login" element={<AdminLogin />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/admin-register" element={<AdminRegister />} />
         <Route path="/verify-otp" element={<VerifyOtp />} />
