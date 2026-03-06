@@ -24,8 +24,8 @@ public class AuthService {
 	@Autowired
 	private OtpTokenRepository otpRepository;
 
-	@Autowired
-	private EmailService emailService;
+	// @Autowired
+	// private EmailService emailService;
 
     @Autowired
     private StudentRepository studentRepository;
@@ -134,7 +134,6 @@ public class AuthService {
 	            .orElseThrow(() ->
 	                    new RuntimeException("Email not registered"));
 	
-	    // delete previous otp
 	    otpRepository.deleteByEmail(email);
 	
 	    String otp = String.valueOf(
@@ -144,15 +143,9 @@ public class AuthService {
 	    OtpToken token = new OtpToken();
 	    token.setEmail(email);
 	    token.setOtp(otp);
-	    token.setExpiryTime(LocalDateTime.now().plusMinutes(1)); // 1 minute
+	    token.setExpiryTime(LocalDateTime.now().plusMinutes(1));
 	
 	    otpRepository.save(token);
-	
-	    try {
-	        emailService.sendOtp(email, otp);
-	    } catch (Exception e) {
-	        System.out.println("Email failed, OTP shown in UI instead");
-	    }
 	
 	    return Map.of(
 	            "success", true,
