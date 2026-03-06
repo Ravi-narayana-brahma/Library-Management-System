@@ -379,3 +379,19 @@ export const markStudentNotificationRead = async (id) => {
 
   return res.json();
 };
+/* ================= ALIASES FOR COMPONENT COMPATIBILITY ================= */
+
+export const verifyOtpApi = verifyOtp;
+
+export const getAllBooks = getBooks;
+
+export const reserveBookFlexible = reserveBook;
+
+export const cancelStudentReservation = async (id) => {
+  const res = await fetch(`${BASE_URL}/library/student/reservations/${id}`, {
+    method: "DELETE",
+    credentials: "include"
+  });
+
+  return res.json();
+};
