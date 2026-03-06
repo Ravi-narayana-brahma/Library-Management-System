@@ -771,3 +771,57 @@ input[placeholder="Enter OTP"]:focus {
   z-index: 9999;
   box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
+/* Admin Code Page */
+
+.admin-code-page{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  background:#f5f7fb;
+}
+
+.admin-code-box{
+  background:white;
+  padding:40px;
+  width:350px;
+  border-radius:10px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.1);
+  text-align:center;
+}
+
+.admin-code-title{
+  margin-bottom:20px;
+  font-size:22px;
+  color:#333;
+}
+
+.admin-code-input{
+  width:100%;
+  padding:10px;
+  margin-bottom:20px;
+  border:1px solid #ccc;
+  border-radius:6px;
+  font-size:14px;
+}
+
+.admin-code-input:focus{
+  outline:none;
+  border-color:#4a6cf7;
+}
+
+.admin-code-btn{
+  width:100%;
+  padding:10px;
+  background:#4a6cf7;
+  color:white;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  font-size:15px;
+  transition:0.3s;
+}
+
+.admin-code-btn:hover{
+  background:#3656d4;
+}
