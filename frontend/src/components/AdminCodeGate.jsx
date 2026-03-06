@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./Auth.css";
 
 export default function AdminCodeGate() {
 
@@ -38,22 +39,25 @@ export default function AdminCodeGate() {
   };
 
   return (
-    <div style={{textAlign:"center",marginTop:"150px"}}>
+    <div className="admin-code-page">
 
-      <h2>Admin Access</h2>
+      <div className="admin-code-box">
 
-      <input
-        type="password"
-        placeholder="Enter Secret Code"
-        value={code}
-        onChange={(e)=>setCode(e.target.value)}
-      />
+        <h2 className="admin-code-title">Admin Access</h2>
 
-      <br/><br/>
+        <input
+          type="password"
+          className="admin-code-input"
+          placeholder="Enter Secret Code"
+          value={code}
+          onChange={(e)=>setCode(e.target.value)}
+        />
 
-      <button onClick={verifyCode}>
-        Continue
-      </button>
+        <button className="admin-code-btn" onClick={verifyCode}>
+          Continue
+        </button>
+
+      </div>
 
     </div>
   );
