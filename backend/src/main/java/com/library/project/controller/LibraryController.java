@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/library")
+@CrossOrigin(origins = "*")
 public class LibraryController {
 
     @Autowired
