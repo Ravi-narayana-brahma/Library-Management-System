@@ -277,7 +277,64 @@ export const reserveBook = async (value, hallTicket) => {
 
   return data;
 };
+export const reserveBookStudent = async (value) => {
 
+  const input = value.trim();
+
+  let bookId = null;
+
+  // 1️⃣ If user enters numeric → already bookId
+  if (/^\d+$/.test(input)) {
+    bookId = input;
+  }
+
+  // 2️⃣ If user enters copy code
+  else if (input.includes("-")) {
+
+    const res = await fetch(
+      `${BASE_URL}/library/copies/search?key=${encodeURIComponent(input)}`
+    );
+
+    const copies = await res.json();
+
+    if (!copies.length) {
+      throw new Error("Copy not found");
+    }
+
+    bookId = copies[0].book.id;
+  }
+
+  // 3️⃣ If user enters book code
+  else {
+
+    const res = await fetch(
+      `${BASE_URL}/library/books/search?key=${encodeURIComponent(input)}`
+    );
+
+    const books = await res.json();
+
+    if (!books.length) {
+      throw new Error("Book not found");
+    }
+
+    bookId = books[0].id;
+  }
+
+  // 4️⃣ Call reserve API
+  const res = await fetch(
+    `${BASE_URL}/library/student/reserve?bookId=${bookId}`,
+    {
+      method: "POST",
+      credentials: "include"
+    }
+  );
+
+  const msg = await res.text();
+
+  if (!res.ok) throw new Error(msg);
+
+  return msg;
+};
 export const getReservations = async () => {
   const res = await fetch(`${BASE_URL}/library/reservations`);
   return res.json();
