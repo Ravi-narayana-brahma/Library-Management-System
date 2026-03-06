@@ -351,6 +351,7 @@ export const getStudentFines = async () => {
 };
 
 export const requestBookCopy = async (bookId, copyCode, days) => {
+
   const res = await fetch(
     `${BASE_URL}/library/student/request-copy?bookId=${bookId}&copyCode=${copyCode}&days=${days}`,
     {
@@ -359,7 +360,13 @@ export const requestBookCopy = async (bookId, copyCode, days) => {
     }
   );
 
-  return res.text();
+  const msg = await res.text();
+
+  if (!res.ok) {
+    throw new Error(msg || "Request failed");
+  }
+
+  return msg;
 };
 
 export const requestReturnBook = async (recordId, copyCode) => {
