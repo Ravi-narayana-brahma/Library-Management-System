@@ -63,7 +63,6 @@ export default function Students() {
         console.log("Add student error:", e);
         alert(e.message || "Error saving student");
     }
-    }
   }
 
   async function loadStudentHistory(hallTicket) {
