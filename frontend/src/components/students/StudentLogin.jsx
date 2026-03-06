@@ -9,51 +9,62 @@ export default function StudentLogin() {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+
     const navigate = useNavigate();
 
     const handleLogin = async () => {
+
         if (!username || !password) {
             showToast("Please fill all fields", "warning");
             return;
         }
 
         try {
+
             const data = await studentLogin(username, password);
 
-            showToast(data.message, "success");
+            if (!data.success) {
+                showToast(data.message || "Login failed", "error");
+                return;
+            }
 
+            showToast(data.message || "Login successful", "success");
+
+            // load session
             await getCurrentUser();
+
             setTimeout(() => {
                 navigate("/student");
-            }, 200);
+            }, 300);
 
-        } catch {
+        } catch (err) {
+
             showToast("Server error", "error");
+
         }
     };
 
     return (
         <div className="bg">
             <div className="glass-card">
+
                 <div className="logo">
                     <img src={logo} alt="Library Logo" className="logo-img" />
                     <div className="logo-text">
                         <strong>Book Nexa</strong>
-                        <span>Studenet Portal</span>
+                        <span>Student Portal</span>
                     </div>
                 </div>
 
                 <h1 className="h">Student Login</h1>
                 <p className="subtitle">Library Management System</p>
 
-                {/* 🔥 SAME INPUT DESIGN AS ADMIN */}
                 <div className="field">
                     <input
                         type="text"
                         placeholder=" "
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
-                        required
                     />
                     <label>Student ID / Roll Number</label>
                 </div>
@@ -64,7 +75,6 @@ export default function StudentLogin() {
                         placeholder=" "
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        required
                     />
                     <label>Password</label>
                 </div>
