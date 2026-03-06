@@ -246,15 +246,28 @@ export const getAllIssuedBooks = async () => {
 
 /* ================= RESERVATIONS ================= */
 
-export const reserveBook = async (bookId, hallTicket) => {
+export const reserveBook = async (value, hallTicket) => {
 
-  const res = await fetch(
-    `${BASE_URL}/library/reserve?bookId=${bookId}&hallTicket=${hallTicket}`,
-    {
-      method: "POST",
-      credentials: "include"
-    }
-  );
+  let url = `${BASE_URL}/library/reserve`;
+  const input = value.trim();
+
+  if (/^\d+$/.test(input)) {
+    // Book ID
+    url += `?bookId=${encodeURIComponent(input)}&hallTicket=${encodeURIComponent(hallTicket)}`;
+  } 
+  else if (input.includes("-")) {
+    // Copy Code
+    url += `?copyCode=${encodeURIComponent(input)}&hallTicket=${encodeURIComponent(hallTicket)}`;
+  } 
+  else {
+    // Book Code
+    url += `?bookCode=${encodeURIComponent(input)}&hallTicket=${encodeURIComponent(hallTicket)}`;
+  }
+
+  const res = await fetch(url, {
+    method: "POST",
+    credentials: "include"
+  });
 
   const data = await res.text();
 
