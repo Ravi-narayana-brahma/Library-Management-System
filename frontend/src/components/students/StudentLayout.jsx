@@ -103,7 +103,7 @@ export default function StudentLayout() {
         </div>
 
         {/* SIDEBAR LINKS */}
-        <button onClick={() => navigate("/student")}>Dashboard</button>
+        <button onClick={() => navigate("/student/dashboard")}>Dashboard</button>
         <button onClick={() => navigate("/student/all-books")}>All Books</button>
         <button onClick={() => navigate("/student/issued")}>My Books</button>
         <button onClick={() => navigate("/student/history")}>Return History</button>
