@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import AppLayout from "./AppLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -36,7 +36,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-
+      <Route path="/" element={<Navigate to="/student-login" />} />
         {/* ---------- Public ---------- */}
         <Route path="/student-login" element={<StudentLogin />} />
         <Route path="/admin-login" element={<AdminLogin />} />
@@ -47,7 +47,7 @@ export default function App() {
 
         {/* ---------- Admin ---------- */}
         <Route
-          path="/"
+          path="/admin"
           element={
             <ProtectedRoute role="ADMIN">
               <AppLayout />
