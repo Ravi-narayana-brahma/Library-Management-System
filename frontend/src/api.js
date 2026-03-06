@@ -494,3 +494,20 @@ export const cancelStudentReservation = async (id) => {
 
   return res.json();
 };
+export const getStudentReservations = async () => {
+
+  const res = await fetch(
+    `${BASE_URL}/library/student/reservations`,
+    {
+      credentials: "include"
+    }
+  );
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.message || "Failed to load reservations");
+  }
+
+  return data;
+};
