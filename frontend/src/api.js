@@ -50,15 +50,22 @@ export const logout = async () => {
 /* ================= AUTH ================= */
 
 export const getCurrentUser = async () => {
-  const res = await fetch(`${BASE_URL}/api/auth/me`, {
-    credentials: "include"
-  });
+  try {
 
-  if (!res.ok) {
+    const res = await fetch(`${BASE_URL}/api/auth/me`, {
+      credentials: "include"
+    });
+
+    if (!res.ok) {
+      return null;
+    }
+
+    const data = await res.json();
+    return data;
+
+  } catch (err) {
     return null;
   }
-
-  return res.json();
 };
 
 export const whoAmI = getCurrentUser;
