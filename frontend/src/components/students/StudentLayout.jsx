@@ -76,13 +76,20 @@ useEffect(() => {
 
   const markAsRead = async (id) => {
 
-  await markStudentNotificationRead(id);
+  try {
 
-  setNotifications(prev =>
-    prev.map(n =>
-      n.id === id ? { ...n, viewed: true } : n
-    )
-  );
+    await markStudentNotificationRead(id);
+
+    // update state AFTER backend success
+    setNotifications(prev =>
+      prev.map(n =>
+        n.id === id ? { ...n, viewed: true } : n
+      )
+    );
+
+  } catch (err) {
+    console.error("Failed to mark notification:", err);
+  }
 
 };
   if (loading) {
