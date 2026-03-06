@@ -39,26 +39,29 @@ export default function AdminCodeGate() {
   };
 
   return (
-    <div className="admin-code-page">
+  <div className="admin-code-page">
+  <div className="admin-code-box">
 
-      <div className="admin-code-box">
+    <h2 className="admin-code-title">Admin Access</h2>
+    <p className="admin-code-subtitle">Enter the secret access code</p>
 
-        <h2 className="admin-code-title">Admin Access</h2>
+    <input
+      type="password"
+      className="admin-code-input"
+      placeholder="Secret Code"
+      value={code}
+      onChange={(e)=>setCode(e.target.value)}
+    />
 
-        <input
-          type="password"
-          className="admin-code-input"
-          placeholder="Enter Secret Code"
-          value={code}
-          onChange={(e)=>setCode(e.target.value)}
-        />
+    <button className="admin-code-btn" onClick={verifyCode}>
+      Continue
+    </button>
 
-        <button className="admin-code-btn" onClick={verifyCode}>
-          Continue
-        </button>
+    <p className="admin-code-attempts">
+      Attempts left: {3 - attempts}
+    </p>
 
-      </div>
-
-    </div>
+  </div>
+</div>
   );
 }
