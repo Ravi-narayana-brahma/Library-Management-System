@@ -55,6 +55,7 @@ export default function App() {
           }
         >
           <Route index element={<Dashboard />} />
+          <Route path="dashboard" element={<Dashboard />} />
           <Route path="books" element={<Books />} />
           <Route path="add-book" element={<AddBook />} />
           <Route path="students" element={<Students />} />
@@ -76,6 +77,7 @@ export default function App() {
           }
         >
           <Route index element={<StudentDashboard />} />
+          <Route path="dashboard" element={<StudentDashboard />} />
           <Route path="all-books" element={<AllBooks />} />
           <Route path="issued" element={<IssuedBooks />} />
           <Route path="history" element={<ReturnHistory />} />
