@@ -60,7 +60,9 @@ export default function Students() {
       loadStudents();
 
     } catch (e) {
-      console.log("Add student error", e);
+        console.log("Add student error:", e);
+        alert(e.message || "Error saving student");
+    }
     }
   }
 
