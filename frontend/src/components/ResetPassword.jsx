@@ -12,10 +12,10 @@ export default function ResetPassword() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Email passed from VerifyOtp
   const email = location.state?.email;
 
-  // Prevent direct access
+  const role = sessionStorage.getItem("FORGOT_ROLE") || "STUDENT";
+
   useEffect(() => {
     if (!email) {
       navigate("/forgot-password");
@@ -23,6 +23,7 @@ export default function ResetPassword() {
   }, [email, navigate]);
 
   const resetPassword = async () => {
+
     if (!password || !confirm) {
       showToast("All fields required", "warning");
       return;
@@ -34,44 +35,62 @@ export default function ResetPassword() {
     }
 
     try {
+
       const data = await resetPasswordApi(email, password);
 
-      if (!data.success) {
-        showToast(data.message, "error");
+      if (data.success === false) {
+        showToast(data.message || "Reset failed", "error");
         return;
       }
 
-      showToast(data.message, "success");
-      navigate("/admin-login");
+      showToast(data.message || "Password reset successfully", "success");
+
+      sessionStorage.removeItem("FORGOT_ROLE");
+
+      navigate(
+        role === "ADMIN"
+          ? "/admin-login"
+          : "/student-login"
+      );
 
     } catch {
+
       showToast("Server error", "error");
+
     }
   };
 
   return (
     <div className="bg">
       <div className="glass-card">
+
         <h1 className="h">Reset Password</h1>
         <p className="subtitle">Create new password</p>
 
-        <input
-          type="password"
-          placeholder="New Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <div className="field">
+          <input
+            type="password"
+            placeholder=" "
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <label>New Password</label>
+        </div>
 
-        <input
-          type="password"
-          placeholder="Confirm Password"
-          value={confirm}
-          onChange={(e) => setConfirm(e.target.value)}
-        />
+        <div className="field">
+          <input
+            type="password"
+            placeholder=" "
+            value={confirm}
+            onChange={(e) => setConfirm(e.target.value)}
+          />
+          <label>Confirm Password</label>
+        </div>
 
         <button className="login-btn" onClick={resetPassword}>
           Reset Password
         </button>
+
       </div>
     </div>
   );
