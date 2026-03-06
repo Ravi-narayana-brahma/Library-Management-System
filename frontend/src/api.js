@@ -484,7 +484,7 @@ export const verifyOtpApi = verifyOtp;
 
 export const getAllBooks = getBooks;
 
-export const reserveBookFlexible = reserveBook;
+export const reserveBookFlexible = reserveBookStudent;
 
 export const cancelStudentReservation = async (id) => {
   const res = await fetch(`${BASE_URL}/library/student/reservations/${id}`, {
