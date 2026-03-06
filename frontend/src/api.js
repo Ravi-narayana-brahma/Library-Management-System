@@ -11,11 +11,7 @@ export const studentLogin = async (username, password) => {
   });
 
   const data = await res.json();
-
-  if (!res.ok) {
-    throw new Error(data.message || "Login failed");
-  }
-
+  if (!res.ok) throw new Error(data.message);
   return data;
 };
 
@@ -28,11 +24,7 @@ export const adminLogin = async (username, password) => {
   });
 
   const data = await res.json();
-
-  if (!res.ok) {
-    throw new Error(data.message || "Login failed");
-  }
-
+  if (!res.ok) throw new Error(data.message);
   return data;
 };
 
@@ -55,7 +47,7 @@ export const logout = async () => {
   return res.json();
 };
 
-/* ================= CURRENT USER ================= */
+/* ================= AUTH ================= */
 
 export const getCurrentUser = async () => {
   const res = await fetch(`${BASE_URL}/api/auth/me`, {
@@ -70,8 +62,6 @@ export const getCurrentUser = async () => {
 };
 
 export const whoAmI = getCurrentUser;
-
-/* ================= PASSWORD ================= */
 
 export const forgotPassword = async (email) => {
   const res = await fetch(`${BASE_URL}/api/auth/forgot-password`, {
@@ -103,8 +93,6 @@ export const resetPassword = async (email, password) => {
   return res.json();
 };
 
-/* ================= PROFILE ================= */
-
 export const getStudentProfile = async () => {
   const res = await fetch(`${BASE_URL}/api/auth/student/profile`, {
     credentials: "include"
@@ -120,6 +108,7 @@ export const getAdminProfile = async () => {
 
   return res.json();
 };
+
 
 /* ================= BOOKS ================= */
 
@@ -142,6 +131,7 @@ export const getBookHistory = async (bookId) => {
   const res = await fetch(`${BASE_URL}/library/books/${bookId}/history`);
   return res.json();
 };
+
 
 /* ================= COPIES ================= */
 
@@ -175,6 +165,7 @@ export const getLostDamagedBooks = async (bookName) => {
   return res.json();
 };
 
+
 /* ================= STUDENTS ================= */
 
 export const getStudents = async () => {
@@ -183,6 +174,7 @@ export const getStudents = async () => {
 };
 
 export const addStudent = async (student) => {
+
   const res = await fetch(`${BASE_URL}/library/student`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -207,6 +199,7 @@ export const getActiveStudentIssues = async (hallTicket) => {
   const res = await fetch(`${BASE_URL}/library/students/${hallTicket}/active-issues`);
   return res.json();
 };
+
 
 /* ================= ISSUE / RETURN ================= */
 
@@ -243,6 +236,7 @@ export const getAllIssuedBooks = async () => {
   return res.json();
 };
 
+
 /* ================= RESERVATIONS ================= */
 
 export const reserveBook = async (bookId, hallTicket) => {
@@ -258,6 +252,62 @@ export const getReservations = async () => {
   const res = await fetch(`${BASE_URL}/library/reservations`);
   return res.json();
 };
+
+
+/* ================= ADMIN DASHBOARD ================= */
+
+export const getDashboardStats = async (fromDate, toDate) => {
+
+  let url = `${BASE_URL}/library/dashboard`;
+
+  if (fromDate && toDate) {
+    url += `?from=${fromDate}&to=${toDate}`;
+  }
+
+  const res = await fetch(url);
+  return res.json();
+};
+
+export const getRecentIssued = async () => {
+  const res = await fetch(`${BASE_URL}/library/issued/recent`);
+  return res.json();
+};
+
+
+/* ================= ADMIN NOTIFICATIONS ================= */
+
+export const getAdminNotifications = async () => {
+  const res = await fetch(`${BASE_URL}/library/admin/notifications`, {
+    credentials: "include"
+  });
+
+  return res.json();
+};
+
+export const approveBookRequest = async (id, days) => {
+  const res = await fetch(
+    `${BASE_URL}/library/admin/requests/${id}/approve?days=${days}`,
+    {
+      method: "POST",
+      credentials: "include"
+    }
+  );
+
+  return res.text();
+};
+
+export const rejectBookRequest = async (id) => {
+  const res = await fetch(
+    `${BASE_URL}/library/admin/requests/${id}/reject`,
+    {
+      method: "POST",
+      credentials: "include"
+    }
+  );
+
+  return res.text();
+};
+
 
 /* ================= STUDENT SIDE ================= */
 
@@ -336,11 +386,12 @@ export const markStudentNotificationRead = async (id) => {
 
   return res.json();
 };
-
-/* ================= ALIASES ================= */
+/* ================= ALIASES FOR COMPONENT COMPATIBILITY ================= */
 
 export const verifyOtpApi = verifyOtp;
+
 export const getAllBooks = getBooks;
+
 export const reserveBookFlexible = reserveBook;
 
 export const cancelStudentReservation = async (id) => {
@@ -350,37 +401,4 @@ export const cancelStudentReservation = async (id) => {
   });
 
   return res.json();
-};
-/* ================= ADMIN NOTIFICATIONS ================= */
-
-export const getAdminNotifications = async () => {
-  const res = await fetch(`${BASE_URL}/library/admin/notifications`, {
-    credentials: "include"
-  });
-
-  return res.json();
-};
-
-export const approveBookRequest = async (id, days) => {
-  const res = await fetch(
-    `${BASE_URL}/library/admin/requests/${id}/approve?days=${days}`,
-    {
-      method: "POST",
-      credentials: "include"
-    }
-  );
-
-  return res.text();
-};
-
-export const rejectBookRequest = async (id) => {
-  const res = await fetch(
-    `${BASE_URL}/library/admin/requests/${id}/reject`,
-    {
-      method: "POST",
-      credentials: "include"
-    }
-  );
-
-  return res.text();
 };
