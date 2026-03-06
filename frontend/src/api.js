@@ -351,3 +351,36 @@ export const cancelStudentReservation = async (id) => {
 
   return res.json();
 };
+/* ================= ADMIN NOTIFICATIONS ================= */
+
+export const getAdminNotifications = async () => {
+  const res = await fetch(`${BASE_URL}/library/admin/notifications`, {
+    credentials: "include"
+  });
+
+  return res.json();
+};
+
+export const approveBookRequest = async (id, days) => {
+  const res = await fetch(
+    `${BASE_URL}/library/admin/requests/${id}/approve?days=${days}`,
+    {
+      method: "POST",
+      credentials: "include"
+    }
+  );
+
+  return res.text();
+};
+
+export const rejectBookRequest = async (id) => {
+  const res = await fetch(
+    `${BASE_URL}/library/admin/requests/${id}/reject`,
+    {
+      method: "POST",
+      credentials: "include"
+    }
+  );
+
+  return res.text();
+};
