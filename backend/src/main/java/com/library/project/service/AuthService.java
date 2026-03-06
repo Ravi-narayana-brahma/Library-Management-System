@@ -61,8 +61,9 @@ public class AuthService {
     session.setAttribute("EMAIL", admin.getEmail());
 
     return Map.of(
-            "message", "Admin login successful"
-    );
+        "success", true,
+        "message", "Admin login successful"
+	);
 }
 
     public Map<String, Object> studentLogin(
@@ -91,8 +92,9 @@ public class AuthService {
         session.setAttribute("STUDENT_NAME", student.getStudentName());
 
         return Map.of(
-                "message", "Student login successful"
-        );
+		    "success", true,
+		    "message", "Student login successful"
+		);
     }
     // ✅ ADMIN REGISTER
   	@Transactional
