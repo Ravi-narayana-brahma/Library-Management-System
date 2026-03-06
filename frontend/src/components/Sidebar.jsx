@@ -33,15 +33,15 @@ export default function Sidebar({ open, setOpen }) {
         className="sidebar-content"
         onClick={(e) => e.stopPropagation()}
       >
-        <button onClick={() => go("/")}>Dashboard</button>
-        <button onClick={() => go("/books")}>Books</button>
-        <button onClick={() => go("/add-book")}>Add Book</button>
-        <button onClick={() => go("/students")}>Students</button>
-        <button onClick={() => go("/issue")}>Issue</button>
-        <button onClick={() => go("/reservations")}>Reservations</button>
-        <button onClick={() => go("/return")}>Return</button>
-        <button onClick={() => go("/admin-profile")}>Profile</button>
-        <button onClick={() => go("/issued")}>Issued List</button>
+       <button onClick={() => go("/admin")}>Dashboard</button>
+        <button onClick={() => go("/admin/books")}>Books</button>
+        <button onClick={() => go("/admin/add-book")}>Add Book</button>
+        <button onClick={() => go("/admin/students")}>Students</button>
+        <button onClick={() => go("/admin/issue")}>Issue</button>
+        <button onClick={() => go("/admin/reservations")}>Reservations</button>
+        <button onClick={() => go("/admin/return")}>Return</button>
+        <button onClick={() => go("/admin/admin-profile")}>Profile</button>
+        <button onClick={() => go("/admin/issued")}>Issued List</button>
 
         {/* 🔴 Logout Button */}
         <button className="logout-btn" onClick={logout}>
