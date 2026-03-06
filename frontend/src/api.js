@@ -246,9 +246,10 @@ export const getAllIssuedBooks = async () => {
 
 /* ================= RESERVATIONS ================= */
 
-export const reserveBook = async (bookId) => {
+export const reserveBook = async (bookId, hallTicket) => {
+
   const res = await fetch(
-    `${BASE_URL}/library/reserve?bookId=${bookId}`,
+    `${BASE_URL}/library/reserve?bookId=${bookId}&hallTicket=${hallTicket}`,
     {
       method: "POST",
       credentials: "include"
