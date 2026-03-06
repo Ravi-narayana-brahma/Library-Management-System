@@ -390,15 +390,13 @@ export const getStudentNotifications = async () => {
 };
 
 export const markStudentNotificationRead = async (id) => {
-  const res = await fetch(
+  await fetch(
     `${BASE_URL}/library/student/notifications/${id}/read`,
     {
       method: "POST",
       credentials: "include"
     }
   );
-
-  return res.json();
 };
 /* ================= ALIASES FOR COMPONENT COMPATIBILITY ================= */
 
