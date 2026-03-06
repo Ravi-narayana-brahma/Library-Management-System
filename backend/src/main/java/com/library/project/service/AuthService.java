@@ -114,6 +114,7 @@ public class AuthService {
 	    admin.setEmail(email);
 	    admin.setPassword(password);
 	    admin.setActive(false);
+		admin.setEmailVerified(false);
 	
 	    adminRepository.save(admin);
 	
