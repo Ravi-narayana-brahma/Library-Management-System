@@ -67,10 +67,9 @@ export default function Reservations() {
 
     try {
 
-      const msg = await reserveBookFlexible(
-        input.trim(),
-        hallTicket
-      );
+     const msg = await reserveBookFlexible(
+      input.trim()
+    );
 
       showToast(msg, "success");
 
