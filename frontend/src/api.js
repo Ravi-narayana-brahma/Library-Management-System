@@ -1,5 +1,4 @@
-const BASE_URL = "https://library-management-system-241n.onrender.com";
-
+const BASE_URL = import.meta.env.VITE_API_URL;
 /* ================= AUTH ================= */
 
 export const studentLogin = async (username, password) => {
