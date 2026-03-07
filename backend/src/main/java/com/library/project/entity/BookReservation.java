@@ -2,22 +2,27 @@ package com.library.project.entity;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "book_reservation")
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class BookReservation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reservationId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "book_id")
+    @JsonIgnoreProperties({"reservations"})
     private Book book;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "student_id")
+    @JsonIgnoreProperties({"reservations","issuedBooks"})
     private Student student;
 
     private LocalDate reservationDate;
