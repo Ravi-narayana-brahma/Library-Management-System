@@ -58,3 +58,6 @@ dist-ssr
 *.sln
 *.sw?
 >>>>>>> 50daeaa95807f3ce994a53186848c1722f36d2a6
+# ===== Environment files =====
+.env
+.env.*
