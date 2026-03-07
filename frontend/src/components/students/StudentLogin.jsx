@@ -10,6 +10,7 @@ export default function StudentLogin() {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
 
@@ -78,17 +79,24 @@ export default function StudentLogin() {
 
         </div>
 
-        <div className="field">
-
+        <div className="field password-field">
+        
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             placeholder=" "
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-
+        
           <label>Password</label>
-
+        
+          <span
+            className="toggle-icon"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? "🙈" : "🐵"}
+          </span>
+        
         </div>
 
         <button
