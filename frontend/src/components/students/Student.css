@@ -791,3 +791,39 @@ body {
   }
 
 }
+/* =========================
+   MOBILE SIDEBAR FIX
+========================= */
+
+@media (max-width: 768px) {
+
+  .student-sidebar {
+    position: fixed;
+    top: 0;
+    left: -260px;
+    height: 100%;
+    width: 240px;
+    z-index: 1000;
+    transition: left 0.3s ease;
+  }
+
+  .student-sidebar.open {
+    left: 0;
+  }
+
+  /* overlay background */
+  .student-layout::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+
+  .student-sidebar.open ~ .student-content {
+    filter: blur(2px);
+  }
+
+}
