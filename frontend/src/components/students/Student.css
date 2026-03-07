@@ -747,3 +747,61 @@ body {
   font-weight: 700 !important;
   font-size: 25px !important;
 }
+/* Hide toggle button on large screens */
+.sidebar-toggle-btn {
+  display: none;
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 1000;
+  padding: 10px 15px;
+  background: #1e293b;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+/* Base Transition for Sidebar */
+.student-sidebar {
+  transition: transform 0.3s ease, width 0.3s ease;
+}
+
+/* =========================
+   MOBILE MEDIA QUERY
+   ========================= */
+@media (max-width: 767px) {
+  .sidebar-toggle-btn {
+    display: block; /* Show button on mobile */
+  }
+
+  .student-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 999;
+    transform: translateX(-100%); /* Hide sidebar off-screen */
+    width: 250px;
+  }
+
+  /* When active class is added via React state */
+  .student-sidebar.active {
+    transform: translateX(0); /* Slide into view */
+  }
+
+  .sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+  }
+
+  .student-content {
+    padding-top: 60px; /* Make room for the toggle button */
+  }
+}
