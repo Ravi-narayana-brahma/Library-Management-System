@@ -747,3 +747,47 @@ body {
   font-weight: 700 !important;
   font-size: 25px !important;
 }
+/* =========================
+   MOBILE SIDEBAR
+========================= */
+
+.sidebar-toggle {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 1000;
+  background: #1e293b;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  font-size: 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: none;
+}
+
+/* Small screens */
+@media (max-width: 768px) {
+
+  .sidebar-toggle {
+    display: block;
+  }
+
+  .student-sidebar {
+    position: fixed;
+    left: -260px;
+    top: 0;
+    height: 100%;
+    z-index: 999;
+    transition: left 0.3s ease;
+  }
+
+  .student-sidebar.open {
+    left: 0;
+  }
+
+  .student-content {
+    padding: 20px;
+  }
+
+}
