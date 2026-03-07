@@ -309,7 +309,18 @@
 .login-btn:active {
   transform: scale(0.97);
 }
+.password-field {
+  position: relative;
+}
 
+.eye-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+}
 /* =====================
    AUTH LINKS – NEW STYLE
 ===================== */
