@@ -253,14 +253,14 @@ useEffect(() => {
                   <div>
 
                 <p className="notif-title">
-
-                    {n.request_type === "ISSUE" && n.status === "APPROVED" && "📗 Book Issued"}
-                    {n.request_type === "RETURN" && n.status === "APPROVED" && "🔁 Return Approved"}
-                  
-                    {n.request_type === "ISSUE" && n.status === "REJECTED" && "❌ Issue Request Rejected"}
-                    {n.request_type === "RETURN" && n.status === "REJECTED" && "❌ Return Request Rejected"}
-                  
-                  </p>
+                  {n.request_type === "ISSUE"
+                    ? n.status === "APPROVED"
+                      ? "📗 Book Issued"
+                      : "❌ Issue Request Rejected"
+                    : n.status === "APPROVED"
+                      ? "🔁 Return Approved"
+                      : "❌ Return Request Rejected"}
+                </p>
                     <span className="notif-msg">
                       {n.message}
                     </span>
