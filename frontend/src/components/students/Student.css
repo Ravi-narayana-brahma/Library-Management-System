@@ -748,29 +748,24 @@ body {
   font-size: 25px !important;
 }
 /* =================================
-   RESPONSIVE MEDIA QUERIES
+   RESPONSIVE SIDEBAR (ALWAYS SIDE)
 ================================= */
 
-/* Large Screens (Desktop >1200px) */
+/* Desktop */
 @media (min-width: 1200px) {
   .student-sidebar {
     width: 240px;
   }
 }
 
-/* Laptops (1024px - 1199px) */
+/* Laptops */
 @media (max-width: 1199px) {
   .student-sidebar {
     width: 220px;
-    padding: 20px 14px;
-  }
-
-  .student-brand-name {
-    font-size: 17px;
   }
 }
 
-/* Tablets (768px - 1024px) */
+/* Tablets */
 @media (max-width: 1024px) {
   .student-sidebar {
     width: 200px;
@@ -786,12 +781,8 @@ body {
   }
 }
 
-/* Small Tablets / Large Phones */
+/* Small Tablets */
 @media (max-width: 768px) {
-
-  .student-layout {
-    flex-direction: row;
-  }
 
   .student-sidebar {
     width: 70px;
@@ -809,54 +800,30 @@ body {
 
 }
 
-/* Mobile Devices */
+/* Mobile */
 @media (max-width: 600px) {
 
-  .student-layout {
-    flex-direction: column;
-  }
-
   .student-sidebar {
-    width: 100%;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 16px;
+    width: 60px;
+    padding: 14px 6px;
   }
 
-  .student-brand {
-    border-bottom: none;
+  .student-brand-text {
+    display: none;
   }
 
 }
 
-/* Small Mobile Devices */
-@media (max-width: 480px) {
+/* Very Small Phones */
+@media (max-width: 420px) {
+
+  .student-sidebar {
+    width: 55px;
+  }
 
   .student-brand-logo {
     width: 28px;
     height: 28px;
-  }
-
-  .student-brand-name {
-    font-size: 14px;
-  }
-
-  .student-brand-tagline {
-    font-size: 10px;
-  }
-
-}
-
-/* Very Small Screens */
-@media (max-width: 360px) {
-
-  .student-brand-name {
-    font-size: 12px;
-  }
-
-  .student-brand-tagline {
-    display: none;
   }
 
 }
