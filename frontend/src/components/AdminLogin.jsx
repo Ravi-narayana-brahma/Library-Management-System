@@ -9,6 +9,7 @@ export default function AdminLogin() {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
     const handleLogin = async () => {
@@ -67,16 +68,23 @@ export default function AdminLogin() {
                     <label htmlFor="username">Admin Username</label>
                 </div>
 
-                <div className="field">
-                    <input
-                        type="password"
-                        id="password"
-                        placeholder=" "
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                    <label htmlFor="password">Password</label>
+               <div className="field password-field">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    id="password"
+                    placeholder=" "
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                  <label htmlFor="password">Password</label>
+                
+                  <span
+                    className="eye-icon"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? "🙈" : "👁"}
+                  </span>
                 </div>
 
                 <button className="login-btn" onClick={handleLogin}>
