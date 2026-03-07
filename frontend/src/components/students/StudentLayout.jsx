@@ -117,7 +117,12 @@ useEffect(() => {
   return (
 
     <div className="student-layout">
-
+      {sidebarOpen && (
+    <div
+      className="sidebar-overlay"
+      onClick={() => setSidebarOpen(false)}
+    ></div>
+  )}
       {/* SIDEBAR */}
      <aside className={`student-sidebar ${sidebarOpen ? "open" : ""}`}>
 
