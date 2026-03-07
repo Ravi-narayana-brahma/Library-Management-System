@@ -285,7 +285,7 @@ export const reserveBookStudent = async (value) => {
     throw new Error("Enter Book ID / Book Code / Copy Code");
   }
 
-  let url = `${BASE_URL}/library/student/reserve`;
+  let url = `${BASE_URL}/library/student/reserved`;
 
   if (/^\d+$/.test(input)) {
     url += `?bookId=${encodeURIComponent(input)}`;
@@ -311,7 +311,10 @@ export const reserveBookStudent = async (value) => {
   return msg;
 };
 export const getReservations = async () => {
-  const res = await fetch(`${BASE_URL}/library/reservations`);
+  const res = await fetch(`${BASE_URL}/library/reservations`, {
+    credentials: "include"
+  });
+
   return res.json();
 };
 
@@ -481,11 +484,10 @@ export const getStudentReservations = async () => {
     }
   );
 
-  const data = await res.json();
-
   if (!res.ok) {
-    throw new Error(data.message || "Failed to load reservations");
+    const text = await res.text();
+    throw new Error(text || "Failed to load reservations");
   }
 
-  return data;
+  return await res.json();
 };
