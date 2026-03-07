@@ -252,11 +252,11 @@ useEffect(() => {
 
                   <div>
 
-                  <p className="notif-title">
+                 <p className="notif-title">
 
-                      {n.status === "APPROVED"
-                        ? "Request Approved"
-                        : "Request Rejected"}
+                      {n.request_type === "ISSUE"
+                        ? (n.status === "APPROVED" ? "Issue Request Approved" : "Issue Request Rejected")
+                        : (n.status === "APPROVED" ? "Return Request Approved" : "Return Request Rejected")}
                     
                     </p>
                     <span className="notif-msg">
