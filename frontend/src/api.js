@@ -249,7 +249,7 @@ export const getAllIssuedBooks = async () => {
 export const reserveBook = async (value, hallTicket) => {
 
   let url = `${BASE_URL}/library/reserve`;
-  const input = value.trim();
+  const input = String(value).trim();
 
   if (/^\d+$/.test(input)) {
     // Book ID
@@ -279,7 +279,7 @@ export const reserveBook = async (value, hallTicket) => {
 };
 export const reserveBookStudent = async (value) => {
 
-  const input = value.trim();
+  const input = String(value).trim();
 
   if (!input) {
     throw new Error("Enter Book ID / Book Code / Copy Code");
