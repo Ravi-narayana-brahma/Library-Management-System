@@ -285,7 +285,7 @@ export const reserveBookStudent = async (value) => {
     throw new Error("Enter Book ID / Book Code / Copy Code");
   }
 
-  let url = `${BASE_URL}/library/student/reserved`;
+  let url = `${BASE_URL}/library/student/reserve`;
 
   if (/^\d+$/.test(input)) {
     url += `?bookId=${encodeURIComponent(input)}`;
