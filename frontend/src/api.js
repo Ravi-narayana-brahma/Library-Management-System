@@ -281,57 +281,32 @@ export const reserveBookStudent = async (value) => {
 
   const input = value.trim();
 
-  let bookId = null;
+  if (!input) {
+    throw new Error("Enter Book ID / Book Code / Copy Code");
+  }
 
-  // 1️⃣ If user enters numeric → already bookId
+  let url = `${BASE_URL}/library/student/reserved`;
+
   if (/^\d+$/.test(input)) {
-    bookId = input;
-  }
-
-  // 2️⃣ If user enters copy code
+    url += `?bookId=${encodeURIComponent(input)}`;
+  } 
   else if (input.includes("-")) {
-
-    const res = await fetch(
-      `${BASE_URL}/library/copies/search?key=${encodeURIComponent(input)}`
-    );
-
-    const copies = await res.json();
-
-    if (!copies.length) {
-      throw new Error("Copy not found");
-    }
-
-    bookId = copies[0].book.id;
-  }
-
-  // 3️⃣ If user enters book code
+    url += `?copyCode=${encodeURIComponent(input)}`;
+  } 
   else {
-
-    const res = await fetch(
-      `${BASE_URL}/library/books/search?key=${encodeURIComponent(input)}`
-    );
-
-    const books = await res.json();
-
-    if (!books.length) {
-      throw new Error("Book not found");
-    }
-
-    bookId = books[0].id;
+    url += `?bookCode=${encodeURIComponent(input)}`;
   }
 
-  // 4️⃣ Call reserve API
-  const res = await fetch(
-    `${BASE_URL}/library/student/reserve?bookId=${bookId}`,
-    {
-      method: "POST",
-      credentials: "include"
-    }
-  );
+  const res = await fetch(url, {
+    method: "POST",
+    credentials: "include"
+  });
 
   const msg = await res.text();
 
-  if (!res.ok) throw new Error(msg);
+  if (!res.ok) {
+    throw new Error(msg || "Reservation failed");
+  }
 
   return msg;
 };
@@ -480,12 +455,22 @@ export const getAllBooks = getBooks;
 export const reserveBookFlexible = reserveBookStudent;
 
 export const cancelStudentReservation = async (id) => {
-  const res = await fetch(`${BASE_URL}/library/student/reservations/${id}`, {
-    method: "DELETE",
-    credentials: "include"
-  });
 
-  return res.json();
+  const res = await fetch(
+    `${BASE_URL}/library/student/reservations/${id}/cancel`,
+    {
+      method: "POST",
+      credentials: "include"
+    }
+  );
+
+  const msg = await res.text();
+
+  if (!res.ok) {
+    throw new Error(msg || "Cancel failed");
+  }
+
+  return msg;
 };
 export const getStudentReservations = async () => {
 
