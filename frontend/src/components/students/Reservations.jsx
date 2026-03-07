@@ -3,8 +3,7 @@ import { showToast } from "../../../public/toast";
 import {
   getStudentReservations,
   reserveBookFlexible,
-  cancelStudentReservation,
-  getStudentProfile
+  cancelStudentReservation
 } from "../../api";
 
 export default function Reservations() {
@@ -13,25 +12,7 @@ export default function Reservations() {
   const [input, setInput] = useState("");
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
-  const [hallTicket, setHallTicket] = useState("");
 
-  // ✅ Load student profile
-  async function loadProfile() {
-  try {
-
-    const profile = await getStudentProfile();
-
-    console.log("Student profile:", profile);
-
-    setHallTicket(profile?.rollNo || "");
-
-  } catch (e) {
-    console.error(e);
-    showToast("Failed to load student profile", "error");
-  }
-}
-
-  // Load logged-in student's reservations
   async function loadReservations() {
     try {
       setLoading(true);
@@ -49,33 +30,30 @@ export default function Reservations() {
 
   useEffect(() => {
     loadReservations();
-    loadProfile(); // ✅ load hallTicket
   }, []);
 
-  // 🔁 FLEXIBLE RESERVE
-async function addReservation() {
+  async function addReservation() {
 
-  if (!input.trim()) {
-    showToast("Enter Book ID / Book Code / Copy Code", "warning");
-    return;
+    if (!input.trim()) {
+      showToast("Enter Book ID / Book Code / Copy Code", "warning");
+      return;
+    }
+
+    try {
+
+      const msg = await reserveBookFlexible(input.trim());
+
+      showToast(msg, "success");
+
+      setInput("");
+      loadReservations();
+
+    } catch (e) {
+      console.error(e);
+      showToast(e.message || "Reservation failed", "error");
+    }
   }
 
-  try {
-
-    const msg = await reserveBookFlexible(input.trim());
-
-    showToast(msg, "success");
-
-    setInput("");
-    loadReservations();
-
-  } catch (e) {
-    console.error(e);
-    showToast(e.message || "Reservation failed", "error");
-  }
-}
-
-  // Cancel reservation
   async function cancelReservation(id) {
 
     if (!window.confirm("Cancel this reservation?")) return;
@@ -94,56 +72,38 @@ async function addReservation() {
     }
   }
 
-  // Search filter
   const filteredReservations = reservations.filter(r =>
-    r.book?.bookName?.toLowerCase()
-      .includes(search.toLowerCase())
+    r.book?.bookName?.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
     <div>
-
-      {/* Header */}
       <div className="student-page-header">
         <h1 className="h1">📌 My Reservations</h1>
         <span>Reserve using Book ID / Book Code / Copy Code</span>
       </div>
 
-      {/* Flexible Reserve */}
       <div className="reservation-form">
-
         <input
-          placeholder="Book ID | Book Code | Copy Code (ex: 1 / JAVA / JAVA-003)"
+          placeholder="Book ID | Book Code | Copy Code"
           value={input}
           onChange={e => setInput(e.target.value)}
         />
-
-        <button onClick={addReservation}>
-          Reserve
-        </button>
-
+        <button onClick={addReservation}>Reserve</button>
       </div>
 
-      {/* Search */}
       <div className="reservation-search">
-
         <input
           placeholder="Search reservation..."
           value={search}
           onChange={e => setSearch(e.target.value)}
         />
-
       </div>
 
-      {/* Reservation List */}
       {loading ? (
-
         <div className="empty-state">Loading...</div>
-
       ) : filteredReservations.length > 0 ? (
-
         <table className="student-table">
-
           <thead>
             <tr>
               <th>Sl No</th>
@@ -155,73 +115,40 @@ async function addReservation() {
           </thead>
 
           <tbody>
-
             {filteredReservations.map((res, index) => (
-
               <tr key={res.reservationId}>
-
                 <td>{index + 1}</td>
-
                 <td>{res.book?.bookName}</td>
-
                 <td>
-                  {new Date(res.reservationDate).toLocaleDateString(
-                    "en-IN",
-                    {
-                      day: "2-digit",
-                      month: "short",
-                      year: "numeric",
-                    }
-                  )}
+                  {new Date(res.reservationDate).toLocaleDateString("en-IN", {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric"
+                  })}
                 </td>
-
                 <td>
-                  <span
-                    className={`badge ${
-                      res.status === "ACTIVE"
-                        ? "orange"
-                        : "red"
-                    }`}
-                  >
+                  <span className={`badge ${res.status === "ACTIVE" ? "orange" : "red"}`}>
                     {res.status}
                   </span>
                 </td>
-
                 <td>
-
                   {res.status === "ACTIVE" ? (
-
                     <button
                       className="cancel-btn"
-                      onClick={() =>
-                        cancelReservation(res.reservationId)
-                      }
+                      onClick={() => cancelReservation(res.reservationId)}
                     >
                       Cancel
                     </button>
-
-                  ) : (
-                    "—"
-                  )}
-
+                  ) : "—"}
                 </td>
-
               </tr>
-
             ))}
-
           </tbody>
 
         </table>
-
       ) : (
-
-        <div className="empty-state">
-          📌 No reservations found
-        </div>
-
+        <div className="empty-state">📌 No reservations found</div>
       )}
-
     </div>
   );
 }
