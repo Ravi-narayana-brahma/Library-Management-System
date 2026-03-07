@@ -53,34 +53,27 @@ export default function Reservations() {
   }, []);
 
   // 🔁 FLEXIBLE RESERVE
-  async function addReservation() {
+async function addReservation() {
 
-    if (!input.trim()) {
-      showToast("Enter Book ID / Book Code / Copy Code", "warning");
-      return;
-    }
-
-    if (!hallTicket) {
-      showToast("Student profile not loaded yet", "error");
-      return;
-    }
-
-    try {
-
-     const msg = await reserveBookFlexible(
-      input.trim()
-    );
-
-      showToast(msg, "success");
-
-      setInput("");
-      loadReservations();
-
-    } catch (e) {
-      console.error(e);
-      showToast(e.message || "Reservation failed", "error");
-    }
+  if (!input.trim()) {
+    showToast("Enter Book ID / Book Code / Copy Code", "warning");
+    return;
   }
+
+  try {
+
+    const msg = await reserveBookFlexible(input.trim());
+
+    showToast(msg, "success");
+
+    setInput("");
+    loadReservations();
+
+  } catch (e) {
+    console.error(e);
+    showToast(e.message || "Reservation failed", "error");
+  }
+}
 
   // Cancel reservation
   async function cancelReservation(id) {
