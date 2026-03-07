@@ -17,18 +17,18 @@ public class BookReservation {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "book_id")
-    @JsonIgnoreProperties({"reservations"})
+    @JsonIgnoreProperties({"copies"})
     private Book book;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "student_id")
-    @JsonIgnoreProperties({"reservations","issuedBooks"})
+    @JsonIgnoreProperties({"issuedBooks","reservations"})
     private Student student;
 
     private LocalDate reservationDate;
 
-    private String status; // ACTIVE, COMPLETED, CANCELLED
-
+    private String status;
+    
     public Long getReservationId() {
         return reservationId;
     }
