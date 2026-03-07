@@ -167,38 +167,43 @@ useEffect(() => {
         </div>
 
         {/* MENU */}
-        <button onClick={() => navigate("/student/dashboard")}>
+        <button onClick={() => { navigate("/student/dashboard"); setSidebarOpen(false); }}>
           Dashboard
         </button>
-
-        <button onClick={() => navigate("/student/all-books")}>
+        
+        <button onClick={() => { navigate("/student/all-books"); setSidebarOpen(false); }}>
           All Books
         </button>
-
-        <button onClick={() => navigate("/student/issued")}>
+        
+        <button onClick={() => { navigate("/student/issued"); setSidebarOpen(false); }}>
           My Books
         </button>
-
-        <button onClick={() => navigate("/student/history")}>
+        
+        <button onClick={() => { navigate("/student/history"); setSidebarOpen(false); }}>
           Return History
         </button>
-
-        <button onClick={() => navigate("/student/reservations")}>
+        
+        <button onClick={() => { navigate("/student/reservations"); setSidebarOpen(false); }}>
           Reservations
         </button>
-
-        <button onClick={() => navigate("/student/fines")}>
+        
+        <button onClick={() => { navigate("/student/fines"); setSidebarOpen(false); }}>
           Fines
         </button>
-
-        <button onClick={() => navigate("/student/profile")}>
+        
+        <button onClick={() => { navigate("/student/profile"); setSidebarOpen(false); }}>
           Profile
         </button>
-
-        <button className="logout-btn" onClick={handleLogout}>
+        
+        <button
+          className="logout-btn"
+          onClick={() => {
+            handleLogout();
+            setSidebarOpen(false);
+          }}
+        >
           Logout
         </button>
-
       </aside>
       <button
         className="sidebar-toggle"
