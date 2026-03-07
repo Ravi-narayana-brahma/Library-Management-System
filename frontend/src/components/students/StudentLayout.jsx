@@ -17,6 +17,7 @@ export default function StudentLayout() {
   const [hallTicket, setHallTicket] = useState(null);
   const [studentName, setStudentName] = useState("");
   const [loading, setLoading] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // 🔔 notifications
   const [showNotif, setShowNotif] = useState(false);
@@ -118,7 +119,7 @@ useEffect(() => {
     <div className="student-layout">
 
       {/* SIDEBAR */}
-      <aside className="student-sidebar">
+     <aside className={`student-sidebar ${sidebarOpen ? "open" : ""}`}>
 
         {/* LOGO */}
         <div className="student-brand">
@@ -194,7 +195,12 @@ useEffect(() => {
         </button>
 
       </aside>
-
+      <button
+        className="sidebar-toggle"
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+      >
+        ☰
+      </button>
 
       {/* PAGE CONTENT */}
       <main className="student-content">
