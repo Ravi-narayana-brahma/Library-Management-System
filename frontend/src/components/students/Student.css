@@ -805,3 +805,98 @@ body {
     padding-top: 60px; /* Make room for the toggle button */
   }
 }
+/* =================================================
+   UNIVERSAL RESPONSIVE MEDIA QUERIES
+   ================================================= */
+
+/* 1. TABLET & SMALL LAPTOPS (Under 1024px) */
+@media (max-width: 1024px) {
+  .student-cards {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns instead of 4 */
+  }
+
+  .mybooks-controls input, 
+  .reservation-search input {
+    width: 100%; /* Inputs take full width on smaller rows */
+  }
+
+  .student-page-header .h1 {
+    font-size: 24px;
+  }
+}
+
+/* 2. MOBILE LANDSCAPE & LARGE PHONES (Under 768px) */
+@media (max-width: 767px) {
+  .student-content {
+    padding: 20px 15px; /* Reduce padding to save space */
+  }
+
+  .student-page-header1 {
+    flex-direction: column; /* Stack header and student name */
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  /* Make Table Scrollable horizontally */
+  .student-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .modal-box {
+    width: 90%; /* Modal fills screen width */
+    padding: 16px;
+  }
+
+  .student-cards {
+    grid-template-columns: 1fr; /* Single column for cards */
+  }
+}
+
+/* 3. SMALL MOBILE DEVICES (Under 480px) */
+@media (max-width: 480px) {
+  .student-page-header .h1 {
+    font-size: 20px;
+  }
+
+  .student-name {
+    font-size: 18px !important; /* Scale down the name */
+  }
+
+  .student-card p {
+    font-size: 28px; /* Slightly smaller numbers in cards */
+  }
+
+  /* Force search forms to stack */
+  .reservation-search, 
+  .reservation-form {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .reservation-search button, 
+  .reservation-form button {
+    width: 100%;
+  }
+
+  /* Make table text smaller to fit more data */
+  .student-table td, 
+  .student-table th {
+    padding: 10px 8px;
+    font-size: 12px;
+  }
+}
+
+/* 4. LARGE MONITOR OPTIMIZATION (Above 1400px) */
+@media (min-width: 1400px) {
+  .student-cards {
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 1200px;
+  }
+
+  .student-layout {
+    justify-content: center;
+  }
+}
