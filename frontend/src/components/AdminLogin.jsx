@@ -1,3 +1,4 @@
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useState } from "react";
 import logo from "../assets/logo.png";
 import "./Auth.css";
@@ -69,23 +70,24 @@ export default function AdminLogin() {
                 </div>
 
                <div className="field password-field">
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    id="password"
-                    placeholder=" "
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
-                  <label htmlFor="password">Password</label>
-                
-                  <span
-                    className="eye-icon"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? "🙈" : "👁"}
-                  </span>
-                </div>
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                placeholder=" "
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            
+              <label htmlFor="password">Password</label>
+            
+              <span
+                className="eye-icon"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
+            </div>
 
                 <button className="login-btn" onClick={handleLogin}>
                     Login
