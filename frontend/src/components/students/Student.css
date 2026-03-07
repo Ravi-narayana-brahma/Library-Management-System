@@ -827,3 +827,31 @@ body {
   }
 
 }
+/* =========================
+   SIDEBAR OVERLAY
+========================= */
+
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  z-index: 998;
+}
+
+/* mobile sidebar */
+@media (max-width: 768px) {
+
+  .student-sidebar {
+    position: fixed;
+    top: 0;
+    left: -260px;
+    height: 100%;
+    z-index: 999;
+    transition: left 0.3s ease;
+  }
+
+  .student-sidebar.open {
+    left: 0;
+  }
+
+}
