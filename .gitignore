@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 HELP.md
 target/
 .mvn/wrapper/maven-wrapper.jar
@@ -44,6 +43,8 @@ lerna-debug.log*
 
 node_modules
 dist
+.env
+.env.*
 dist-ssr
 *.local
 
@@ -58,6 +59,9 @@ dist-ssr
 *.sln
 *.sw?
 >>>>>>> 50daeaa95807f3ce994a53186848c1722f36d2a6
+<<<<<<< HEAD
 # ===== Environment files =====
 .env
 .env.*
+=======
+
