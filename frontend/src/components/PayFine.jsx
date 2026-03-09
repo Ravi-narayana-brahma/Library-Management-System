@@ -30,40 +30,20 @@ export default function PayFine() {
     async function pay() {
 
         const payAmount = Number(amount);
-
+    
         if (!payAmount || payAmount <= 0) {
             showToast("Enter valid amount", "warning");
             return;
         }
-
+    
         if (payAmount > issue.balanceAmount) {
-            showToast("Amount cannot be more than balance", "warning")
+            showToast("Amount cannot be more than balance", "warning");
             return;
         }
-           setPayAmount(amountNumber);
-           setConfirmPayment(true);
-
-        try {
-            setLoading(true);
-
-            const data = await payFine(issue.issueId, payAmount);
-
-            setResult(data);
-
-            // ✅ update safely
-            setIssue(prev => ({
-                ...prev,
-                balanceAmount: data.balanceAmount
-            }));
-
-            setAmount("");
-
-        } catch (e) {
-            console.error(e);
-            showToast("Payment failed", "error");
-        } finally {
-            setLoading(false);
-        }
+    
+        // Only open confirm modal
+        setPayAmount(payAmount);
+        setConfirmPayment(true);
     }
 
     function handleKey(e) {
