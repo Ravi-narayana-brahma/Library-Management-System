@@ -39,10 +39,13 @@ export default function AdminLogin() {
 
         } catch (err) {
 
+            console.log(err); // helpful for debugging
+        
             const msg =
                 err?.response?.data?.message ||
                 err?.response?.data?.error ||
-                "Server error";
+                err?.response?.data ||
+                "Invalid username or password";
         
             showToast(msg, "error");
         }
