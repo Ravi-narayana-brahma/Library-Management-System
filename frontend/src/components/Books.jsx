@@ -177,18 +177,18 @@ export default function Books() {
         <div className="table-wrap">
           <CopiesTable
             copies={selectedBook.copies}
-            onStatusChange={(copyId, newStatus) => {
+            onStatusChange={(copyCode, newStatus) => {
 
-              setSelectedBook(prev => ({
-                ...prev,
-                copies: prev.copies.map(c =>
-                  c.copyId === copyId
-                    ? { ...c, status: newStatus }
-                    : c
-                )
-              }));
-
-            }}
+            setSelectedBook(prev => ({
+              ...prev,
+              copies: prev.copies.map(c =>
+                c.copyCode === copyCode
+                  ? { ...c, status: newStatus }
+                  : c
+              )
+            }));
+          
+          }}
           />
         </div>
 
