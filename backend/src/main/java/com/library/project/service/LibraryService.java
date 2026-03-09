@@ -353,7 +353,7 @@ public class LibraryService {
     getAllReservations() {
         return bookReservationRepository.findAll();
     }
-   @Transactional
+  @Transactional
 public Map<String, Object> markCopyStatus(Long copyId, String status, double fine) {
 
     status = status.toUpperCase();
@@ -365,8 +365,9 @@ public Map<String, Object> markCopyStatus(Long copyId, String status, double fin
 
     Book book = copy.getBook();
 
+    // Get latest issued record (ISSUED or RETURNED)
     IssuedBook issued = issuedBookRepository
-            .findTopByBookCopyIdAndRecordStatus(copy, "ISSUED")
+            .findTopByBookCopyIdOrderByIssueDateDesc(copy)
             .orElse(null);
 
     result.put("copyCode", copy.getCopyCode());
@@ -376,8 +377,8 @@ public Map<String, Object> markCopyStatus(Long copyId, String status, double fin
 
         issued.setReturnDate(LocalDate.now());
         issued.setFine(fine);
-
         issued.setRecordStatus("RETURNED");
+
         issued.setPaidAmount(0.0);
         issued.setBalanceAmount(fine);
 
@@ -396,19 +397,8 @@ public Map<String, Object> markCopyStatus(Long copyId, String status, double fin
         result.put("fineStatus", issued.getFineStatus());
     }
 
-    // Update copy status
     copy.setStatus(status);
     bookCopyRepository.save(copy);
-
-    // LOST / DAMAGED should reduce available count if it was available
-    if ("LOST".equals(status) || "DAMAGED".equals(status)) {
-
-        if (book.getAvailableCopies() > 0) {
-            book.setAvailableCopies(book.getAvailableCopies() - 1);
-        }
-
-        bookRepository.save(book);
-    }
 
     result.put("status", status);
 
