@@ -16,11 +16,10 @@ import com.library.project.entity.Student;
 @Repository
 public interface IssuedBookRepository extends JpaRepository<IssuedBook, Long> {
 
-   Optional<IssuedBook>
-findTopByBookCopyIdAndRecordStatusOrderByIssueDateDesc(
-        BookCopy bookCopyId,
-        String recordStatus
-); 
+    Optional<IssuedBook>
+    findTopByBookCopyIdAndRecordStatus(BookCopy bookCopyId, String recordStatus); // active record for a copy
+
+
     @Query("""
         select
             s.studentName,
@@ -209,7 +208,7 @@ findTopByBookCopyIdAndRecordStatusOrderByIssueDateDesc(
     		double sumPendingFineByStudent(
     		        @Param("student") Student student
     		);
-Optional<IssuedBook> findTopByBookCopyIdOrderByIssueDateDesc(BookCopy copy);
-    
+
+    Optional<IssuedBook> findTopByBookCopyIdOrderByIssueDateDesc(BookCopy copy);
 
 }
