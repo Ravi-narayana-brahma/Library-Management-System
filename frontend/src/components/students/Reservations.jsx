@@ -5,6 +5,7 @@ import {
   reserveBookFlexible,
   cancelStudentReservation
 } from "../../api";
+import "./Student.css"
 
 export default function Reservations() {
 
