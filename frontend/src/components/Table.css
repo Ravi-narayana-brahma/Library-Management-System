@@ -418,7 +418,13 @@ select:disabled {
 }
 /* small action buttons in tables */
 /* panel header with close button */
-
+.status.overdue {
+  background: #ef4444;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: 600;
+}
 .panel-header {
   display: flex;
   align-items: center;
