@@ -235,9 +235,6 @@ public class AuthService {
 
         return map;
     }
-
-
-}
 private String hashPassword(String password) {
     try {
 
@@ -262,3 +259,6 @@ private String hashPassword(String password) {
         throw new RuntimeException("Error hashing password");
     }
 }
+
+}
+
