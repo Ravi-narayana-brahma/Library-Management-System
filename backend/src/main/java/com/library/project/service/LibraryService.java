@@ -360,8 +360,8 @@ public class LibraryService {
 
         Map<String, Object> result = new HashMap<>();
 
-        BookCopy copy = bookCopyRepository.findById(copyId)
-                .orElseThrow(() -> new RuntimeException("Invalid copy"));
+       BookCopy copy = bookCopyRepository.findByCopyCode(copyCode)
+        .orElseThrow(() -> new RuntimeException("Invalid copy"));
 
         Book book = copy.getBook();
 
