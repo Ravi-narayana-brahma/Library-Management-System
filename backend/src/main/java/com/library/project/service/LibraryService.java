@@ -353,7 +353,7 @@ public class LibraryService {
     getAllReservations() {
         return bookReservationRepository.findAll();
     }
-  @Transactional
+ @Transactional
 public Map<String, Object> markCopyStatus(Long copyId, String status, double fine) {
 
     status = status.toUpperCase();
@@ -365,7 +365,7 @@ public Map<String, Object> markCopyStatus(Long copyId, String status, double fin
 
     Book book = copy.getBook();
 
-    // Get latest issued record (ISSUED or RETURNED)
+    // Get latest issued record
     IssuedBook issued = issuedBookRepository
             .findTopByBookCopyIdOrderByIssueDateDesc(copy)
             .orElse(null);
@@ -377,7 +377,7 @@ public Map<String, Object> markCopyStatus(Long copyId, String status, double fin
 
         issued.setReturnDate(LocalDate.now());
         issued.setFine(fine);
-        issued.setRecordStatus("RETURNED");
+        issued.setRecordStatus(status);
 
         issued.setPaidAmount(0.0);
         issued.setBalanceAmount(fine);
@@ -387,6 +387,9 @@ public Map<String, Object> markCopyStatus(Long copyId, String status, double fin
         );
 
         issuedBookRepository.save(issued);
+
+        // ⭐ ADD THIS
+        result.put("issueId", issued.getRecordId());
 
         result.put("issuedTo", issued.getStudent().getHallTicket());
         result.put("issuedDate", issued.getIssueDate());
