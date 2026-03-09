@@ -244,7 +244,7 @@ export default function IssuedList() {
                       <button
                         className="pay-btn-row"
                         onClick={() =>
-                          navigate("/pay-fine", {
+                          navigate("/admin/pay-fine", {
                             state: {
                               issueId: i.recordId,
                               issuedTo: i.student?.studentName,
