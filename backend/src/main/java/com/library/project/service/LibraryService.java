@@ -211,7 +211,7 @@ public class LibraryService {
 
         IssuedBook issued =
                 issuedBookRepository
-                        .findTopByBookCopyIdAndRecordStatusOrderByIssueDateDesc(
+                        .findTopByBookCopyIdAndRecordStatus(
                                 copy, "ISSUED")
                         .orElseThrow(() ->
                                 new RuntimeException("Already returned"));
@@ -353,68 +353,68 @@ public class LibraryService {
     getAllReservations() {
         return bookReservationRepository.findAll();
     }
-@Transactional
-public Map<String, Object> markCopyStatus(String copyCode, String status, double fine) {
+    @Transactional
+    public Map<String, Object> markCopyStatus(Long copyId, String status, double fine) {
 
-    status = status.toUpperCase();
+        status = status.toUpperCase();
 
-    Map<String, Object> result = new HashMap<>();
+        Map<String, Object> result = new HashMap<>();
 
-    BookCopy copy = bookCopyRepository.findByCopyCode(copyCode)
-            .orElseThrow(() -> new RuntimeException("Invalid copy"));
+        BookCopy copy = bookCopyRepository.findById(copyId)
+                .orElseThrow(() -> new RuntimeException("Invalid copy"));
 
-    Book book = copy.getBook();
+        Book book = copy.getBook();
 
-    IssuedBook issued = issuedBookRepository
-            .findTopByBookCopyIdOrderByIssueDateDesc(copy)
-            .orElse(null);
+        IssuedBook issued = issuedBookRepository
+                .findTopByBookCopyIdAndRecordStatus(copy, "ISSUED")
+                .orElse(null);
 
-    result.put("copyCode", copy.getCopyCode());
-    result.put("bookTitle", book.getBookName());
+        result.put("copyCode", copy.getCopyCode());
+        result.put("bookTitle", book.getBookName());
 
-    // ⭐ Only update issued record if LOST or DAMAGED
-    if (!status.equals("AVAILABLE") && issued != null) {
+        if (issued != null) {
 
-        issued.setReturnDate(LocalDate.now());
-        issued.setFine(fine);
-        issued.setRecordStatus(status);
+            issued.setReturnDate(LocalDate.now());
+            issued.setFine(fine);
 
-        issued.setPaidAmount(0.0);
-        issued.setBalanceAmount(fine);
+            issued.setRecordStatus("RETURNED");
+            issued.setPaidAmount(0.0);
+            issued.setBalanceAmount(fine);
 
-        issued.setFineStatus(
-                fine > 0 ? "PENDING" : "NO_FINE"
-        );
+            issued.setFineStatus(
+                    fine > 0 ? "PENDING" : "NO_FINE"
+            );
 
-        issuedBookRepository.save(issued);
+            issuedBookRepository.save(issued);
 
-        result.put("issueId", issued.getRecordId());
-        result.put("issuedTo", issued.getStudent().getHallTicket());
-        result.put("issuedDate", issued.getIssueDate());
-        result.put("dueDate", issued.getDueDate());
-        result.put("returnDate", issued.getReturnDate());
-        result.put("fine", fine);
-        result.put("balanceAmount", fine);
-        result.put("fineStatus", issued.getFineStatus());
+            result.put("issuedTo", issued.getStudent().getHallTicket());
+            result.put("issuedDate", issued.getIssueDate());
+            result.put("dueDate", issued.getDueDate());
+            result.put("returnDate", issued.getReturnDate());
+            result.put("fine", fine);
+            result.put("balanceAmount", fine);
+            result.put("fineStatus", issued.getFineStatus());
+        }
+
+        // Update copy status
+        copy.setStatus(status);
+        bookCopyRepository.save(copy);
+
+        // LOST / DAMAGED should reduce available count if it was available
+        if ("LOST".equals(status) || "DAMAGED".equals(status)) {
+
+            if (book.getAvailableCopies() > 0) {
+                book.setAvailableCopies(book.getAvailableCopies() - 1);
+            }
+
+            bookRepository.save(book);
+        }
+
+        result.put("status", status);
+
+        return result;
     }
 
-    // ⭐ Update copy status
-    copy.setStatus(status);
-    bookCopyRepository.save(copy);
-
-    result.put("status", status);
-
-    return result;
-}
-	@Transactional
-	public Map<String, Object> markCopyStatusByCode(String copyCode, String status, double fine) {
-	
-	    BookCopy copy = bookCopyRepository
-	            .findByCopyCode(copyCode)
-	            .orElseThrow(() -> new RuntimeException("Invalid copy code"));
-	
-	    return markCopyStatus(copy.getCopyCode(), status, fine);
-	}
     public List<Map<String, Object>> filterLostAndDamagedByBookName(String bookName) {
 
     List<BookCopy> copies;
