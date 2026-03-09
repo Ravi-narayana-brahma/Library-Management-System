@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import "./Form.css";
 import { getAllBooks, issueBook, reserveBook } from "../api";
+import { showToast } from "../../public/toast";
 
 function SearchableDropdown({
   placeholder,
@@ -114,7 +115,7 @@ export default function IssueBook() {
   );
   useEffect(() => {
     if (bookId && availableCopies.length === 0) {
-      alert("No copies available. You can reserve this book.");
+      showToast("No copies available. You can reserve this book.", "warning");
     }
   }, [bookId, availableCopies.length]);
 
@@ -131,59 +132,61 @@ export default function IssueBook() {
 
   async function reserveSelectedBook() {
     if (!bookId || !hallTicket) {
-      alert("Select book and enter student id first");
+      showToast("Select book and enter student ID first", "warning");
       return;
     }
 
     const msg = await reserveBook(bookId, hallTicket);
-    alert(msg);
+    showToast(msg, "success");
   }
 
-  async function handleIssue() {
-    if (availableCopies.length === 0) {
-      alert("No copies available. Please reserve.");
+async function handleIssue() {
+
+  if (availableCopies.length === 0) {
+    showToast("No copies available. Please reserve.", "warning");
+    return;
+  }
+
+  if (!copyId || !hallTicket || !days) {
+    showToast("Please select copy, student and days", "warning");
+    return;
+  }
+
+  try {
+    const msg = await issueBook(copyId, hallTicket, days);
+
+    showToast(msg, msg.toLowerCase().includes("issued") ? "success" : "warning");
+
+    // ❌ STOP if issue failed
+    if (!msg.toLowerCase().includes("book issued")) {
       return;
     }
 
-    if (!copyId || !hallTicket || !days) {
-      alert("Please select copy, student and days");
-      return;
-    }
+    // ✅ ONLY SUCCESS CASE CONTINUES
+    const issueDate = new Date();
+    const dueDate = new Date();
+    dueDate.setDate(issueDate.getDate() + Number(days));
 
-    try {
-      const msg = await issueBook(copyId, hallTicket, days);
-      alert(msg);
+    setIssueDetails({
+      book: selectedBook?.bookName,
+      copy: dropdownCopies.find(
+        c => String(c.copyId) === String(copyId)
+      )?.copyCode,
+      hallTicket,
+      issueDate,
+      dueDate
+    });
 
-      // ❌ STOP if issue failed
-      if (!msg.toLowerCase().includes("book issued")) {
-        return;
-      }
+    setBookId("");
+    setCopyId("");
+    setHallTicket("");
+    setDays("");
 
-      // ✅ ONLY SUCCESS CASE CONTINUES
-      const issueDate = new Date();
-      const dueDate = new Date();
-      dueDate.setDate(issueDate.getDate() + Number(days));
-
-      setIssueDetails({
-        book: selectedBook?.bookName,
-        copy: dropdownCopies.find(
-          c => String(c.copyId) === String(copyId)
-        )?.copyCode,
-        hallTicket,
-        issueDate,
-        dueDate
-      });
-
-      setBookId("");
-      setCopyId("");
-      setHallTicket("");
-      setDays("");
-
-    } catch (e) {
-      console.log("Issue book error", e);
-      alert("Error issuing book");
-    }
+  } catch (e) {
+    console.log("Issue book error", e);
+    showToast("Error issuing book", "error");
   }
+}
   function handleReset() {
     setBookId("");
     setCopyId("");
