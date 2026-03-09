@@ -1,19 +1,26 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Form.css";
-import { searchCopyCodes, returnBook } from "../api";
+import { searchCopyCodes, returnBook, markCopyStatus } from "../api";
 import { showToast } from "../../public/toast";
 
 export default function ReturnBook() {
 
   const [copyId, setCopyId] = useState("");
   const [suggestions, setSuggestions] = useState([]);
-
   const [returnInfo, setReturnInfo] = useState(null);
+
+  const [showModal, setShowModal] = useState(false);
+  const [actionType, setActionType] = useState("");
+  const [fineAmount, setFineAmount] = useState("");
+
   const navigate = useNavigate();
+
   async function loadSuggestions(text) {
     try {
+
       const data = await searchCopyCodes(text);
+
       if (data.autoIssued === true) {
         showToast(`Auto issued to : ${data.autoIssuedTo}`, "info");
       }
@@ -24,6 +31,7 @@ export default function ReturnBook() {
       console.log("suggest error", e);
     }
   }
+
   useEffect(() => {
 
     if (!copyId || copyId.length < 2) {
@@ -38,29 +46,76 @@ export default function ReturnBook() {
     return () => clearTimeout(t);
 
   }, [copyId]);
-  async function handleReturn() {
+
+  function handleReturn() {
 
     if (!copyId) {
       showToast("Enter Copy ID", "warning");
       return;
     }
 
+    setShowModal(true);
+  }
+
+  async function handleAction(type) {
+
+    if (type === "RETURN") {
+
+      try {
+
+        const data = await returnBook(copyId);
+        setReturnInfo(data);
+
+        setCopyId("");
+        setSuggestions([]);
+        setShowModal(false);
+
+      } catch (e) {
+
+        showToast("Error returning book", "error");
+
+      }
+
+    } else {
+
+      setActionType(type);
+
+    }
+  }
+
+  async function submitFineAction() {
+
+    if (!fineAmount) {
+      showToast("Enter fine amount", "warning");
+      return;
+    }
+
     try {
 
-      const data = await returnBook(copyId);
+      const data = await markCopyStatus(copyId, actionType, fineAmount);
 
-      setReturnInfo(data);
+      setReturnInfo({
+        copyCode: copyId,
+        bookTitle: data.bookTitle,
+        issuedTo: data.issuedTo,
+        issuedDate: data.issuedDate,
+        dueDate: data.dueDate,
+        returnDate: new Date().toISOString().split("T")[0],
+        fine: fineAmount,
+        balanceAmount: fineAmount
+      });
 
+      setShowModal(false);
       setCopyId("");
       setSuggestions([]);
 
     } catch (e) {
-      console.log("Return error", e);
-      showToast("Error returning book", "error");
+
+      showToast("Error processing request", "error");
+
     }
+
   }
-
-
 
   return (
     <div className="form-box">
@@ -98,6 +153,81 @@ export default function ReturnBook() {
         Return
       </button>
 
+      {/* -------- Modal -------- */}
+
+      {showModal && (
+        <div className="modal-overlay">
+
+          <div className="modal-box">
+
+            {!actionType && (
+              <>
+                <h3>Select Action</h3>
+
+                <div className="modal-buttons">
+
+                  <button
+                    className="modal-return"
+                    onClick={() => handleAction("RETURN")}
+                  >
+                    Return
+                  </button>
+
+                  <button
+                    className="modal-lost"
+                    onClick={() => handleAction("LOST")}
+                  >
+                    Lost
+                  </button>
+
+                  <button
+                    className="modal-damaged"
+                    onClick={() => handleAction("DAMAGED")}
+                  >
+                    Damaged
+                  </button>
+
+                </div>
+              </>
+            )}
+
+            {(actionType === "LOST" || actionType === "DAMAGED") && (
+              <>
+
+                <h3>{actionType} Fine</h3>
+
+                <input
+                  type="number"
+                  placeholder="Enter fine amount"
+                  value={fineAmount}
+                  onChange={e => setFineAmount(e.target.value)}
+                />
+
+                <button
+                  className="issue-btn"
+                  onClick={submitFineAction}
+                >
+                  Submit
+                </button>
+
+              </>
+            )}
+
+            <button
+              className="modal-cancel"
+              onClick={() => {
+                setShowModal(false);
+                setActionType("");
+                setFineAmount("");
+              }}
+            >
+              Cancel
+            </button>
+
+          </div>
+
+        </div>
+      )}
 
       {/* -------- Return Details -------- */}
 
@@ -141,24 +271,21 @@ export default function ReturnBook() {
             <span>₹ {returnInfo.fine}</span>
           </div>
 
-          {/* ✅ balance */}
-          {returnInfo.fine > 0 && (
-            <div className="rd-row">
-              <span>Balance</span>
-              <span>₹ {returnInfo.balanceAmount}</span>
-            </div>
-          )}
-
           {returnInfo?.balanceAmount > 0 && (
-            <button
-              className="pay-btn"
-              onClick={() => navigate("/pay-fine", { state: returnInfo })}
-            >
-              Pay Fine
-            </button>
+            <>
+              <div className="rd-row">
+                <span>Balance</span>
+                <span>₹ {returnInfo.balanceAmount}</span>
+              </div>
+
+              <button
+                className="pay-btn"
+                onClick={() => navigate("/pay-fine", { state: returnInfo })}
+              >
+                Pay Fine
+              </button>
+            </>
           )}
-
-
 
         </div>
       )}
