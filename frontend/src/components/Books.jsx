@@ -11,10 +11,17 @@ export default function Books() {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    getAllBooks()
-      .then(data => setBooks(data))
-      .catch(err => console.log(err));
+    loadBooks();
   }, []);
+
+  async function loadBooks() {
+    try {
+      const data = await getAllBooks();
+      setBooks(data);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   const filteredBooks = [...books]
     .sort((a, b) => a.bookId - b.bookId)
@@ -29,9 +36,9 @@ export default function Books() {
     setBookHistory(data);
   }
 
-  /* --------------------------------
-     BOOK LIST VIEW
-  -------------------------------- */
+  /* ------------------------------
+      BOOK LIST VIEW
+  ------------------------------ */
 
   if (!selectedBook) {
 
@@ -42,13 +49,11 @@ export default function Books() {
 
           <div className="table-header">
             <h2>Books</h2>
-
             <span className="table-count">
               Total : {filteredBooks.length}
             </span>
           </div>
 
-          {/* Search */}
           <div className="table-search">
             <input
               type="text"
@@ -59,6 +64,7 @@ export default function Books() {
           </div>
 
           <div className="table-wrap">
+
             <table className="data-table">
 
               <thead>
@@ -74,17 +80,20 @@ export default function Books() {
               </thead>
 
               <tbody>
+
                 {filteredBooks.map(b => (
                   <tr
                     key={b.bookId}
                     className="click-row"
                     onClick={() => setSelectedBook(b)}
                   >
+
                     <td>{b.bookId}</td>
                     <td>{b.bookCode}</td>
                     <td>{b.bookName}</td>
                     <td>{b.totalCopies}</td>
                     <td>{b.availableCopies}</td>
+
                     <td className="view-text">View</td>
 
                     <td
@@ -111,13 +120,16 @@ export default function Books() {
               </tbody>
 
             </table>
+
           </div>
 
           {/* Book history panel */}
           {bookHistory.length > 0 && (
+
             <div className="table-wrap" style={{ marginTop: 20 }}>
 
               <div className="panel-header">
+
                 <h3>Book History</h3>
 
                 <button
@@ -126,6 +138,7 @@ export default function Books() {
                 >
                   ✕
                 </button>
+
               </div>
 
               <table className="data-table">
@@ -140,6 +153,7 @@ export default function Books() {
                 </thead>
 
                 <tbody>
+
                   {bookHistory.map(r => (
                     <tr key={r.recordId}>
                       <td>{r.student?.studentName}</td>
@@ -148,11 +162,13 @@ export default function Books() {
                       <td>{r.returnDate ?? "-"}</td>
                     </tr>
                   ))}
+
                 </tbody>
 
               </table>
 
             </div>
+
           )}
 
         </div>
@@ -161,16 +177,18 @@ export default function Books() {
     );
   }
 
-  /* --------------------------------
-     COPIES VIEW
-  -------------------------------- */
+  /* ------------------------------
+      COPIES VIEW
+  ------------------------------ */
 
   return (
+
     <div className="books-page">
 
       <div className="table-card">
 
         <div className="table-header">
+
           <h2>
             Copies – {selectedBook.bookName}
           </h2>
@@ -181,6 +199,7 @@ export default function Books() {
           >
             ← Back to books
           </button>
+
         </div>
 
         <div className="table-wrap">
@@ -198,7 +217,6 @@ export default function Books() {
 
                   if (c.copyCode === copyCode) {
 
-                    // adjust available count
                     if (c.status === "AVAILABLE" && newStatus !== "AVAILABLE") {
                       available--;
                     }
@@ -211,13 +229,23 @@ export default function Books() {
                   }
 
                   return c;
+
                 });
 
-                return {
+                const updatedBook = {
                   ...prev,
                   availableCopies: available,
                   copies: updatedCopies
                 };
+
+                // 🔥 update books list also
+                setBooks(list =>
+                  list.map(b =>
+                    b.bookId === updatedBook.bookId ? updatedBook : b
+                  )
+                );
+
+                return updatedBook;
 
               });
 
@@ -230,5 +258,6 @@ export default function Books() {
       </div>
 
     </div>
+
   );
 }
