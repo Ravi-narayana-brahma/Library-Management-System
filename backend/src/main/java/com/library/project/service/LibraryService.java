@@ -354,7 +354,7 @@ public class LibraryService {
         return bookReservationRepository.findAll();
     }
     @Transactional
-    public Map<String, Object> markCopyStatus(Long copyId, String status, double fine) {
+    public Map<String, Object> markCopyStatus(String copyCode, String status, double fine) {
 
         status = status.toUpperCase();
 
