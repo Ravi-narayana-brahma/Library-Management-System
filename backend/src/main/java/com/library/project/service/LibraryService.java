@@ -353,19 +353,18 @@ public class LibraryService {
     getAllReservations() {
         return bookReservationRepository.findAll();
     }
- @Transactional
-public Map<String, Object> markCopyStatus(Long copyId, String status, double fine) {
+@Transactional
+public Map<String, Object> markCopyStatus(String copyCode, String status, double fine) {
 
     status = status.toUpperCase();
 
     Map<String, Object> result = new HashMap<>();
 
-    BookCopy copy = bookCopyRepository.findById(copyId)
+    BookCopy copy = bookCopyRepository.findByCopyCode(copyCode)
             .orElseThrow(() -> new RuntimeException("Invalid copy"));
 
     Book book = copy.getBook();
 
-    // Get latest issued record
     IssuedBook issued = issuedBookRepository
             .findTopByBookCopyIdOrderByIssueDateDesc(copy)
             .orElse(null);
@@ -373,7 +372,8 @@ public Map<String, Object> markCopyStatus(Long copyId, String status, double fin
     result.put("copyCode", copy.getCopyCode());
     result.put("bookTitle", book.getBookName());
 
-    if (issued != null) {
+    // ⭐ Only update issued record if LOST or DAMAGED
+    if (!status.equals("AVAILABLE") && issued != null) {
 
         issued.setReturnDate(LocalDate.now());
         issued.setFine(fine);
@@ -388,9 +388,7 @@ public Map<String, Object> markCopyStatus(Long copyId, String status, double fin
 
         issuedBookRepository.save(issued);
 
-        // ⭐ ADD THIS
         result.put("issueId", issued.getRecordId());
-
         result.put("issuedTo", issued.getStudent().getHallTicket());
         result.put("issuedDate", issued.getIssueDate());
         result.put("dueDate", issued.getDueDate());
@@ -400,6 +398,7 @@ public Map<String, Object> markCopyStatus(Long copyId, String status, double fin
         result.put("fineStatus", issued.getFineStatus());
     }
 
+    // ⭐ Update copy status
     copy.setStatus(status);
     bookCopyRepository.save(copy);
 
