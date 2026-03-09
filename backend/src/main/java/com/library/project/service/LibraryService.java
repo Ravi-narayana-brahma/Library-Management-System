@@ -367,9 +367,10 @@ public Map<String, Object> markCopyStatus(String copyCode, String status, double
 
     String oldStatus = copy.getStatus(); // ⭐ important
 
-    IssuedBook issued = issuedBookRepository
-            .findTopByBookCopyIdAndRecordStatus(copy, "ISSUED")
-            .orElse(null);
+    IssuedBook issued =
+        issuedBookRepository
+        .findTopByBookCopyIdOrderByRecordIdDesc(copy)
+        .orElse(null);
 
     result.put("copyCode", copy.getCopyCode());
     result.put("bookTitle", book.getBookName());
