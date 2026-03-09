@@ -353,7 +353,7 @@ public class LibraryService {
     getAllReservations() {
         return bookReservationRepository.findAll();
     }
-   @Transactional
+  @Transactional
 public Map<String, Object> markCopyStatus(String copyCode, String status, double fine) {
 
     status = status.toUpperCase();
@@ -364,8 +364,6 @@ public Map<String, Object> markCopyStatus(String copyCode, String status, double
             .orElseThrow(() -> new RuntimeException("Invalid copy"));
 
     Book book = copy.getBook();
-
-    String oldStatus = copy.getStatus();   // ⭐ IMPORTANT
 
     IssuedBook issued = issuedBookRepository
             .findTopByBookCopyIdAndRecordStatus(copy, "ISSUED")
@@ -385,29 +383,20 @@ public Map<String, Object> markCopyStatus(String copyCode, String status, double
 
         issuedBookRepository.save(issued);
 
+        // ⭐ IMPORTANT DATA FOR PAYFINE PAGE
+        result.put("issueId", issued.getRecordId());
         result.put("issuedTo", issued.getStudent().getHallTicket());
         result.put("issuedDate", issued.getIssueDate());
         result.put("dueDate", issued.getDueDate());
         result.put("returnDate", issued.getReturnDate());
         result.put("fine", fine);
+        result.put("paidAmount", 0.0);
         result.put("balanceAmount", fine);
         result.put("fineStatus", issued.getFineStatus());
     }
 
-    // ⭐ update copy status
     copy.setStatus(status);
     bookCopyRepository.save(copy);
-
-    // ⭐ correct available copies logic
-    if ("AVAILABLE".equals(oldStatus) && !"AVAILABLE".equals(status)) {
-        book.setAvailableCopies(book.getAvailableCopies() - 1);
-    }
-
-    if (!"AVAILABLE".equals(oldStatus) && "AVAILABLE".equals(status)) {
-        book.setAvailableCopies(book.getAvailableCopies() + 1);
-    }
-
-    bookRepository.save(book);
 
     result.put("status", status);
 
