@@ -12,6 +12,17 @@ export default function Books() {
 
   useEffect(() => {
     loadBooks();
+
+    const handleRefresh = () => {
+      loadBooks();
+    };
+
+    window.addEventListener("refreshBooks", handleRefresh);
+
+    return () => {
+      window.removeEventListener("refreshBooks", handleRefresh);
+    };
+
   }, []);
 
   async function loadBooks() {
@@ -36,10 +47,6 @@ export default function Books() {
     setBookHistory(data);
   }
 
-  /* ------------------------------
-      BOOK LIST VIEW
-  ------------------------------ */
-
   if (!selectedBook) {
 
     return (
@@ -49,6 +56,7 @@ export default function Books() {
 
           <div className="table-header">
             <h2>Books</h2>
+
             <span className="table-count">
               Total : {filteredBooks.length}
             </span>
@@ -82,6 +90,7 @@ export default function Books() {
               <tbody>
 
                 {filteredBooks.map(b => (
+
                   <tr
                     key={b.bookId}
                     className="click-row"
@@ -107,6 +116,7 @@ export default function Books() {
                     </td>
 
                   </tr>
+
                 ))}
 
                 {filteredBooks.length === 0 && (
@@ -123,7 +133,6 @@ export default function Books() {
 
           </div>
 
-          {/* Book history panel */}
           {bookHistory.length > 0 && (
 
             <div className="table-wrap" style={{ marginTop: 20 }}>
@@ -155,12 +164,14 @@ export default function Books() {
                 <tbody>
 
                   {bookHistory.map(r => (
+
                     <tr key={r.recordId}>
                       <td>{r.student?.studentName}</td>
                       <td>{r.bookCopyId?.copyCode}</td>
                       <td>{r.issueDate}</td>
                       <td>{r.returnDate ?? "-"}</td>
                     </tr>
+
                   ))}
 
                 </tbody>
@@ -177,10 +188,6 @@ export default function Books() {
     );
   }
 
-  /* ------------------------------
-      COPIES VIEW
-  ------------------------------ */
-
   return (
 
     <div className="books-page">
@@ -195,7 +202,10 @@ export default function Books() {
 
           <button
             className="back-btn1"
-            onClick={() => setSelectedBook(null)}
+            onClick={() => {
+              setSelectedBook(null);
+              loadBooks();
+            }}
           >
             ← Back to books
           </button>
@@ -204,54 +214,7 @@ export default function Books() {
 
         <div className="table-wrap">
 
-          <CopiesTable
-            copies={selectedBook.copies}
-
-            onStatusChange={(copyCode, newStatus) => {
-
-              setSelectedBook(prev => {
-
-                let available = prev.availableCopies;
-
-                const updatedCopies = prev.copies.map(c => {
-
-                  if (c.copyCode === copyCode) {
-
-                    if (c.status === "AVAILABLE" && newStatus !== "AVAILABLE") {
-                      available--;
-                    }
-
-                    if (c.status !== "AVAILABLE" && newStatus === "AVAILABLE") {
-                      available++;
-                    }
-
-                    return { ...c, status: newStatus };
-                  }
-
-                  return c;
-
-                });
-
-                const updatedBook = {
-                  ...prev,
-                  availableCopies: available,
-                  copies: updatedCopies
-                };
-
-                // 🔥 update books list also
-                setBooks(list =>
-                  list.map(b =>
-                    b.bookId === updatedBook.bookId ? updatedBook : b
-                  )
-                );
-
-                return updatedBook;
-
-              });
-
-            }}
-
-          />
+          <CopiesTable copies={selectedBook.copies} />
 
         </div>
 
