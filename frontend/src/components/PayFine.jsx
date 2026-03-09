@@ -22,7 +22,7 @@ export default function PayFine() {
             <div style={{ padding: 20 }}>
                 No payment data found.
                 <br />
-                <button onClick={() => navigate("/return")}>Go Back</button>
+                <button onClick={() => navigate("/admin/return")}>Go Back</button>
             </div>
         );
     }
@@ -249,7 +249,7 @@ export default function PayFine() {
 
                 <button
                     className="back-btn2"
-                    onClick={() => navigate("/issued")}
+                    onClick={() => navigate("/admin/issued")}
                 >
                     ← Back to Issued List
                 </button>
