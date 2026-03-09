@@ -404,6 +404,15 @@ public Map<String, Object> markCopyStatus(Long copyId, String status, double fin
 
     return result;
 }
+	@Transactional
+	public Map<String, Object> markCopyStatusByCode(String copyCode, String status, double fine) {
+	
+	    BookCopy copy = bookCopyRepository
+	            .findByCopyCode(copyCode)
+	            .orElseThrow(() -> new RuntimeException("Invalid copy code"));
+	
+	    return markCopyStatus(copy.getCopyId(), status, fine);
+	}
     public List<Map<String, Object>> filterLostAndDamagedByBookName(String bookName) {
 
     List<BookCopy> copies;
