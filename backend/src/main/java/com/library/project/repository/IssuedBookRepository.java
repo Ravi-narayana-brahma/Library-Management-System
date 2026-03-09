@@ -16,10 +16,11 @@ import com.library.project.entity.Student;
 @Repository
 public interface IssuedBookRepository extends JpaRepository<IssuedBook, Long> {
 
-    Optional<IssuedBook>
-    findTopByBookCopyIdAndRecordStatus(BookCopy bookCopyId, String recordStatus); // active record for a copy
-
-
+   Optional<IssuedBook>
+findTopByBookCopyIdAndRecordStatusOrderByIssueDateDesc(
+        BookCopy bookCopyId,
+        String recordStatus
+); 
     @Query("""
         select
             s.studentName,
