@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Form.css";
 import { searchCopyCodes, returnBook } from "../api";
-
+import { showToast } from "../../public/toast";
 
 export default function ReturnBook() {
 
@@ -15,7 +15,7 @@ export default function ReturnBook() {
     try {
       const data = await searchCopyCodes(text);
       if (data.autoIssued === true) {
-        alert("Auto issued to : " + data.autoIssuedTo);
+        showToast(`Auto issued to : ${data.autoIssuedTo}`, "info");
       }
 
       setSuggestions(data);
@@ -41,7 +41,7 @@ export default function ReturnBook() {
   async function handleReturn() {
 
     if (!copyId) {
-      alert("Enter Copy ID");
+      showToast("Enter Copy ID", "warning");
       return;
     }
 
@@ -56,7 +56,7 @@ export default function ReturnBook() {
 
     } catch (e) {
       console.log("Return error", e);
-      alert("Error returning book");
+      showToast("Error returning book", "error");
     }
   }
 
