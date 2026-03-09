@@ -211,7 +211,7 @@ public class LibraryService {
 
         IssuedBook issued =
                 issuedBookRepository
-                        .findTopByBookCopyIdAndRecordStatus(
+                        .findTopByBookCopyIdAndRecordStatusOrderByIssueDateDesc(
                                 copy, "ISSUED")
                         .orElseThrow(() ->
                                 new RuntimeException("Already returned"));
