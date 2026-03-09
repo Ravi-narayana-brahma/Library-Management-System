@@ -112,7 +112,11 @@ export default function IssuedList() {
 
     return result;
   }
-
+  const today = new Date();
+  const dueDate = new Date(i.dueDate);
+  
+  const isOverdue =
+    i.recordStatus === "ISSUED" && dueDate < today;
   return (
     <div>
 
@@ -234,9 +238,9 @@ export default function IssuedList() {
                   <td>{i.fineStatus ?? "-"}</td>
 
                   <td>
-                    <span className={`status ${(i.recordStatus || "").toLowerCase()}`}>
-                      {i.recordStatus}
-                    </span>
+                   <span className={`status ${isOverdue ? "overdue" : (i.recordStatus || "").toLowerCase()}`}>
+                    {isOverdue ? "OVERDUE" : i.recordStatus}
+                  </span>
                   </td>
 
                   <td>
