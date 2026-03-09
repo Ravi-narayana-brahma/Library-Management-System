@@ -365,6 +365,8 @@ public Map<String, Object> markCopyStatus(String copyCode, String status, double
 
     Book book = copy.getBook();
 
+    String oldStatus = copy.getStatus(); // ⭐ important
+
     IssuedBook issued = issuedBookRepository
             .findTopByBookCopyIdAndRecordStatus(copy, "ISSUED")
             .orElse(null);
@@ -376,19 +378,18 @@ public Map<String, Object> markCopyStatus(String copyCode, String status, double
 
         issued.setReturnDate(LocalDate.now());
         issued.setFine(fine);
-        issued.setPaidAmount(0.0);
-        issued.setBalanceAmount(fine);
 
         if ("LOST".equals(status) || "DAMAGED".equals(status)) {
             issued.setRecordStatus(status);
-            issued.setFineStatus(fine > 0 ? "PENDING" : "NO_FINE");
         }
 
         if ("AVAILABLE".equals(status)) {
             issued.setRecordStatus("RETURNED");
-            issued.setFineStatus("NO_FINE");
-            issued.setBalanceAmount(0.0);
         }
+
+        issued.setPaidAmount(0.0);
+        issued.setBalanceAmount(fine);
+        issued.setFineStatus(fine > 0 ? "PENDING" : "NO_FINE");
 
         issuedBookRepository.save(issued);
 
@@ -397,10 +398,21 @@ public Map<String, Object> markCopyStatus(String copyCode, String status, double
         result.put("issuedDate", issued.getIssueDate());
         result.put("dueDate", issued.getDueDate());
         result.put("returnDate", issued.getReturnDate());
-        result.put("fine", issued.getFine());
+        result.put("fine", fine);
         result.put("balanceAmount", issued.getBalanceAmount());
         result.put("fineStatus", issued.getFineStatus());
     }
+
+    // ⭐ UPDATE AVAILABLE COPIES CORRECTLY
+    if ("AVAILABLE".equals(oldStatus) && !"AVAILABLE".equals(status)) {
+        book.setAvailableCopies(book.getAvailableCopies() - 1);
+    }
+
+    if (!"AVAILABLE".equals(oldStatus) && "AVAILABLE".equals(status)) {
+        book.setAvailableCopies(book.getAvailableCopies() + 1);
+    }
+
+    bookRepository.save(book);
 
     copy.setStatus(status);
     bookCopyRepository.save(copy);
