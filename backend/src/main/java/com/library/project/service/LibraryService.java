@@ -413,7 +413,7 @@ public Map<String, Object> markCopyStatus(String copyCode, String status, double
 	            .findByCopyCode(copyCode)
 	            .orElseThrow(() -> new RuntimeException("Invalid copy code"));
 	
-	    return markCopyStatus(copy.getCopyId(), status, fine);
+	    return markCopyStatus(copy.getCopyCode(), status, fine);
 	}
     public List<Map<String, Object>> filterLostAndDamagedByBookName(String bookName) {
 
