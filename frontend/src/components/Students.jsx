@@ -7,7 +7,7 @@ import {
   getStudentHistory,
   getActiveStudentIssues
 } from "../api";
-
+import { showToast } from "../../public/toast";
 export default function Students() {
 
   const [studentName, setStudentName] = useState("");
@@ -33,11 +33,11 @@ export default function Students() {
     if (
       !studentName.trim() ||
       !email.trim() ||
-      !hallTicket.trim() ||   // ✅
+      !hallTicket.trim() ||
       !year.trim() ||
       !branch.trim()
     ) {
-      alert("All fields are required");
+      showToast("All fields are required", "warning");
       return;
     }
     try {
@@ -49,8 +49,8 @@ export default function Students() {
         year,
         branch
       });
-      alert(msg);
-
+      showToast(msg, "success");
+      
       setStudentName("");
       setEmail("");
       setHallTicket("");
@@ -60,8 +60,7 @@ export default function Students() {
       loadStudents();
 
     } catch (e) {
-        console.log("Add student error:", e);
-        alert(e.message || "Error saving student");
+        showToast(e.message || "Error saving student", "error");
     }
   }
 
