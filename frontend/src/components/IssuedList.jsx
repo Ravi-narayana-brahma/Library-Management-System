@@ -221,9 +221,12 @@ export default function IssuedList() {
             ) : (
               pageData.map(i => {
           
-                const today = new Date();
+               const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                
                 const dueDate = new Date(i.dueDate);
-          
+                dueDate.setHours(0, 0, 0, 0);
+                
                 const isOverdue =
                   i.recordStatus === "ISSUED" && dueDate < today;
           
