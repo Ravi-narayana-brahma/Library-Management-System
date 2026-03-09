@@ -206,7 +206,7 @@ public class LibraryController {
         try {
             return ResponseEntity.ok(
                     libraryService
-                            .markCopyStatusByCode(copyId, status, fine));
+                            .markCopyStatusByCode(copyCode, status, fine));
         } catch (Exception e) {
             return ResponseEntity
                     .badRequest()
