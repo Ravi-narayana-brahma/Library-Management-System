@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import "./PayFine.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { payFine } from "../api";
+import { showToast } from "../../public/toast";
 
 export default function PayFine() {
 
@@ -12,6 +13,8 @@ export default function PayFine() {
     const [amount, setAmount] = useState("");
     const [result, setResult] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [confirmPayment, setConfirmPayment] = useState(false);
+    const [payAmount, setPayAmount] = useState(0);
 
     // safety
     if (!issue) {
@@ -29,16 +32,16 @@ export default function PayFine() {
         const payAmount = Number(amount);
 
         if (!payAmount || payAmount <= 0) {
-            alert("Enter valid amount");
+            showToast("Enter valid amount", "warning");
             return;
         }
 
         if (payAmount > issue.balanceAmount) {
-            alert("Amount cannot be more than balance");
+            showToast("Amount cannot be more than balance", "warning")
             return;
         }
-
-        if (!window.confirm(`Confirm payment of ₹${payAmount} ?`)) return;
+           setPayAmount(amountNumber);
+           setConfirmPayment(true);
 
         try {
             setLoading(true);
@@ -57,7 +60,7 @@ export default function PayFine() {
 
         } catch (e) {
             console.error(e);
-            alert("Payment failed");
+            showToast("Payment failed", "error");
         } finally {
             setLoading(false);
         }
@@ -68,7 +71,32 @@ export default function PayFine() {
             pay();
         }
     }
+    const handleConfirmPayment = async () => {
 
+    try {
+        setConfirmPayment(false);
+        setLoading(true);
+
+        const data = await payFine(issue.issueId, payAmount);
+
+        setResult(data);
+
+        setIssue(prev => ({
+            ...prev,
+            balanceAmount: data.balanceAmount
+        }));
+
+        setAmount("");
+
+        showToast("Payment successful", "success");
+
+    } catch (e) {
+        console.error(e);
+        showToast("Payment failed", "error");
+    } finally {
+        setLoading(false);
+    }
+};
     return (
         <div className="pay-wrapper">
 
@@ -227,7 +255,30 @@ export default function PayFine() {
                 </button>
 
             </div>
-
+            {confirmPayment && (
+              <div className="confirm-overlay">
+                <div className="confirm-box">
+                  <h3>Confirm Payment</h3>
+                  <p>Confirm payment of ₹{payAmount} ?</p>
+            
+                  <div className="confirm-buttons">
+                    <button 
+                      className="btn cancel"
+                      onClick={() => setConfirmPayment(false)}
+                    >
+                      Cancel
+                    </button>
+            
+                    <button 
+                      className="btn confirm"
+                      onClick={handleConfirmPayment}
+                    >
+                      Confirm
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
         </div>
     );
 }
