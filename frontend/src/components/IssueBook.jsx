@@ -142,27 +142,31 @@ export default function IssueBook() {
 
 async function handleIssue() {
 
+  // 1️⃣ First check required fields
+  if (!bookId || !copyId || !hallTicket || !days) {
+    showToast("Please select book, copy, student and days", "warning");
+    return;
+  }
+
+  // 2️⃣ Then check availability
   if (availableCopies.length === 0) {
     showToast("No copies available. Please reserve.", "warning");
     return;
   }
 
-  if (!copyId || !hallTicket || !days) {
-    showToast("Please select copy, student and days", "warning");
-    return;
-  }
-
   try {
+
     const msg = await issueBook(copyId, hallTicket, days);
 
-    showToast(msg, msg.toLowerCase().includes("issued") ? "success" : "warning");
+    showToast(
+      msg,
+      msg.toLowerCase().includes("issued") ? "success" : "warning"
+    );
 
-    // ❌ STOP if issue failed
-    if (!msg.toLowerCase().includes("book issued")) {
+    if (!msg.toLowerCase().includes("issued")) {
       return;
     }
 
-    // ✅ ONLY SUCCESS CASE CONTINUES
     const issueDate = new Date();
     const dueDate = new Date();
     dueDate.setDate(issueDate.getDate() + Number(days));
