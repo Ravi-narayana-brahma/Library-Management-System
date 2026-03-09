@@ -280,7 +280,7 @@ export default function ReturnBook() {
 
               <button
                 className="pay-btn"
-                onClick={() => navigate("/pay-fine", { state: returnInfo })}
+                onClick={() => navigate("/admin/pay-fine", { state: returnInfo })}
               >
                 Pay Fine
               </button>
