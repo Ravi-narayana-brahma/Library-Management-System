@@ -354,38 +354,58 @@ public class LibraryService {
         return bookReservationRepository.findAll();
     }
     @Transactional
-    public Map<String, Object>
-    markCopyStatus(Long copyId, String status) {
+public Map<String, Object> markCopyStatus(Long copyId, String status, double fine) {
 
-        status = status.toUpperCase();
+    status = status.toUpperCase();
 
-        BookCopy copy =
-                bookCopyRepository.findById(copyId)
-                        .orElseThrow(() ->
-                                new RuntimeException("Invalid copy"));
+    Map<String, Object> result = new HashMap<>();
 
-        Book book = copy.getBook();
+    BookCopy copy = bookCopyRepository.findById(copyId)
+            .orElseThrow(() -> new RuntimeException("Invalid copy"));
 
-        String oldStatus = copy.getStatus();
+    Book book = copy.getBook();
 
-        if ("ISSUED".equals(oldStatus))
-            throw new RuntimeException(
-                    "Cannot change ISSUED copy");
+    IssuedBook issued = issuedBookRepository
+            .findTopByBookCopyIdAndRecordStatus(copy, "ISSUED")
+            .orElse(null);
 
-        copy.setStatus(status);
+    // Copy information
+    result.put("copyCode", copy.getCopyCode());
+    result.put("bookTitle", book.getBookName());
 
-        bookCopyRepository.save(copy);
-        bookRepository.save(book);
+    if (issued != null) {
 
-        Map<String, Object> result =
-                new HashMap<>();
+        issued.setReturnDate(LocalDate.now());
+        issued.setFine(fine);
 
-        result.put("copyId", copy.getCopyId());
-        result.put("newStatus", status);
+        issued.setRecordStatus("RETURNED");
+        issued.setPaidAmount(0.0);
+        issued.setBalanceAmount(fine);
 
-        return result;
+        issued.setFineStatus(
+                fine > 0 ? "PENDING" : "NO_FINE"
+        );
+
+        issuedBookRepository.save(issued);
+
+        result.put("issuedTo", issued.getStudent().getHallTicket());
+        result.put("issuedDate", issued.getIssueDate());
+        result.put("dueDate", issued.getDueDate());
+        result.put("returnDate", issued.getReturnDate());
+        result.put("fine", fine);
+        result.put("balanceAmount", fine);
+        result.put("fineStatus", issued.getFineStatus());
     }
 
+    // Update copy status
+    copy.setStatus(status);
+
+    bookCopyRepository.save(copy);
+
+    result.put("status", status);
+
+    return result;
+}
     public List<Map<String, Object>> filterLostAndDamagedByBookName(String bookName) {
 
     List<BookCopy> copies;
