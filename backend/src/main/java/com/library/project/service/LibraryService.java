@@ -353,67 +353,7 @@ public class LibraryService {
     getAllReservations() {
         return bookReservationRepository.findAll();
     }
-    @Transactional
-public Map<String, Object> markCopyStatus(Long copyId, String status, double fine) {
-
-    status = status.toUpperCase();
-
-    Map<String, Object> result = new HashMap<>();
-
-    BookCopy copy = bookCopyRepository.findById(copyId)
-            .orElseThrow(() -> new RuntimeException("Invalid copy"));
-
-    Book book = copy.getBook();
-
-    IssuedBook issued = issuedBookRepository
-            .findTopByBookCopyIdAndRecordStatus(copy, "ISSUED")
-            .orElse(null);
-
-    result.put("copyCode", copy.getCopyCode());
-    result.put("bookTitle", book.getBookName());
-
-    if (issued != null) {
-
-        issued.setReturnDate(LocalDate.now());
-        issued.setFine(fine);
-
-        issued.setRecordStatus("RETURNED");
-        issued.setPaidAmount(0.0);
-        issued.setBalanceAmount(fine);
-
-        issued.setFineStatus(
-                fine > 0 ? "PENDING" : "NO_FINE"
-        );
-
-        issuedBookRepository.save(issued);
-
-        result.put("issuedTo", issued.getStudent().getHallTicket());
-        result.put("issuedDate", issued.getIssueDate());
-        result.put("dueDate", issued.getDueDate());
-        result.put("returnDate", issued.getReturnDate());
-        result.put("fine", fine);
-        result.put("balanceAmount", fine);
-        result.put("fineStatus", issued.getFineStatus());
-    }
-
-    // Update copy status
-    copy.setStatus(status);
-    bookCopyRepository.save(copy);
-
-    // LOST / DAMAGED should reduce available count if it was available
-    if ("LOST".equals(status) || "DAMAGED".equals(status)) {
-
-        if (book.getAvailableCopies() > 0) {
-            book.setAvailableCopies(book.getAvailableCopies() - 1);
-        }
-
-        bookRepository.save(book);
-    }
-
-    result.put("status", status);
-
-    return result;
-}
+   @RequestParam String status
     public List<Map<String, Object>> filterLostAndDamagedByBookName(String bookName) {
 
     List<BookCopy> copies;
