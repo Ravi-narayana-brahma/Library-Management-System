@@ -353,7 +353,7 @@ public class LibraryService {
     getAllReservations() {
         return bookReservationRepository.findAll();
     }
-  @Transactional
+ @Transactional
 public Map<String, Object> markCopyStatus(String copyCode, String status, double fine) {
 
     status = status.toUpperCase();
@@ -376,22 +376,29 @@ public Map<String, Object> markCopyStatus(String copyCode, String status, double
 
         issued.setReturnDate(LocalDate.now());
         issued.setFine(fine);
-        issued.setRecordStatus("RETURNED");
         issued.setPaidAmount(0.0);
         issued.setBalanceAmount(fine);
-        issued.setFineStatus(fine > 0 ? "PENDING" : "NO_FINE");
+
+        if ("LOST".equals(status) || "DAMAGED".equals(status)) {
+            issued.setRecordStatus(status);
+            issued.setFineStatus(fine > 0 ? "PENDING" : "NO_FINE");
+        }
+
+        if ("AVAILABLE".equals(status)) {
+            issued.setRecordStatus("RETURNED");
+            issued.setFineStatus("NO_FINE");
+            issued.setBalanceAmount(0.0);
+        }
 
         issuedBookRepository.save(issued);
 
-        // ⭐ IMPORTANT DATA FOR PAYFINE PAGE
         result.put("issueId", issued.getRecordId());
         result.put("issuedTo", issued.getStudent().getHallTicket());
         result.put("issuedDate", issued.getIssueDate());
         result.put("dueDate", issued.getDueDate());
         result.put("returnDate", issued.getReturnDate());
-        result.put("fine", fine);
-        result.put("paidAmount", 0.0);
-        result.put("balanceAmount", fine);
+        result.put("fine", issued.getFine());
+        result.put("balanceAmount", issued.getBalanceAmount());
         result.put("fineStatus", issued.getFineStatus());
     }
 
@@ -402,7 +409,6 @@ public Map<String, Object> markCopyStatus(String copyCode, String status, double
 
     return result;
 }
-
     public List<Map<String, Object>> filterLostAndDamagedByBookName(String bookName) {
 
     List<BookCopy> copies;
