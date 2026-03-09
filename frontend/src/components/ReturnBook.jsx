@@ -85,37 +85,30 @@ export default function ReturnBook() {
 
   async function submitFineAction() {
 
-    if (!fineAmount) {
-      showToast("Enter fine amount", "warning");
-      return;
-    }
+  if (!fineAmount) {
+    showToast("Enter fine amount", "warning");
+    return;
+  }
 
-    try {
+  try {
 
-      const data = await markCopyStatus(copyId, actionType, fineAmount);
+    const data = await markCopyStatus(copyId, actionType, Number(fineAmount));
 
-      setReturnInfo({
-        copyCode: copyId,
-        bookTitle: data.bookTitle,
-        issuedTo: data.issuedTo,
-        issuedDate: data.issuedDate,
-        dueDate: data.dueDate,
-        returnDate: new Date().toISOString().split("T")[0],
-        fine: fineAmount,
-        balanceAmount: fineAmount
-      });
+    setReturnInfo(data);
 
-      setShowModal(false);
-      setCopyId("");
-      setSuggestions([]);
+    setShowModal(false);
+    setCopyId("");
+    setSuggestions([]);
+    setActionType("");
+    setFineAmount("");
 
-    } catch (e) {
+  } catch (e) {
 
-      showToast("Error processing request", "error");
-
-    }
+    showToast("Error processing request", "error");
 
   }
+
+}
 
   return (
     <div className="form-box">
