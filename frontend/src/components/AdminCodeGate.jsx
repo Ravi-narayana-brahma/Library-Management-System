@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Auth.css";
+import { showToast } from "../../public/toast";
 
 export default function AdminCodeGate() {
 
@@ -33,7 +34,7 @@ export default function AdminCodeGate() {
     if(newAttempts >= 3){
         navigate("/student-login");
     } else {
-        alert(`Wrong code. Attempts left: ${3-newAttempts}`);
+        showToast(`Wrong code. Attempts left: ${3 - newAttempts}`, "warning");
     }
 
   };
