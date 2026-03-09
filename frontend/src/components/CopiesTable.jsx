@@ -16,7 +16,7 @@ export default function CopiesTable({ copies, onStatusChange }) {
 
     async function markStatus(copyCode, status) {
         const data = await markCopyStatus(copyCode, status);
-        onStatusChange(copyCode, data.newStatus);
+        onStatusChange(copyCode, data.status);
     }
 
     // ✅ filter + sort
