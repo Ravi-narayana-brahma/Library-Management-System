@@ -369,7 +369,6 @@ public Map<String, Object> markCopyStatus(Long copyId, String status, double fin
             .findTopByBookCopyIdAndRecordStatus(copy, "ISSUED")
             .orElse(null);
 
-    // Copy information
     result.put("copyCode", copy.getCopyCode());
     result.put("bookTitle", book.getBookName());
 
@@ -399,8 +398,17 @@ public Map<String, Object> markCopyStatus(Long copyId, String status, double fin
 
     // Update copy status
     copy.setStatus(status);
-
     bookCopyRepository.save(copy);
+
+    // LOST / DAMAGED should reduce available count if it was available
+    if ("LOST".equals(status) || "DAMAGED".equals(status)) {
+
+        if (book.getAvailableCopies() > 0) {
+            book.setAvailableCopies(book.getAvailableCopies() - 1);
+        }
+
+        bookRepository.save(book);
+    }
 
     result.put("status", status);
 
