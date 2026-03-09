@@ -49,8 +49,10 @@ export default function IssuedList() {
       i.recordStatus === statusFilter;
 
     const matchesFineStatus =
-      fineStatusFilter === "ALL" ||
-      i.fineStatus === fineStatusFilter;
+    fineStatusFilter === "ALL" ||
+    (fineStatusFilter === "UNPAID" && i.balanceAmount > 0) ||
+    (fineStatusFilter === "PAID" && i.balanceAmount === 0 && i.fine > 0) ||
+    (fineStatusFilter === "NO_FINE" && i.fine === 0);
 
     const issueDate = i.issueDate ? new Date(i.issueDate) : null;
     const from = fromDate ? new Date(fromDate) : null;
@@ -137,8 +139,8 @@ export default function IssuedList() {
             <option value="ALL">All Status</option>
             <option value="ISSUED">Issued</option>
             <option value="RETURNED">Returned</option>
-            {/* <option value="LOST">Lost</option>
-            <option value="DAMAGED">Damaged</option> */}
+            <option value="LOST">Lost</option>
+            <option value="DAMAGED">Damaged</option>
           </select>
         </div>
 
