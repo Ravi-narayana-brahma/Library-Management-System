@@ -49,7 +49,6 @@ export default function AdminLogin() {
         
             showToast(msg, "error");
         }
-        }
     };
 
     return (
