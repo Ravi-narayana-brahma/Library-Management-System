@@ -29,6 +29,10 @@ export default function Books() {
     setBookHistory(data);
   }
 
+  /* --------------------------------
+     BOOK LIST VIEW
+  -------------------------------- */
+
   if (!selectedBook) {
 
     return (
@@ -82,6 +86,7 @@ export default function Books() {
                     <td>{b.totalCopies}</td>
                     <td>{b.availableCopies}</td>
                     <td className="view-text">View</td>
+
                     <td
                       className="view-text history-link"
                       onClick={(e) => {
@@ -91,6 +96,7 @@ export default function Books() {
                     >
                       History
                     </td>
+
                   </tr>
                 ))}
 
@@ -101,6 +107,7 @@ export default function Books() {
                     </td>
                   </tr>
                 )}
+
               </tbody>
 
             </table>
@@ -122,6 +129,7 @@ export default function Books() {
               </div>
 
               <table className="data-table">
+
                 <thead>
                   <tr>
                     <th>Student</th>
@@ -141,6 +149,7 @@ export default function Books() {
                     </tr>
                   ))}
                 </tbody>
+
               </table>
 
             </div>
@@ -175,21 +184,47 @@ export default function Books() {
         </div>
 
         <div className="table-wrap">
+
           <CopiesTable
             copies={selectedBook.copies}
+
             onStatusChange={(copyCode, newStatus) => {
 
-            setSelectedBook(prev => ({
-              ...prev,
-              copies: prev.copies.map(c =>
-                c.copyCode === copyCode
-                  ? { ...c, status: newStatus }
-                  : c
-              )
-            }));
-          
-          }}
+              setSelectedBook(prev => {
+
+                let available = prev.availableCopies;
+
+                const updatedCopies = prev.copies.map(c => {
+
+                  if (c.copyCode === copyCode) {
+
+                    // adjust available count
+                    if (c.status === "AVAILABLE" && newStatus !== "AVAILABLE") {
+                      available--;
+                    }
+
+                    if (c.status !== "AVAILABLE" && newStatus === "AVAILABLE") {
+                      available++;
+                    }
+
+                    return { ...c, status: newStatus };
+                  }
+
+                  return c;
+                });
+
+                return {
+                  ...prev,
+                  availableCopies: available,
+                  copies: updatedCopies
+                };
+
+              });
+
+            }}
+
           />
+
         </div>
 
       </div>
