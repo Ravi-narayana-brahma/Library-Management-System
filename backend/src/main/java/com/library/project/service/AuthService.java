@@ -174,8 +174,9 @@ public class AuthService {
 	                    new RuntimeException("Admin not found"));
 	
 	    admin.setActive(true);
+		admin.setEmailVerified(true);
 	    adminRepository.save(admin);
-	
+		
 	    otpRepository.deleteByEmail(email);
 	
 	    return Map.of(
