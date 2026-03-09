@@ -38,7 +38,14 @@ export default function AdminLogin() {
             }, 200);
 
         } catch (err) {
-            showToast("Server error", "error");
+
+            const msg =
+                err?.response?.data?.message ||
+                err?.response?.data?.error ||
+                "Server error";
+        
+            showToast(msg, "error");
+        }
         }
     };
 
