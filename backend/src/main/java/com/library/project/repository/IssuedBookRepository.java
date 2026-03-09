@@ -210,5 +210,5 @@ public interface IssuedBookRepository extends JpaRepository<IssuedBook, Long> {
     		);
 
     Optional<IssuedBook> findTopByBookCopyIdOrderByIssueDateDesc(BookCopy copy);
-
+    Optional<IssuedBook> findTopByBookCopyIdOrderByRecordIdDesc(BookCopy copy);
 }
