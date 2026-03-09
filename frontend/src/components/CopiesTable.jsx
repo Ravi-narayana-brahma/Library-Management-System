@@ -14,9 +14,9 @@ export default function CopiesTable({ copies, onStatusChange }) {
         return <div className="copies-empty">No copies</div>;
     }
 
-    async function markStatus(copyId, status) {
-        const data = await markCopyStatus(copyId, status);
-        onStatusChange(copyId, data.newStatus);
+    async function markStatus(copyCode, status) {
+        const data = await markCopyStatus(copyCOde, status);
+        onStatusChange(copyCode, data.newStatus);
     }
 
     // ✅ filter + sort
@@ -136,7 +136,7 @@ export default function CopiesTable({ copies, onStatusChange }) {
                                         value=""
                                         onChange={(e) => {
                                             if (e.target.value) {
-                                                markStatus(c.copyId, e.target.value);
+                                                markStatus(c.copyCode, e.target.value);
                                             }
                                         }}
                                     >
