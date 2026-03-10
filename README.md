@@ -1,6 +1,3 @@
-Copy-paste **README.md** based on your **actual project structure (Spring Boot + PostgreSQL + React + OTP + Reservation + Book Copies)**.
-
-```markdown
 # 📚 Library Management System
 
 ![Java](https://img.shields.io/badge/Java-17-orange)
@@ -11,7 +8,7 @@ Copy-paste **README.md** based on your **actual project structure (Spring Boot +
 Full Stack **Library Management System** built using **Spring Boot, React, and PostgreSQL**.  
 The system manages **books, book copies, students, issuing, reservations, requests, OTP authentication, and fines**.
 
-🔗 Repository  
+Repository  
 https://github.com/Ravi-narayana-brahma/Library-Management-System
 
 ---
@@ -33,135 +30,78 @@ https://github.com/Ravi-narayana-brahma/Library-Management-System
 
 # 🛠 Tech Stack
 
-| Technology | Purpose |
-|-----------|---------|
-| React | Frontend UI |
-| Spring Boot | Backend REST API |
-| PostgreSQL | Database |
-| Maven | Dependency Management |
-| JPA / Hibernate | ORM |
-| Vite | React Build Tool |
+React – Frontend  
+Spring Boot – Backend REST API  
+PostgreSQL – Database  
+Maven – Dependency Management  
+JPA / Hibernate – ORM  
+Vite – React build tool
 
 ---
 
 # 🏗 System Architecture
 
-```
-
-React Frontend
-│
-│ REST API
-▼
-Spring Boot Backend
-│
-▼
+React Frontend  
+↓ REST API  
+Spring Boot Backend  
+↓  
 PostgreSQL Database
-
-```
 
 ---
 
 # 📂 Project Structure
 
-```
-
 Library-management-System
 
 backend
-├── config
-│   └── CorsConfig.java
-│
-├── controller
-│   ├── AuthController.java
-│   ├── LibraryController.java
-│   └── SecurityController.java
-│
-├── entity
-│   ├── Admin.java
-│   ├── Book.java
-│   ├── BookCopy.java
-│   ├── BookRequest.java
-│   ├── BookReservation.java
-│   ├── IssuedBook.java
-│   ├── OtpToken.java
-│   └── Student.java
-│
-├── repository
-│   ├── AdminRepository.java
-│   ├── BookRepository.java
-│   ├── BookCopyRepository.java
-│   ├── BookRequestRepository.java
-│   ├── BookReservationRepository.java
-│   ├── IssuedBookRepository.java
-│   ├── OtpTokenRepository.java
-│   └── StudentRepository.java
-│
-├── service
-│   ├── AuthService.java
-│   ├── EmailService.java
-│   └── LibraryService.java
-│
-└── LibraryManagementProjectApplication.java
+- config
+- controller
+- entity
+- repository
+- service
 
 frontend
-├── components
-├── pages
-├── api
-└── index.html
+- components
+- pages
+- api
 
-```
+README.md
 
 ---
 
 # ⚙️ Installation
 
-## Clone Repository
+Clone repository
 
-```
+git clone https://github.com/Ravi-narayana-brahma/Library-Management-System.git
 
-git clone [https://github.com/Ravi-narayana-brahma/Library-Management-System.git](https://github.com/Ravi-narayana-brahma/Library-Management-System.git)
 cd Library-Management-System
-
-```
 
 ---
 
 # 🔧 Backend Setup
 
-```
-
 cd backend
-mvn spring-boot:run
 
-```
+mvn spring-boot:run
 
 Backend runs on
 
-```
-
-[http://localhost:8080](http://localhost:8080)
-
-```
+http://localhost:8080
 
 ---
 
 # 💻 Frontend Setup
 
-```
-
 cd frontend
-npm install
-npm run dev
 
-```
+npm install
+
+npm run dev
 
 Frontend runs on
 
-```
-
-[http://localhost:5173](http://localhost:5173)
-
-````
+http://localhost:5173
 
 ---
 
@@ -169,102 +109,73 @@ Frontend runs on
 
 Create database
 
-```sql
 CREATE DATABASE library_db;
-````
 
-Update `application.properties`
+Update application.properties
 
-```
-spring.datasource.url=jdbc:postgresql://localhost:5432/library_db
-spring.datasource.username=postgres
-spring.datasource.password=yourpassword
+spring.datasource.url=jdbc:postgresql://localhost:5432/library_db  
+spring.datasource.username=postgres  
+spring.datasource.password=yourpassword  
 spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-```
 
 ---
 
 # 🔌 API Modules
 
-### Authentication
+Authentication
 
-```
-POST /auth/login
-POST /auth/register
-POST /auth/verify-otp
-```
+POST /auth/login  
+POST /auth/register  
+POST /auth/verify-otp  
 
-### Books
+Books
 
-```
-GET /library/books
-POST /library/books
+GET /library/books  
+POST /library/books  
 DELETE /library/books/{id}
-```
 
-### Book Copies
+Book Copies
 
-```
-POST /library/copies
-PATCH /library/copies/status
-```
+POST /library/copies  
+PATCH /library/copies/status  
 
-### Issue & Return
+Issue & Return
 
-```
-POST /library/issue
-POST /library/return
-```
+POST /library/issue  
+POST /library/return  
 
-### Reservations
+Reservations
 
-```
-POST /library/reserve
-GET /library/reservations
-```
+POST /library/reserve  
+GET /library/reservations  
 
-### Requests
+Requests
 
-```
-POST /library/request
-```
+POST /library/request  
 
 ---
 
 # 📊 Core Modules
 
-* Admin Management
-* Student Management
-* Book Management
-* Book Copy Tracking
-* Issue / Return System
-* Reservation Queue
-* Book Requests
-* Fine Management
-* OTP Email Authentication
+Admin Management  
+Student Management  
+Book Management  
+Book Copy Tracking  
+Issue / Return System  
+Reservation Queue  
+Book Requests  
+Fine Management  
+OTP Email Authentication
 
 ---
 
 # 👨‍💻 Author
 
-**Ravi Narayana Brahma**
+Ravi Narayana Brahma
 
-GitHub
-[https://github.com/Ravi-narayana-brahma](https://github.com/Ravi-narayana-brahma)
+GitHub  
+https://github.com/Ravi-narayana-brahma
 
 ---
 
 ⭐ Star the repository if you like the project
-
-```
-
-If you want, I can also make a **🔥 much stronger README (like top GitHub projects)** including:
-
-- architecture diagram  
-- API flow diagram  
-- database schema diagram  
-- UI preview section  
-
-which makes your project **look like a production SaaS project on GitHub.**
-```
