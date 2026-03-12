@@ -7,7 +7,8 @@ import {
   getStudents,
   addStudent,
   getStudentHistory,
-  getActiveStudentIssues
+  getActiveStudentIssues,
+  downloadStudentTemplate 
 } from "../api";
 
 import { showToast } from "../../public/toast";
@@ -144,11 +145,29 @@ export default function Students() {
   }
 
 
-  function downloadTemplate() {
+ async function downloadTemplate() {
 
-    window.open("/library/students/template", "_blank");
+  try {
+
+    const blob = await downloadStudentTemplate();
+
+    const url = window.URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "students_template.xlsx";
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+  } catch (err) {
+
+    showToast("Template download failed", "error");
 
   }
+
+}
 
 
   async function loadStudentHistory(hallTicket) {
