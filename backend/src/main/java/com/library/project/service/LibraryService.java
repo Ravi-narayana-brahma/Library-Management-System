@@ -1149,10 +1149,10 @@ public byte[] generateStudentTemplate() {
         Row header = sheet.createRow(0);
 
         header.createCell(0).setCellValue("Student name");
-		header.createCell(0).setCellValue("email");
-        header.createCell(1).setCellValue("hallTicket");
-        header.createCell(2).setCellValue("year");
-        header.createCell(3).setCellValue("branch");
+		header.createCell(1).setCellValue("email");
+        header.createCell(2).setCellValue("hallTicket");
+        header.createCell(3).setCellValue("year");
+        header.createCell(4).setCellValue("branch");
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
