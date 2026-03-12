@@ -12,7 +12,12 @@ import com.library.project.entity.*;
 import com.library.project.repository.*;
 
 import jakarta.transaction.Transactional;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayOutputStream;
+import java.util.*;
 @Service
 public class LibraryService {
 
@@ -1134,5 +1139,140 @@ private List<Map<String, Object>> mapTopBooks() {
 
         return "Return request sent to admin";
     }
+public byte[] generateStudentTemplate() {
 
+    try {
+
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Students");
+
+        Row header = sheet.createRow(0);
+
+        header.createCell(0).setCellValue("name");
+        header.createCell(1).setCellValue("hallTicket");
+        header.createCell(2).setCellValue("year");
+        header.createCell(3).setCellValue("branch");
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        workbook.write(out);
+        workbook.close();
+
+        return out.toByteArray();
+
+    } catch (Exception e) {
+
+        throw new RuntimeException("Template generation failed");
+
+    }
+	
+}
+	public Map<String, Object> uploadStudentsFromExcel(MultipartFile file) {
+
+    Map<String, Object> result = new HashMap<>();
+
+    List<Student> studentsToSave = new ArrayList<>();
+    List<String[]> errorRows = new ArrayList<>();
+
+    try {
+
+        // FILE NAME VALIDATION
+        String fileName = file.getOriginalFilename();
+
+        if (fileName == null || !fileName.matches("\\d+_[A-Za-z]+\\.xlsx")) {
+
+            throw new RuntimeException(
+                    "File name must be Year_Branch.xlsx example 4_CSE.xlsx");
+
+        }
+
+        String nameWithoutExt = fileName.replace(".xlsx", "");
+        String[] parts = nameWithoutExt.split("_");
+
+        int fileYear = Integer.parseInt(parts[0]);
+        String fileBranch = parts[1];
+
+        Workbook workbook = new XSSFWorkbook(file.getInputStream());
+        Sheet sheet = workbook.getSheetAt(0);
+
+        Set<String> excelHallTickets = new HashSet<>();
+
+        for (Row row : sheet) {
+
+            if (row.getRowNum() == 0)
+                continue;
+
+            try {
+
+                String name = row.getCell(0).getStringCellValue();
+                String hallTicket = row.getCell(1).getStringCellValue();
+                int year = (int) row.getCell(2).getNumericCellValue();
+                String branch = row.getCell(3).getStringCellValue();
+
+                if (year != fileYear ||
+                        !branch.equalsIgnoreCase(fileBranch)) {
+
+                    errorRows.add(new String[]{
+                            name, hallTicket,
+                            "Year/Branch mismatch with filename"
+                    });
+
+                    continue;
+                }
+
+                if (excelHallTickets.contains(hallTicket)) {
+
+                    errorRows.add(new String[]{
+                            name, hallTicket,
+                            "Duplicate in Excel"
+                    });
+
+                    continue;
+                }
+
+                excelHallTickets.add(hallTicket);
+
+                if (studentRepository.existsByHallTicket(hallTicket)) {
+
+                    errorRows.add(new String[]{
+                            name, hallTicket,
+                            "Already exists in DB"
+                    });
+
+                    continue;
+                }
+
+                Student student = new Student();
+
+                student.setName(name);
+                student.setHallTicket(hallTicket);
+                student.setYear(year);
+                student.setBranch(branch);
+
+                studentsToSave.add(student);
+
+            } catch (Exception ex) {
+
+                errorRows.add(new String[]{
+                        "Invalid", "Invalid", "Row error"
+                });
+
+            }
+        }
+
+        workbook.close();
+
+        studentRepository.saveAll(studentsToSave);
+
+        result.put("saved", studentsToSave.size());
+        result.put("errors", errorRows.size());
+
+        return result;
+
+    } catch (Exception e) {
+
+        throw new RuntimeException(e.getMessage());
+
+    }
+}
 }
