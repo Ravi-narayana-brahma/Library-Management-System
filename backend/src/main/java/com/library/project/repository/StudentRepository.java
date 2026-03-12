@@ -10,4 +10,5 @@ import com.library.project.entity.Student;
 @Repository
 public interface StudentRepository extends JpaRepository<Student, Long>{
 	Optional<Student> findByHallTicket(String hallTicket);
+	boolean existsByHallTicket(String hallTicket);
 }
