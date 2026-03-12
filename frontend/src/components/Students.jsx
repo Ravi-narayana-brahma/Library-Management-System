@@ -8,7 +8,8 @@ import {
   addStudent,
   getStudentHistory,
   getActiveStudentIssues,
-  downloadStudentTemplate 
+  downloadStudentTemplate,
+  uploadStudentsExcel
 } from "../api";
 
 import { showToast } from "../../public/toast";
@@ -87,7 +88,7 @@ export default function Students() {
   }
 
 
-  async function handleExcelUpload() {
+async function handleExcelUpload() {
 
   if (!excelFile) {
     showToast("Please select Excel file", "warning");
@@ -102,21 +103,21 @@ export default function Students() {
     setUploading(true);
     setProgress(0);
 
-    const res = await axios.post(
-      `${BASE_URL}/library/students/upload`,
+    const data = await uploadStudentsExcel(
       formData,
-      {
-        onUploadProgress: (event) => {
-          const percent = Math.round(
-            (event.loaded * 100) / event.total
-          );
-          setProgress(percent);
-        }
+      (event) => {
+
+        const percent = Math.round(
+          (event.loaded * 100) / event.total
+        );
+
+        setProgress(percent);
+
       }
     );
 
     showToast(
-      `Saved: ${res.data.saved} | Errors: ${res.data.errors}`,
+      `Saved: ${data.saved} | Errors: ${data.errors}`,
       "success"
     );
 
