@@ -1148,7 +1148,8 @@ public byte[] generateStudentTemplate() {
 
         Row header = sheet.createRow(0);
 
-        header.createCell(0).setCellValue("name");
+        header.createCell(0).setCellValue("Student name");
+		header.createCell(0).setCellValue("email");
         header.createCell(1).setCellValue("hallTicket");
         header.createCell(2).setCellValue("year");
         header.createCell(3).setCellValue("branch");
@@ -1205,6 +1206,7 @@ public byte[] generateStudentTemplate() {
             try {
 
                 String name = row.getCell(0).getStringCellValue();
+				String email = row.getCell(1).getStringCellValue();
                 String hallTicket = row.getCell(1).getStringCellValue();
                 String year = String.valueOf((int) row.getCell(2).getNumericCellValue());
                 String branch = row.getCell(3).getStringCellValue();
@@ -1245,6 +1247,7 @@ public byte[] generateStudentTemplate() {
                 Student student = new Student();
 
                 student.setStudentName(name);
+				student.setEmail(email);
                 student.setHallTicket(hallTicket);
                 student.setYear(year);
                 student.setBranch(branch);
