@@ -208,8 +208,19 @@ export const getActiveStudentIssues = async (hallTicket) => {
   const res = await fetch(`${BASE_URL}/library/students/${hallTicket}/active-issues`);
   return res.json();
 };
+export const downloadStudentTemplate = async () => {
 
+  const res = await fetch(`${BASE_URL}/library/students/template`, {
+    credentials: "include"
+  });
 
+  if (!res.ok) {
+    throw new Error("Failed to download template");
+  }
+
+  const blob = await res.blob();
+  return blob;
+};
 /* ================= ISSUE / RETURN ================= */
 
 export const issueBook = async (copyId, hallTicket, days) => {
