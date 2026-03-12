@@ -1244,7 +1244,7 @@ public byte[] generateStudentTemplate() {
 
                 Student student = new Student();
 
-                student.setName(name);
+                student.setStudentName(name);
                 student.setHallTicket(hallTicket);
                 student.setYear(year);
                 student.setBranch(branch);
