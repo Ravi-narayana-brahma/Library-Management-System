@@ -11,7 +11,7 @@ import {
 
 export default function Topbar({ open, setOpen }) {
 
-  const today = new Date().toLocaleDateString();
+  const today = new Date().toLocaleDateString("en-GB");
 
   const [theme, setTheme] = useState(
     () => localStorage.getItem("theme") || "dark"
