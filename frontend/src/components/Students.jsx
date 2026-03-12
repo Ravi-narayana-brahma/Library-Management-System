@@ -277,11 +277,20 @@ async function handleExcelUpload() {
 
         <br /><br />
 
-        <input
-          type="file"
-          accept=".xlsx"
-          onChange={(e) => setExcelFile(e.target.files[0])}
-        />
+       <div className="file-upload-box">
+        
+          <input
+            type="file"
+            id="excelUpload"
+            accept=".xlsx"
+            onChange={(e) => setExcelFile(e.target.files[0])}
+          />
+        
+          <label htmlFor="excelUpload" className="file-upload-label">
+            {excelFile ? excelFile.name : "Choose Excel File"}
+          </label>
+        
+        </div>
 
         <br /><br />
 
