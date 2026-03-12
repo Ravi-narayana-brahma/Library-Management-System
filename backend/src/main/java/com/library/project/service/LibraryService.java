@@ -1148,7 +1148,7 @@ public byte[] generateStudentTemplate() {
 
         Row header = sheet.createRow(0);
 
-        header.createCell(0).setCellValue("Student name");
+        header.createCell(0).setCellValue("name");
 		header.createCell(1).setCellValue("email");
         header.createCell(2).setCellValue("hallTicket");
         header.createCell(3).setCellValue("year");
@@ -1207,9 +1207,9 @@ public byte[] generateStudentTemplate() {
 
                 String name = row.getCell(0).getStringCellValue();
 				String email = row.getCell(1).getStringCellValue();
-                String hallTicket = row.getCell(1).getStringCellValue();
-                String year = String.valueOf((int) row.getCell(2).getNumericCellValue());
-                String branch = row.getCell(3).getStringCellValue();
+                String hallTicket = row.getCell(2).getStringCellValue();
+                String year = String.valueOf((int) row.getCell(3).getNumericCellValue());
+                String branch = row.getCell(4).getStringCellValue();
 
                 if (!year.equals(String.valueOf(fileYear)) ||
         				!branch.equalsIgnoreCase(fileBranch)) {
