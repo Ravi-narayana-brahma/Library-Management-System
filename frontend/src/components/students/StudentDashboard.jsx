@@ -8,7 +8,7 @@ export default function StudentDashboard() {
 
   const [data, setData] = useState(null);
   const { studentName } = useOutletContext();
-  const today = new Date().toLocaleDateString();
+  const today = new Date().toLocaleDateString("en-GB");
 
   async function loadDashboard() {
     try {
