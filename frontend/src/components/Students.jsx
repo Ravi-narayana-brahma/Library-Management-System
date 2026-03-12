@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import "./Form.css";
 import "./Table.css";
@@ -23,7 +23,7 @@ export default function Students() {
   const [email, setEmail] = useState("");
 
   const [students, setStudents] = useState([]);
-
+  const fileInputRef = useRef(null);
   const [history, setHistory] = useState([]);
   const [activeIssues, setActiveIssues] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState(null);
@@ -123,7 +123,14 @@ async function handleExcelUpload() {
 
     setUploading(false);
     loadStudents();
-
+    
+    setExcelFile(null);
+    setProgress(0);
+    setUploading(false);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  
   } catch (err) {
 
     setUploading(false);
@@ -267,7 +274,7 @@ async function handleExcelUpload() {
       <div className="form-box" style={{ marginTop: 20 }}>
 
         <h2>Upload Students Excel</h2>
-
+        
         <button
           className="mini-btn"
           onClick={downloadTemplate}
@@ -279,12 +286,13 @@ async function handleExcelUpload() {
 
        <div className="file-upload-box">
         
-          <input
-            type="file"
-            id="excelUpload"
-            accept=".xlsx"
-            onChange={(e) => setExcelFile(e.target.files[0])}
-          />
+            <input
+              type="file"
+              id="excelUpload"
+              accept=".xlsx"
+              ref={fileInputRef}
+              onChange={(e) => setExcelFile(e.target.files[0])}
+            />
         
           <label htmlFor="excelUpload" className="file-upload-label">
             {excelFile ? excelFile.name : "Choose Excel File"}
