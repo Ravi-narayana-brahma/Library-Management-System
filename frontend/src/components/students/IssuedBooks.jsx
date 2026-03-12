@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { showToast } from "../../../public/toast";
 import { useOutletContext } from "react-router-dom";
 import {
   getStudentHistory,
@@ -42,12 +43,18 @@ export default function IssuedBooks() {
   }
 
   async function requestReturn(recordId, copyCode) {
+  try {
     const msg = await requestReturnBook(recordId, copyCode);
-    alert(msg);
+
+    showToast(msg, "success");   // ✅ instead of alert
 
     // 🔄 Refresh list after request
     loadHistoryBooks(hallTicket);
+
+  } catch (error) {
+    showToast("Return request failed", "error");
   }
+}
 
   // 🔍 SEARCH FILTER
   const filteredBooks = books.filter(b =>

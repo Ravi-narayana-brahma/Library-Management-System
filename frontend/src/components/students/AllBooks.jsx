@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { showToast } from "../../../public/toast";
 import "./Student.css";
 import {
   getBooks,
@@ -75,15 +76,19 @@ export default function AllBooks() {
 
   // 🔹 send request to admin
   const requestCopy = async (copy) => {
-    if (!days || days <= 0 || days > 30) {
-      alert("Please enter valid days (1–30)");
-      return;
-    }
+  if (!days || days <= 0 || days > 30) {
+    showToast("Please enter valid days (1–30)", "warning");
+    return;
+  }
 
+  try {
     const msg = await requestBookCopy(copy.book.bookId, copy.copyCode, days);
-    alert(msg);
+    showToast(msg, "success");
     setShowModal(false);
-  };
+  } catch (err) {
+    showToast("Request failed. Try again.", "error");
+  }
+};
 
   return (
     <div>

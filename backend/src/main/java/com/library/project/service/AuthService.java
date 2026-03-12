@@ -8,7 +8,7 @@ import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import java.security.MessageDigest;
 import com.library.project.entity.Admin;
 import com.library.project.entity.OtpToken;
 import com.library.project.entity.Student;
@@ -43,9 +43,9 @@ public class AuthService {
                     new RuntimeException("Admin not found"));
 
     // ✅ Check password
-    if (!admin.getPassword().equals(password)) {
-        throw new RuntimeException("Invalid credentials");
-    }
+    if (!admin.getPassword().equals(hashPassword(password))) {
+    throw new RuntimeException("Invalid credentials");
+}
 
     // 🔐 NEW: Check if account is verified
     if (!admin.isActive()) {
@@ -112,7 +112,7 @@ public class AuthService {
 	    Admin admin = new Admin();
 	    admin.setUsername(username);
 	    admin.setEmail(email);
-	    admin.setPassword(password);
+	    admin.setPassword(hashPassword(password));
 	    admin.setActive(false);
 		admin.setEmailVerified(false);
 	
@@ -174,8 +174,9 @@ public class AuthService {
 	                    new RuntimeException("Admin not found"));
 	
 	    admin.setActive(true);
+		admin.setEmailVerified(true);
 	    adminRepository.save(admin);
-	
+		
 	    otpRepository.deleteByEmail(email);
 	
 	    return Map.of(
@@ -192,7 +193,7 @@ public class AuthService {
                 .orElseThrow(() ->
                         new RuntimeException("Admin not found"));
 
-        admin.setPassword(newPassword);
+        admin.setPassword(hashPassword(newPassword));
         adminRepository.save(admin);
 
         otpRepository.deleteByEmail(email);
@@ -234,6 +235,30 @@ public class AuthService {
 
         return map;
     }
+private String hashPassword(String password) {
+    try {
 
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+
+        byte[] hash = md.digest(password.getBytes());
+
+        StringBuilder hexString = new StringBuilder();
+
+        for (byte b : hash) {
+            String hex = Integer.toHexString(0xff & b);
+
+            if (hex.length() == 1)
+                hexString.append('0');
+
+            hexString.append(hex);
+        }
+
+        return hexString.toString();
+
+    } catch (Exception e) {
+        throw new RuntimeException("Error hashing password");
+    }
+}
 
 }
+

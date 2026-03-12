@@ -321,6 +321,22 @@
   cursor: pointer;
   font-size: 18px;
 }
+.password-field {
+  position: relative;
+}
+
+.toggle-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 22px;
+}
+
+.field input {
+  padding-right: 40px;
+}
 /* =====================
    AUTH LINKS – NEW STYLE
 ===================== */

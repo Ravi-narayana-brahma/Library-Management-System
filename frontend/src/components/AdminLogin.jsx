@@ -1,4 +1,3 @@
-import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useState } from "react";
 import logo from "../assets/logo.png";
 import "./Auth.css";
@@ -39,7 +38,16 @@ export default function AdminLogin() {
             }, 200);
 
         } catch (err) {
-            showToast("Server error", "error");
+
+            console.log(err); // helpful for debugging
+        
+            const msg =
+                err?.response?.data?.message ||
+                err?.response?.data?.error ||
+                err?.response?.data ||
+                "Invalid username or password";
+        
+            showToast(msg, "error");
         }
     };
 
@@ -69,26 +77,26 @@ export default function AdminLogin() {
                     <label htmlFor="username">Admin Username</label>
                 </div>
 
-               <div className="field password-field">
-              <input
-                type={showPassword ? "text" : "password"}
-                id="password"
-                placeholder=" "
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            
-              <label htmlFor="password">Password</label>
-            
-              <span
-                className="eye-icon"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
-              </span>
-            </div>
-
+        
+                <div className="field password-field">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    id="password"
+                    placeholder=" "
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                
+                  <label htmlFor="password">Password</label>
+                
+                  <span
+                    className="eye-icon"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? "🙈" : "🐵"}
+                  </span>
+                </div>
                 <button className="login-btn" onClick={handleLogin}>
                     Login
                 </button>

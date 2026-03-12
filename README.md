@@ -1,16 +1,181 @@
-# React + Vite
+# 📚 Library Management System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![Java](https://img.shields.io/badge/Java-17-orange)
+![Spring Boot](https://img.shields.io/badge/SpringBoot-Backend-brightgreen)
+![React](https://img.shields.io/badge/React-Frontend-blue)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-blue)
 
-Currently, two official plugins are available:
+Full Stack **Library Management System** built using **Spring Boot, React, and PostgreSQL**.  
+The system manages **books, book copies, students, issuing, reservations, requests, OTP authentication, and fines**.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Repository  
+https://github.com/Ravi-narayana-brahma/Library-Management-System
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+# 🚀 Features
 
-## Expanding the ESLint configuration
+- Admin authentication
+- Student authentication with OTP
+- Book management
+- Book copy management
+- Issue and return books
+- Book reservation system
+- Book request system
+- Fine calculation for late returns
+- Email OTP verification
+- Search and filter books
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+# 🛠 Tech Stack
+
+React – Frontend  
+Spring Boot – Backend REST API  
+PostgreSQL – Database  
+Maven – Dependency Management  
+JPA / Hibernate – ORM  
+Vite – React build tool
+
+---
+
+# 🏗 System Architecture
+
+React Frontend  
+↓ REST API  
+Spring Boot Backend  
+↓  
+PostgreSQL Database
+
+---
+
+# 📂 Project Structure
+
+Library-management-System
+
+backend
+- config
+- controller
+- entity
+- repository
+- service
+
+frontend
+- components
+- pages
+- api
+
+README.md
+
+---
+
+# ⚙️ Installation
+
+Clone repository
+
+git clone https://github.com/Ravi-narayana-brahma/Library-Management-System.git
+
+cd Library-Management-System
+
+---
+
+# 🔧 Backend Setup
+
+cd backend
+
+mvn spring-boot:run
+
+Backend runs on
+
+http://localhost:8080
+
+---
+
+# 💻 Frontend Setup
+
+cd frontend
+
+npm install
+
+npm run dev
+
+Frontend runs on
+
+http://localhost:5173
+
+---
+
+# 🗄 Database Setup (PostgreSQL)
+
+Create database
+
+CREATE DATABASE library_db;
+
+Update application.properties
+
+spring.datasource.url=jdbc:postgresql://localhost:5432/library_db  
+spring.datasource.username=postgres  
+spring.datasource.password=yourpassword  
+spring.jpa.hibernate.ddl-auto=update
+
+---
+
+# 🔌 API Modules
+
+Authentication
+
+POST /auth/login  
+POST /auth/register  
+POST /auth/verify-otp  
+
+Books
+
+GET /library/books  
+POST /library/books  
+DELETE /library/books/{id}
+
+Book Copies
+
+POST /library/copies  
+PATCH /library/copies/status  
+
+Issue & Return
+
+POST /library/issue  
+POST /library/return  
+
+Reservations
+
+POST /library/reserve  
+GET /library/reservations  
+
+Requests
+
+POST /library/request  
+
+---
+
+# 📊 Core Modules
+
+Admin Management  
+Student Management  
+Book Management  
+Book Copy Tracking  
+Issue / Return System  
+Reservation Queue  
+Book Requests  
+Fine Management  
+OTP Email Authentication
+
+---
+
+# 👨‍💻 Author
+
+Ravi Narayana Brahma
+
+GitHub  
+https://github.com/Ravi-narayana-brahma
+
+---
+
+⭐ Star the repository if you like the project

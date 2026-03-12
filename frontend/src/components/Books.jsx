@@ -11,10 +11,28 @@ export default function Books() {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    getAllBooks()
-      .then(data => setBooks(data))
-      .catch(err => console.log(err));
+    loadBooks();
+
+    const handleRefresh = () => {
+      loadBooks();
+    };
+
+    window.addEventListener("refreshBooks", handleRefresh);
+
+    return () => {
+      window.removeEventListener("refreshBooks", handleRefresh);
+    };
+
   }, []);
+
+  async function loadBooks() {
+    try {
+      const data = await getAllBooks();
+      setBooks(data);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   const filteredBooks = [...books]
     .sort((a, b) => a.bookId - b.bookId)
@@ -44,7 +62,6 @@ export default function Books() {
             </span>
           </div>
 
-          {/* Search */}
           <div className="table-search">
             <input
               type="text"
@@ -55,6 +72,7 @@ export default function Books() {
           </div>
 
           <div className="table-wrap">
+
             <table className="data-table">
 
               <thead>
@@ -70,18 +88,23 @@ export default function Books() {
               </thead>
 
               <tbody>
+
                 {filteredBooks.map(b => (
+
                   <tr
                     key={b.bookId}
                     className="click-row"
                     onClick={() => setSelectedBook(b)}
                   >
+
                     <td>{b.bookId}</td>
                     <td>{b.bookCode}</td>
                     <td>{b.bookName}</td>
                     <td>{b.totalCopies}</td>
                     <td>{b.availableCopies}</td>
+
                     <td className="view-text">View</td>
+
                     <td
                       className="view-text history-link"
                       onClick={(e) => {
@@ -91,7 +114,9 @@ export default function Books() {
                     >
                       History
                     </td>
+
                   </tr>
+
                 ))}
 
                 {filteredBooks.length === 0 && (
@@ -101,16 +126,19 @@ export default function Books() {
                     </td>
                   </tr>
                 )}
+
               </tbody>
 
             </table>
+
           </div>
 
-          {/* Book history panel */}
           {bookHistory.length > 0 && (
+
             <div className="table-wrap" style={{ marginTop: 20 }}>
 
               <div className="panel-header">
+
                 <h3>Book History</h3>
 
                 <button
@@ -119,9 +147,11 @@ export default function Books() {
                 >
                   ✕
                 </button>
+
               </div>
 
               <table className="data-table">
+
                 <thead>
                   <tr>
                     <th>Student</th>
@@ -132,18 +162,24 @@ export default function Books() {
                 </thead>
 
                 <tbody>
+
                   {bookHistory.map(r => (
+
                     <tr key={r.recordId}>
                       <td>{r.student?.studentName}</td>
                       <td>{r.bookCopyId?.copyCode}</td>
                       <td>{r.issueDate}</td>
                       <td>{r.returnDate ?? "-"}</td>
                     </tr>
+
                   ))}
+
                 </tbody>
+
               </table>
 
             </div>
+
           )}
 
         </div>
@@ -152,48 +188,39 @@ export default function Books() {
     );
   }
 
-  /* --------------------------------
-     COPIES VIEW
-  -------------------------------- */
-
   return (
+
     <div className="books-page">
 
       <div className="table-card">
 
         <div className="table-header">
+
           <h2>
             Copies – {selectedBook.bookName}
           </h2>
 
           <button
             className="back-btn1"
-            onClick={() => setSelectedBook(null)}
+            onClick={() => {
+              setSelectedBook(null);
+              loadBooks();
+            }}
           >
             ← Back to books
           </button>
+
         </div>
 
         <div className="table-wrap">
-          <CopiesTable
-            copies={selectedBook.copies}
-            onStatusChange={(copyId, newStatus) => {
 
-              setSelectedBook(prev => ({
-                ...prev,
-                copies: prev.copies.map(c =>
-                  c.copyId === copyId
-                    ? { ...c, status: newStatus }
-                    : c
-                )
-              }));
+          <CopiesTable copies={selectedBook.copies} />
 
-            }}
-          />
         </div>
 
       </div>
 
     </div>
+
   );
 }

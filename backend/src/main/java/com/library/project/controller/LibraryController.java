@@ -200,12 +200,13 @@ public class LibraryController {
     // Mark copy status
     @PostMapping("/copy/mark-status")
     public ResponseEntity<?> markCopyStatus(
-            @RequestParam Long copyId,
-            @RequestParam String status) {
+            @RequestParam String copyCode,
+            @RequestParam String status,
+            @RequestParam double fine) {
         try {
             return ResponseEntity.ok(
                     libraryService
-                            .markCopyStatus(copyId, status));
+                            .markCopyStatus(copyCode, status, fine));
         } catch (Exception e) {
             return ResponseEntity
                     .badRequest()

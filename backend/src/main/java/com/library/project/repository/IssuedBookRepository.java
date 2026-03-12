@@ -209,6 +209,6 @@ public interface IssuedBookRepository extends JpaRepository<IssuedBook, Long> {
     		        @Param("student") Student student
     		);
 
-    
-
+    Optional<IssuedBook> findTopByBookCopyIdOrderByIssueDateDesc(BookCopy copy);
+    Optional<IssuedBook> findTopByBookCopyIdOrderByRecordIdDesc(BookCopy copy);
 }

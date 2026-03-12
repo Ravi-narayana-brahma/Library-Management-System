@@ -151,10 +151,13 @@ export const searchCopyCodes = async (key) => {
   return res.json();
 };
 
-export const markCopyStatus = async (copyId, status) => {
+export const markCopyStatus = async (copyCode, status, fine = 0) => {
+
   const res = await fetch(
-    `${BASE_URL}/library/copy/mark-status?copyId=${copyId}&status=${status}`,
-    { method: "POST" }
+    `${BASE_URL}/library/copy/mark-status?copyCode=${copyCode}&status=${status}&fine=${fine}`,
+    {
+      method: "POST"
+    }
   );
 
   return res.json();

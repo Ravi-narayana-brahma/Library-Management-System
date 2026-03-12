@@ -747,3 +747,153 @@ body {
   font-weight: 700 !important;
   font-size: 25px !important;
 }
+/* =========================
+   MOBILE SIDEBAR
+========================= */
+
+.sidebar-toggle {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  z-index: 1000;
+  background: #1e293b;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  font-size: 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: none;
+}
+
+/* Small screens */
+@media (max-width: 768px) {
+
+  .sidebar-toggle {
+    display: block;
+  }
+
+  .student-sidebar {
+    position: fixed;
+    left: -260px;
+    top: 0;
+    height: 100%;
+    z-index: 999;
+    transition: left 0.3s ease;
+  }
+
+  .student-sidebar.open {
+    left: 0;
+  }
+
+  .student-content {
+    padding: 20px;
+  }
+
+}
+/* =========================
+   MOBILE SIDEBAR FIX
+========================= */
+
+@media (max-width: 768px) {
+
+  .student-sidebar {
+    position: fixed;
+    top: 0;
+    left: -260px;
+    height: 100%;
+    width: 240px;
+    z-index: 1000;
+    transition: left 0.3s ease;
+  }
+
+  .student-sidebar.open {
+    left: 0;
+  }
+
+  /* overlay background */
+  .student-layout::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+
+  .student-sidebar.open ~ .student-content {
+    filter: blur(2px);
+  }
+
+}
+/* =========================
+   SIDEBAR OVERLAY
+========================= */
+
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  z-index: 998;
+}
+
+/* mobile sidebar */
+@media (max-width: 768px) {
+
+  .student-sidebar {
+    position: fixed;
+    top: 0;
+    left: -260px;
+    height: 100%;
+    z-index: 999;
+    transition: left 0.3s ease;
+  }
+
+  .student-sidebar.open {
+    left: 0;
+  }
+
+}
+.confirm-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.35);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.confirm-box {
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  width: 320px;
+  text-align: center;
+}
+
+.confirm-buttons {
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn.cancel {
+  background: #e5e7eb;
+}
+
+.btn.confirm {
+  background: #ef4444;
+  color: white;
+}

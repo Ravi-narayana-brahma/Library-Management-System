@@ -13,6 +13,8 @@ export default function Reservations() {
   const [input, setInput] = useState("");
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
+  const [confirmCancel, setConfirmCancel] = useState(false);
+  const [cancelId, setCancelId] = useState(null);
 
   async function loadReservations() {
     try {
@@ -54,25 +56,27 @@ export default function Reservations() {
       showToast(e.message || "Reservation failed", "error");
     }
   }
+async function cancelReservation(id) {
+  setCancelId(id);
+  setConfirmCancel(true);
+}
+async function confirmCancelReservation() {
 
-  async function cancelReservation(id) {
+  try {
 
-    if (!window.confirm("Cancel this reservation?")) return;
+    const msg = await cancelStudentReservation(cancelId);
 
-    try {
+    showToast(msg || "Reservation cancelled", "info");
 
-      const msg = await cancelStudentReservation(id);
+    loadReservations();
 
-      showToast(msg || "Reservation cancelled", "info");
-
-      loadReservations();
-
-    } catch (e) {
-      console.error(e);
-      showToast("Cancel failed", "error");
-    }
+  } catch (e) {
+    console.error(e);
+    showToast("Cancel failed", "error");
+  } finally {
+    setConfirmCancel(false);
   }
-
+}
   const filteredReservations = reservations.filter(r =>
     r.book?.bookName?.toLowerCase().includes(search.toLowerCase())
   );
@@ -150,6 +154,32 @@ export default function Reservations() {
       ) : (
         <div className="empty-state">📌 No reservations found</div>
       )}
+      {confirmCancel && (
+      <div className="confirm-overlay">
+        <div className="confirm-box">
+    
+          <h3>Cancel Reservation</h3>
+          <p>Cancel this reservation?</p>
+    
+          <div className="confirm-buttons">
+            <button
+              className="btn cancel"
+              onClick={() => setConfirmCancel(false)}
+            >
+              No
+            </button>
+    
+            <button
+              className="btn confirm"
+              onClick={confirmCancelReservation}
+            >
+              Yes, Cancel
+            </button>
+          </div>
+    
+        </div>
+      </div>
+    )}
     </div>
   );
 }

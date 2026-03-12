@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import logo from "../assets/logo.png";
 import "./Topbar.css";
+import { showToast } from "../../public/toast";
 import {
   getAdminNotifications,
   approveBookRequest,
@@ -63,32 +64,32 @@ export default function Topbar({ open, setOpen }) {
   const acceptRequest = async (id) => {
     try {
       const msg = await approveBookRequest(id, 14);
-      alert(msg);
+      showToast(msg, "success");
 
       setNotifications(prev =>
         prev.filter(n => n.id !== id)
       );
     } catch (e) {
       console.error(e);
-      alert("Failed to approve request");
+      showToast("Failed to approve request", "error");
     }
   };
 
-  // ❌ DECLINE REQUEST (optional)
-  const rejectRequest = async (id) => {
+   const rejectRequest = async (id) => {
     try {
       const msg = await rejectBookRequest(id);
-      alert(msg);
-
+  
+      showToast(msg, "success");
+  
       setNotifications(prev =>
         prev.filter(n => n.id !== id)
       );
+  
     } catch (e) {
       console.error(e);
-      alert("Failed to reject request");
+      showToast("Failed to reject request", "error");
     }
   };
-
   const toggleTheme = () => {
     setTheme(p => (p === "dark" ? "light" : "dark"));
   };

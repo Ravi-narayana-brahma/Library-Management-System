@@ -49,8 +49,10 @@ export default function IssuedList() {
       i.recordStatus === statusFilter;
 
     const matchesFineStatus =
-      fineStatusFilter === "ALL" ||
-      i.fineStatus === fineStatusFilter;
+    fineStatusFilter === "ALL" ||
+    (fineStatusFilter === "UNPAID" && i.balanceAmount > 0) ||
+    (fineStatusFilter === "PAID" && i.balanceAmount === 0 && i.fine > 0) ||
+    (fineStatusFilter === "NO_FINE" && i.fine === 0);
 
     const issueDate = i.issueDate ? new Date(i.issueDate) : null;
     const from = fromDate ? new Date(fromDate) : null;
@@ -112,7 +114,6 @@ export default function IssuedList() {
 
     return result;
   }
-
   return (
     <div>
 
@@ -138,8 +139,8 @@ export default function IssuedList() {
             <option value="ALL">All Status</option>
             <option value="ISSUED">Issued</option>
             <option value="RETURNED">Returned</option>
-            {/* <option value="LOST">Lost</option>
-            <option value="DAMAGED">Damaged</option> */}
+            <option value="LOST">Lost</option>
+            <option value="DAMAGED">Damaged</option>
           </select>
         </div>
 
@@ -212,7 +213,7 @@ export default function IssuedList() {
             </tr>
           </thead>
 
-          <tbody>
+         <tbody>
             {pageData.length === 0 ? (
               <tr>
                 <td colSpan="12" style={{ textAlign: "center" }}>
@@ -220,49 +221,61 @@ export default function IssuedList() {
                 </td>
               </tr>
             ) : (
-              pageData.map(i => (
-                <tr key={i.recordId}>
-                  <td>{i.recordId}</td>
-                  <td>{i.bookCopyId?.book?.bookName}</td>
-                  <td>{i.bookCopyId?.copyCode}</td>
-                  <td>{i.student?.studentName}</td>
-                  <td>{i.issueDate}</td>
-                  <td>{i.dueDate}</td>
-                  <td>{i.returnDate ?? "-"}</td>
-                  <td>{i.fine ?? 0}</td>
-                  <td>{i.balanceAmount ?? 0}</td>
-                  <td>{i.fineStatus ?? "-"}</td>
-
-                  <td>
-                    <span className={`status ${(i.recordStatus || "").toLowerCase()}`}>
-                      {i.recordStatus}
-                    </span>
-                  </td>
-
-                  <td>
-                    {i.balanceAmount > 0 ? (
-                      <button
-                        className="pay-btn-row"
-                        onClick={() =>
-                          navigate("/pay-fine", {
-                            state: {
-                              issueId: i.recordId,
-                              issuedTo: i.student?.studentName,
-                              bookTitle: i.bookCopyId?.book?.bookName,
-                              copyCode: i.bookCopyId?.copyCode,
-                              fine: i.fine ?? 0,
-                              balanceAmount: i.balanceAmount ?? 0
-                            }
-                          })
-                        }
-                      >
-                        Pay
-                      </button>
-                    ) : "-"}
-                  </td>
-
-                </tr>
-              ))
+              pageData.map(i => {
+          
+               const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                
+                const dueDate = new Date(i.dueDate);
+                dueDate.setHours(0, 0, 0, 0);
+                
+                const isOverdue =
+                  i.recordStatus === "ISSUED" && dueDate < today;
+          
+                return (
+                  <tr key={i.recordId}>
+                    <td>{i.recordId}</td>
+                    <td>{i.bookCopyId?.book?.bookName}</td>
+                    <td>{i.bookCopyId?.copyCode}</td>
+                    <td>{i.student?.studentName}</td>
+                    <td>{i.issueDate}</td>
+                    <td>{i.dueDate}</td>
+                    <td>{i.returnDate ?? "-"}</td>
+                    <td>{i.fine ?? 0}</td>
+                    <td>{i.balanceAmount ?? 0}</td>
+                    <td>{i.fineStatus ?? "-"}</td>
+          
+                    <td>
+                      <span className={`status ${isOverdue ? "overdue" : (i.recordStatus || "").toLowerCase()}`}>
+                        {isOverdue ? "OVERDUE" : i.recordStatus}
+                      </span>
+                    </td>
+          
+                    <td>
+                      {i.balanceAmount > 0 ? (
+                        <button
+                          className="pay-btn-row"
+                          onClick={() =>
+                            navigate("/admin/pay-fine", {
+                              state: {
+                                issueId: i.recordId,
+                                issuedTo: i.student?.studentName,
+                                bookTitle: i.bookCopyId?.book?.bookName,
+                                copyCode: i.bookCopyId?.copyCode,
+                                fine: i.fine ?? 0,
+                                balanceAmount: i.balanceAmount ?? 0
+                              }
+                            })
+                          }
+                        >
+                          Pay
+                        </button>
+                      ) : "-"}
+                    </td>
+          
+                  </tr>
+                );
+              })
             )}
           </tbody>
         </table>
