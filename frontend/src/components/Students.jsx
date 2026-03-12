@@ -89,60 +89,48 @@ export default function Students() {
 
   async function handleExcelUpload() {
 
-    if (!excelFile) {
+  if (!excelFile) {
+    showToast("Please select Excel file", "warning");
+    return;
+  }
 
-      showToast("Please select Excel file", "warning");
-      return;
+  try {
 
-    }
+    const formData = new FormData();
+    formData.append("file", excelFile);
 
-    try {
+    setUploading(true);
+    setProgress(0);
 
-      const formData = new FormData();
-      formData.append("file", excelFile);
-
-      setUploading(true);
-      setProgress(0);
-
-      const res = await axios.post(
-        "/library/students/upload",
-        formData,
-        {
-
-          headers: {
-            "Content-Type": "multipart/form-data"
-          },
-
-          onUploadProgress: (event) => {
-
-            const percent = Math.round(
-              (event.loaded * 100) / event.total
-            );
-
-            setProgress(percent);
-
-          }
-
+    const res = await axios.post(
+      `${BASE_URL}/library/students/upload`,
+      formData,
+      {
+        onUploadProgress: (event) => {
+          const percent = Math.round(
+            (event.loaded * 100) / event.total
+          );
+          setProgress(percent);
         }
-      );
+      }
+    );
 
-      showToast(
-        `Saved: ${res.data.saved} | Errors: ${res.data.errors}`,
-        "success"
-      );
+    showToast(
+      `Saved: ${res.data.saved} | Errors: ${res.data.errors}`,
+      "success"
+    );
 
-      setUploading(false);
-      loadStudents();
+    setUploading(false);
+    loadStudents();
 
-    }
-    catch (err) {
+  } catch (err) {
 
-      setUploading(false);
-      showToast("Upload failed", "error");
-
-    }
+    setUploading(false);
+    showToast("Upload failed", "error");
 
   }
+
+}
 
 
  async function downloadTemplate() {
