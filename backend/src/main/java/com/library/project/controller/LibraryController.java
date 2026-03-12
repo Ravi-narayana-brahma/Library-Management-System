@@ -515,4 +515,42 @@ public class LibraryController {
                 libraryService.requestReturn(recordId, copyCode, hallTicket)
         );
     }
+	@GetMapping("/students/template")
+	public ResponseEntity<byte[]> downloadTemplate() {
+	
+	    try {
+	
+	        byte[] file = libraryService.generateStudentTemplate();
+	
+	        return ResponseEntity.ok()
+	                .header("Content-Disposition",
+	                        "attachment; filename=students_template.xlsx")
+	                .body(file);
+	
+	    } catch (Exception e) {
+	
+	        return ResponseEntity.badRequest().build();
+	
+	    }
+	}
+	
+	
+	// Upload students
+	@PostMapping("/students/upload")
+	public ResponseEntity<?> uploadStudents(
+	        @RequestParam("file") MultipartFile file) {
+	
+	    try {
+	
+	        return ResponseEntity.ok(
+	                libraryService.uploadStudentsFromExcel(file)
+	        );
+	
+	    } catch (Exception e) {
+	
+	        return ResponseEntity.badRequest()
+	                .body(e.getMessage());
+	
+	    }
+	}
 }
