@@ -1209,8 +1209,8 @@ public byte[] generateStudentTemplate() {
                 String year = String.valueOf((int) row.getCell(2).getNumericCellValue());
                 String branch = row.getCell(3).getStringCellValue();
 
-                if (year != fileYear ||
-                        !branch.equalsIgnoreCase(fileBranch)) {
+                if (!year.equals(String.valueOf(fileYear)) ||
+        				!branch.equalsIgnoreCase(fileBranch)) {
 
                     errorRows.add(new String[]{
                             name, hallTicket,
