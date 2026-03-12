@@ -221,6 +221,19 @@ export const downloadStudentTemplate = async () => {
   const blob = await res.blob();
   return blob;
 };
+export const uploadStudentsExcel = async (formData, onProgress) => {
+
+  const res = await axios.post(
+    `${BASE_URL}/library/students/upload`,
+    formData,
+    {
+      onUploadProgress: onProgress
+    }
+  );
+
+  return res.data;
+
+};
 /* ================= ISSUE / RETURN ================= */
 
 export const issueBook = async (copyId, hallTicket, days) => {
